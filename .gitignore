@@ -1,0 +1,5 @@
+.tern-port
+node_modules
+dist/
+out/
+src/book.epub

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EPUB.js Annotator Example</title>
+
+  <script src="../lib/jszip.min.js"></script>
+  <script src="../lib/epub.js"></script>
+
+</head>
+<body>
+  <div id="viewer" class="spreads"></div>
+  <div id="prev" class="arrow">‹</div>
+  <div id="next" class="arrow">›</div>
+  <script>
+      //var book = ePub("https://s3.amazonaws.com/moby-dick/OPS/package.opf");
+      var book = ePub("../book.epub");
+      var rendition = book.renderTo("viewer", {width:"100%", height:"auto"});
+      var displayed = rendition.display();
+  </script>
+  <script src="../book.js"></script>
+  </body>
+</html>
