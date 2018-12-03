@@ -16,6 +16,7 @@ let win;
 function createWindow(){
     win = new BrowserWindow({width:640,height:480});
     win.loadFile(path.join(__dirname,'html','reader.html'));
+    win.webContents.send('next')
 }
 
 app.on('ready',createWindow)
