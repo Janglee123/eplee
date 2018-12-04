@@ -1,47 +1,55 @@
 {
-    "name": "Eplee",
-    "version": "0.1.0",
-    "license": "MIT",
-    "description": "Sweat,Simple ePub reader",
-    "author": "Patel Meru <merupatel123@gmail.com> (janglee123.github.io)",
-    "main": "./src/js/main.js",
-    "keywords": [],
-    "scripts": {
-        "start": "electron .",
-        "pack": "build --dir",
-        "dist": "build"
-    },
-    "build": {
-        "appId": "eplee",
-        "dmg": {
-            "contents": [
-                {
-                    "x": 110,
-                    "y": 150
-                },
-                {
-                    "x": 240,
-                    "y": 150,
-                    "type": "link",
-                    "path": "/Applications"
-                }
-            ]
+  "name": "Eplee",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Sweat,Simple ePub reader",
+  "author": "Patel Meru <merupatel123@gmail.com> (janglee123.github.io)",
+  "main": "./src/js/main.js",
+  "keywords": [],
+  "scripts": {
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "build": {
+    "appId": "eplee",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
         },
-        "linux": {
-            "target": [
-                "AppImage"
-            ]
-        },
-        "win": {
-            "target": "NSIS",
-            "icon": "build/icon.ico"
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
         }
+      ]
     },
-    "devDependencies": {
-        "electron": "^3.0.10",
-        "electron-builder": "^20.38.2"
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
     },
-    "dependencies": {
-        "electron-localshortcut": "^3.1.0"
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
     }
+  },
+  "devDependencies": {
+    "electron": "^3.0.10",
+    "electron-builder": "^20.38.2"
+  },
+  "dependencies": {
+    "electron-localshortcut": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Janglee123/eplee.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Janglee123/eplee/issues"
+  },
+  "homepage": "https://github.com/Janglee123/eplee#readme"
 }
