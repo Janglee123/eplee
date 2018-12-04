@@ -16,19 +16,19 @@ function createWindow(){
         useContentSize: true
     });
 
-    electronLocalshortcut.register('Ctrl+O', () => {
+    electronLocalshortcut.register(win, 'Ctrl+O', () => {
         console.log('openDialog open');
         let pathtoepub = dialog.showOpenDialog(
             {
                 filters:[{ name: 'ePub', extensions: 'epub' }],
                 properties:['openFile'],
             }
-        )[0];
-        console.log(pathtoepub);
-
+        );
         if(!pathtoepub){
             return;
         }
+        pathtoepub = pathtoepub[0];
+        console.log(pathtoepub);
         if(!pathtoepub.endsWith('.epub')){
             dialog.showMessageBox({message:'Please select ePub file'});
             return;
