@@ -1,16 +1,45 @@
 {
     "name": "Eplee",
-    "version": "1.0.0",
-    "description": "Sweat,Simple",
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Sweat,Simple ePub reader",
+    "author": "Patel Meru <merupatel123@gmail.com> (janglee123.github.io)",
     "main": "./src/js/main.js",
-    "scripts": {
-        "start": "electron ."
-    },
     "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "scripts": {
+        "start": "electron .",
+        "pack": "build --dir",
+        "dist": "build"
+    },
+    "build": {
+        "appId": "eplee",
+        "dmg": {
+            "contents": [
+                {
+                    "x": 110,
+                    "y": 150
+                },
+                {
+                    "x": 240,
+                    "y": 150,
+                    "type": "link",
+                    "path": "/Applications"
+                }
+            ]
+        },
+        "linux": {
+            "target": [
+                "AppImage"
+            ]
+        },
+        "win": {
+            "target": "NSIS",
+            "icon": "build/icon.ico"
+        }
+    },
     "devDependencies": {
-        "electron": "^3.0.10"
+        "electron": "^3.0.10",
+        "electron-builder": "^20.38.2"
     },
     "dependencies": {
         "electron-localshortcut": "^3.1.0"
