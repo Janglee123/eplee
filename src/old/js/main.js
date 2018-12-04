@@ -16,8 +16,8 @@ let win;
 
 function createWindow(){
     win = new BrowserWindow({
-        width:640,
-        height:480,
+        width:960,
+        height:640,
         //kiosk:true,
         //frame: false,
         webSecurity: false,
