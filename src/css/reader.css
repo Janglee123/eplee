@@ -1,3 +1,7 @@
+body {
+  overflow-y: hidden;
+}
+
 #prev {
   left: 40px;
 }

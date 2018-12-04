@@ -1,8 +1,8 @@
 {
     "name": "Eplee",
     "version": "1.0.0",
-    "description": "",
-    "main": "./src/main.js",
+    "description": "Sweat,Simple",
+    "main": "./src/js/main.js",
     "scripts": {
         "start": "electron ."
     },
