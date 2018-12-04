@@ -738,39 +738,6 @@ input:-ms-placeholder {
 }
 
 
-/* For iPad portrait layouts only */
-@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: portrait) {
-    #viewer iframe {
-        width: 460px;
-        height: 740px;
-    }
-}
- /*For iPad landscape layouts only */
-@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
-    #viewer iframe {
-        width: 460px;
-        height: 415px;
-    }
-}
-/* For iPhone portrait layouts only */
-@media only screen and (max-device-width: 480px) and (orientation: portrait) {
-    #viewer {
-      width: 256px;
-      height: 432px;
-    }
-    #viewer iframe {
-       width: 256px;
-       height: 432px;
-    }
-}
-/* For iPhone landscape layouts only */
-@media only screen and (max-device-width: 480px) and (orientation: landscape) {
-    #viewer iframe {
-        width: 256px;
-        height: 124px;
-    }
-}
-
 [class^="icon-"]:before, [class*=" icon-"]:before {
     font-family: "fontello";
     font-style: normal;

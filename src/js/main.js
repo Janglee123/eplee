@@ -21,11 +21,11 @@ function createWindow(){
         //kiosk:true,
         //frame: false,
         webSecurity: false,
-        titleBarStyle: 'hiddenInset',
+        //titleBarStyle: 'hiddenInset',
         //backgroundColor: '#2e2c29',
         useContentSize: true
     });
-    win.setMenu(null)
+    //win.setMenu(null)
     win.loadFile(path.join(__dirname,'..','html','reader.html'));
 }
 
