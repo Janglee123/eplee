@@ -244,11 +244,7 @@ if (Array.isArray) {
 
 var isArray = _isArray;
 
-// Date.now is not available in browsers < IE9
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now#Compatibility
-var now = Date.now || function () {
-  return new Date().getTime();
-};
+var now = Date.now;
 
 var queue = [];
 
@@ -1053,25 +1049,25 @@ var Promise = function () {
   /**
     `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
     as the catch block of a try/catch statement.
-  
+
     ```js
     function findAuthor(){
       throw new Error('couldn\'t find that author');
     }
-  
+
     // synchronous
     try {
       findAuthor();
     } catch(reason) {
       // something went wrong
     }
-  
+
     // async with promises
     findAuthor().catch(function(reason){
       // something went wrong
     });
     ```
-  
+
     @method catch
     @param {Function} onRejection
     @param {String} label optional string for labeling the promise.
@@ -1087,9 +1083,9 @@ var Promise = function () {
   /**
     `finally` will be invoked regardless of the promise's fate just as native
     try/catch/finally behaves
-  
+
     Synchronous example:
-  
+
     ```js
     findAuthor() {
       if (Math.random() > 0.5) {
@@ -1097,7 +1093,7 @@ var Promise = function () {
       }
       return new Author();
     }
-  
+
     try {
       return findAuthor(); // succeed or fail
     } catch(error) {
@@ -1107,9 +1103,9 @@ var Promise = function () {
       // doesn't affect the return value
     }
     ```
-  
+
     Asynchronous example:
-  
+
     ```js
     findAuthor().catch(function(reason){
       return findOtherAuthor();
@@ -1117,7 +1113,7 @@ var Promise = function () {
       // author was either found, or not
     });
     ```
-  
+
     @method finally
     @param {Function} callback
     @param {String} label optional string for labeling the promise.
@@ -3613,22 +3609,7 @@ EPUBJS.reader.ControlsController = function(book) {
 			$sidebar = $("#sidebar"),
 			$settings = $("#setting"),
 			$bookmark = $("#bookmark");
-	/*
-	var goOnline = function() {
-		reader.offline = false;
-		// $store.attr("src", $icon.data("save"));
-	};
 
-	var goOffline = function() {
-		reader.offline = true;
-		// $store.attr("src", $icon.data("saved"));
-	};
-
-	var fullscreen = false;
-
-	book.on("book:online", goOnline);
-	book.on("book:offline", goOffline);
-	*/
 	$slider.on("click", function () {
 		if(reader.sidebarOpen) {
 			reader.SidebarController.hide();
@@ -3709,7 +3690,6 @@ EPUBJS.reader.ControlsController = function(book) {
 	});
 
 	return {
-
 	};
 };
 
@@ -4212,7 +4192,7 @@ EPUBJS.reader.SidebarController = function(book) {
 
 	var changePanelTo = function(viewName) {
 		var controllerName = viewName + "Controller";
-		
+
 		if(activePanel == viewName || typeof reader[controllerName] === 'undefined' ) return;
 		reader[activePanel+ "Controller"].hide();
 		reader[controllerName].show();
@@ -4221,11 +4201,11 @@ EPUBJS.reader.SidebarController = function(book) {
 		$panels.find('.active').removeClass("active");
 		$panels.find("#show-" + viewName ).addClass("active");
 	};
-	
+
 	var getActivePanel = function() {
 		return activePanel;
 	};
-	
+
 	var show = function() {
 		reader.sidebarOpen = true;
 		reader.ReaderController.slideOut();

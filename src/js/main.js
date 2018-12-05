@@ -9,12 +9,13 @@ let win;
 
 function createWindow(){
     win = new BrowserWindow({
-        width:960,
+        width:1042,
         height:640,
-        //frame: false,
+        frame: false,
         webSecurity: false,
         useContentSize: true,
-        icon: path.join(__dirname,'..','img','icons','128x128.png')
+            transparent: true,
+        icon: path.join(__dirname,'..','img','icons','64x64.png')
     });
 
     electronLocalshortcut.register(win, 'Ctrl+O', () => {

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   data-name="Layer 1"
+   viewBox="0 0 1024 1024"
+   x="0px"
+   y="0px"
+   version="1.1"
+   id="svg12"
+   sodipodi:docname="icon.svg"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   width="1024"
+   height="1024"
+   inkscape:export-filename="/home/meru/Projects/eplee/icons/icon_1024.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96">
+  <metadata
+     id="metadata18">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Artboard 13</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs16">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient6000">
+      <stop
+         style="stop-color:#fefeff;stop-opacity:1;"
+         offset="0"
+         id="stop5996" />
+      <stop
+         style="stop-color:#fefeff;stop-opacity:0;"
+         offset="1"
+         id="stop5998" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4544"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop4542" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient6000"
+       id="linearGradient6004"
+       x1="14"
+       y1="64"
+       x2="114"
+       y2="64"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="706"
+     id="namedview14"
+     showgrid="false"
+     inkscape:zoom="0.236"
+     inkscape:cx="322.90461"
+     inkscape:cy="569.41811"
+     inkscape:window-x="0"
+     inkscape:window-y="28"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:pagecheckerboard="false"
+     scale-x="1" />
+  <title
+     id="title2">Artboard 13</title>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="BG"
+     transform="translate(0,896)">
+    <circle
+       id="path23"
+       cx="512"
+       cy="-384"
+       style="fill:#005fff;fill-opacity:1;stroke:none;stroke-width:6.86963844"
+       r="512" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="LOGO"
+     transform="translate(0,896)">
+    <g
+       id="g21"
+       transform="matrix(6.4,0,0,6.4,102.4,-793.6)"
+       style="fill:#fefeff;fill-opacity:1">
+      <path
+         style="fill:#fefeff;fill-opacity:1;stroke-width:1.08574629"
+         inkscape:connector-curvature="0"
+         id="path6"
+         d="m 110.14286,25.483364 h -7.61225 V 16.88817 A 2.5510204,2.8881702 0 0 0 99.979592,14 H 84.102041 A 29.591837,33.502774 0 0 0 64,22.953327 29.591837,33.502774 0 0 0 43.897959,14 H 28.020408 a 2.5510204,2.8881702 0 0 0 -2.55102,2.88817 v 8.595194 H 17.857143 A 3.8571429,4.3669133 0 0 0 14,29.850277 V 98.40389 a 3.8571429,4.3669133 0 0 0 3.857143,4.36691 h 25.32653 a 15.183673,17.190389 0 0 1 11.22449,5.6146 A 11.765306,13.320241 0 0 0 64,114 v 0 a 11.785714,13.343346 0 0 0 9.632653,-5.66081 14.897959,16.866914 0 0 1 11.22449,-5.56839 H 110.14286 A 3.8571429,4.3669133 0 0 0 114,98.40389 V 29.850277 a 3.8571429,4.3669133 0 0 0 -3.85714,-4.366913 z M 30.55102,19.776341 h 13.346939 a 24.418367,27.645565 0 0 1 17.551021,8.41035 v 4.771258 a 2.5510204,2.8881702 0 0 0 5.10204,0 v -4.771258 a 24.418367,27.645565 0 0 1 17.551021,-8.445009 h 13.32653 V 83.939928 H 84.102041 A 29.530612,33.433458 0 0 0 66.55102,90.501851 v -8.976433 a 2.5510204,2.8881702 0 0 0 -5.10204,0 v 8.987985 A 29.530612,33.433458 0 0 0 43.897959,83.951481 H 30.571429 Z M 108.89796,96.99446 H 84.816327 a 19.989796,22.631702 0 0 0 -15.122449,7.65942 3.2346939,3.6621997 0 0 0 -0.204082,0.30038 A 6.5816327,7.451479 0 0 1 64,108.22366 v 0 a 6.5816327,7.451479 0 0 1 -5.489796,-3.2694 2.4081633,2.7264326 0 0 0 -0.204082,-0.28882 20.295918,22.978282 0 0 0 -15.122449,-7.67098 H 19.102041 V 31.259705 h 6.367347 v 55.568394 a 2.5510204,2.8881702 0 0 0 2.55102,2.88817 h 15.877551 a 24.418367,27.645565 0 0 1 18.193878,9.242141 2.5510204,2.8881702 0 0 0 3.806122,0 24.428571,27.657118 0 0 1 18.193878,-9.242141 h 15.887755 a 2.5510204,2.8881702 0 0 0 2.551018,-2.88817 V 31.259705 h 6.36735 z" />
+      <text
+         transform="scale(0.93756844,1.0665888)"
+         id="text43"
+         y="68.195717"
+         x="50.94561"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:57.65952682px;line-height:1.25;font-family:'Mali SemiBold';-inkscape-font-specification:'Mali SemiBold, ';letter-spacing:0px;word-spacing:0px;fill:#fefeff;fill-opacity:1;stroke:none;stroke-width:1.44148839"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Mali SemiBold';-inkscape-font-specification:'Mali SemiBold, ';fill:#fefeff;fill-opacity:1;stroke-width:1.44148839"
+           y="68.195717"
+           x="50.94561"
+           id="tspan41"
+           sodipodi:role="line">e</tspan></text>
+    </g>
+  </g>
+</svg>

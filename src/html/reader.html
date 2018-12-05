@@ -54,12 +54,10 @@
     <div id="sidebar">
         <div id="panels">
             <input id="searchBox" placeholder="search" type="search">
-
             <a id="show-Search" class="show_view icon-search" data-view="Search">Search</a>
             <a id="show-Toc" class="show_view icon-list-1 active" data-view="Toc">TOC</a>
             <a id="show-Bookmarks" class="show_view icon-bookmark" data-view="Bookmarks">Bookmarks</a>
             <a id="show-Notes" class="show_view icon-edit" data-view="Notes">Notes</a>
-
         </div>
         <div id="tocView" class="view">
         </div>
@@ -83,7 +81,7 @@
             <div id="opener">
                 <a id="slider" class="icon-menu">Menu</a>
             </div>
-            <div id="metainfo">
+            <div id="metainfo" style="-webkit-app-region: drag;">
                 <span id="book-title"></span>
                 <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
                 <span id="chapter-title"></span>
@@ -92,12 +90,26 @@
                 <a id="bookmark" class="icon-bookmark-empty">Bookmark</a>
                 <a id="setting" class="icon-cog">Settings</a>
                 <a id="fullscreen" class="icon-resize-full">Fullscreen</a>
+                <a id="minimize">M</a>
+                <a id="close">C</a>
+                <script>
+                    document.getElementById("minimize").addEventListener("click", (e) => {
+                        var window = remote.getCurrentWindow();
+                        window.minimize();
+                    });
+
+                    const remote = require('electron').remote;
+                    document.getElementById("close").addEventListener("click", (e) => {
+                        var window = remote.getCurrentWindow();
+                        window.close();
+                    });
+                </script>
             </div>
         </div>
 
         <div id="divider"></div>
         <div id="prev" class="arrow">‹</div>
-        <div id="viewer"></div>
+        <div id="viewer" style="user-select: none"></div>
         <div id="next" class="arrow">›</div>
 
         <div id="loader"><img src="../img/loader.gif"></div>
