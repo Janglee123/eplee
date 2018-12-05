@@ -13,7 +13,8 @@ function createWindow(){
         height:640,
         //frame: false,
         webSecurity: false,
-        useContentSize: true
+        useContentSize: true,
+        icon: path.join(__dirname,'..','img','icons','128x128.png')
     });
 
     electronLocalshortcut.register(win, 'Ctrl+O', () => {
