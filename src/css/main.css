@@ -21,23 +21,15 @@ body {
   height: 100%;
   right: 0;
   /* left: 40px; */
-/*   -webkit-transform: translate(40px, 0);
+  /* -webkit-transform: translate(40px, 0);
   -moz-transform: translate(40px, 0); */
-
-  /* border-radius: 5px 0px 0px 5px; */
-  border-radius: 5px;
+  border-radius: 10px;
   background: #fff;
   overflow: hidden;
   -webkit-transition: -webkit-transform .4s, width .2s;
   -moz-transition: -webkit-transform .4s, width .2s;
   -ms-transition: -webkit-transform .4s, width .2s;
-
-  -moz-box-shadow:    inset 0 0 50px rgba(0,0,0,.1);
-  -webkit-box-shadow: inset 0 0 50px rgba(0,0,0,.1);
-  -ms-box-shadow: inset 0 0 50px rgba(0,0,0,.1);
-  box-shadow:         inset 0 0 50px rgba(0,0,0,.1);
 }
-
 
 #titlebar {
   height: 8%;
@@ -102,7 +94,6 @@ body {
 #viewer {
   width: 80%;
   height: 80%;
-  /* margin-left: 10%; */
   margin: 0 auto;
   max-width: 1250px;
   z-index: 2;
@@ -115,22 +106,23 @@ body {
 }
 
 #prev {
-  left: 40px;
+  left: 20px;
 }
 
 #next {
-  right: 40px;
+  right: 20px;
 }
 
 .arrow {
   position: absolute;
   top: 50%;
-  margin-top: -32px;
   font-size: 64px;
+  margin-top: -32px;
   color: #E2E2E2;
   font-family: arial, sans-serif;
   font-weight: bold;
   cursor: pointer;
+  z-index: 3;
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -182,7 +174,7 @@ body {
 }
 
 #main.single #viewer {
-  /* width: 60%;
+  /*width: 60%;
   margin-left: 20%; */
 }
 
@@ -275,7 +267,7 @@ input:-ms-placeholder {
     color: #454545;
 }
 
-#divider {
+/*#divider {
   position: absolute;
   width: 1px;
   border-right: 1px #000 solid;
@@ -291,7 +283,7 @@ input:-ms-placeholder {
 
 #divider.show {
   display: block;
-}
+}*/
 
 #loader {
   position: absolute;
@@ -653,10 +645,10 @@ input:-ms-placeholder {
 }
 
 @media only screen and (max-width: 1040px) {
-  #viewer{
+  /*#viewer{
     width: 50%;
     margin-left: 25%;
-  }
+  }*/
 
   #divider,
   #divider.show {
@@ -665,10 +657,10 @@ input:-ms-placeholder {
 }
 
 @media only screen and (max-width: 900px) {
-  #viewer{
+  /*#viewer{
     width: 60%;
     margin-left: 20%;
-  }
+  }*/
 
   #prev {
     left: 20px;
@@ -680,10 +672,10 @@ input:-ms-placeholder {
 }
 
 @media only screen and (max-width: 550px) {
-  #viewer{
+  /*#viewer{
     width: 80%;
     margin-left: 10%;
-  }
+  }*/
 
   #prev {
     left: 0;
@@ -698,6 +690,8 @@ input:-ms-placeholder {
     top: 45px;
     width: 10%;
     text-indent: -10000px;
+    z-index: 3;
+
   }
 
   #main {

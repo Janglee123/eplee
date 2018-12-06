@@ -18,38 +18,39 @@
     <script src="../js/libs/zip.min.js"></script>
 
     <!-- File Storage -->
-    <script src="../js/libs/localforage.min.js"></script>
+    <!-- <script src="../js/libs/localforage.min.js"></script> -->
 
     <!-- Full Screen -->
     <script src="../js/libs/screenfull.min.js"></script>
 
-    <!--Rsvp reader.js-->
+    <!-- Rsvp -->
     <script src="../js/libs/rsvp.min.js"></script>
 
-    <!--Render -->
+    <!-- Render -->
     <script src="../js/libs/epub.js"></script>
 
     <!-- Reader -->
     <script src="../js/reader.js"></script>
 
     <!--Plugins -->
-    <script src="../js/plugins/search.js"></script>
+    <!-- <script src="../js/plugins/search.js"></script> -->
 
     <script>
-    "use strict";
-    document.onreadystatechange = function () {
-        if (document.readyState == "complete") {
-            window.reader = ePubReader("", {
-                restore: true
-            });
-        }
-    };
-</script>
+        "use strict";
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+                window.reader = ePubReader("", {
+                    restore: true
+                });
+            }
+        };
+    </script>
+
     <script>if (window.module) module = window.module;</script>
 </head>
 
 <body>
-    <div id="sidebar">
+     <!--<div id="sidebar">
         <div id="panels">
             <input id="searchBox" placeholder="search" type="search">
             <a id="show-Search" class="show_view icon-search" data-view="Search">Search</a>
@@ -57,8 +58,8 @@
             <a id="show-Bookmarks" class="show_view icon-bookmark" data-view="Bookmarks">Bookmarks</a>
             <a id="show-Notes" class="show_view icon-edit" data-view="Notes">Notes</a>
         </div>
-        <div id="tocView" class="view">
-        </div>
+        <div id="tocView" class="view"></div>
+
         <div id="searchView" class="view">
             <ul id="searchResults"></ul>
         </div>
@@ -72,14 +73,13 @@
             </div>
             <ol id="notes"></ol>
         </div>
-    </div>
+    </div> -->
     <div id="main">
-
         <div id="titlebar">
             <div id="opener">
-                <a id="slider" class="icon-menu">Menu</a>
+                <!-- <a id="slider" class="icon-menu">Menu</a> -->
             </div>
-            <div id="metainfo" style="-webkit-app-region: drag;">
+                <div id="metainfo" style="-webkit-app-region: drag;">
                 <span id="book-title"></span>
                 <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
                 <span id="chapter-title"></span>
