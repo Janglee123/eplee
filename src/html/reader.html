@@ -20,9 +20,6 @@
     <!-- File Storage -->
     <!-- <script src="../js/libs/localforage.min.js"></script> -->
 
-    <!-- Full Screen -->
-    <script src="../js/libs/screenfull.min.js"></script>
-
     <!-- Rsvp -->
     <script src="../js/libs/rsvp.min.js"></script>
 
@@ -83,27 +80,16 @@
             </div>
                 <div id="metainfo" style="-webkit-app-region: drag;">
                 <span id="book-title"></span>
-                <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
+                <span id="title-seperator">-</span>
                 <span id="chapter-title"></span>
             </div>
             <div id="title-controls">
                 <a id="bookmark" class="icon-bookmark-empty">Bookmark</a>
-                <a id="setting" class="icon-cog">Settings</a>
-                <a id="fullscreen" class="icon-resize-full">Fullscreen</a>
-                <a id="minimize">M</a>
-                <a id="close">C</a>
-                <script>
-                    document.getElementById("minimize").addEventListener("click", (e) => {
-                        var window = remote.getCurrentWindow();
-                        window.minimize();
-                    });
-
-                    const remote = require('electron').remote;
-                    document.getElementById("close").addEventListener("click", (e) => {
-                        var window = remote.getCurrentWindow();
-                        window.close();
-                    });
-                </script>
+                <a id="setting" class="icon-settings"></a>
+                <a id="fullscreen" class="icon-fullscreen-full"></a>
+                <a id="minimize" class="icon-minimize"></a>
+                <a id="maximize" class="icon-maximize"></a>
+                <a id="close" class="icon-close">C</a>
             </div>
         </div>
 

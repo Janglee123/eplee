@@ -209,6 +209,7 @@ width: 25px;
 
 #title-controls {
     float: right;
+    user-select: none;
 }
 
 #panels a {
@@ -700,39 +701,12 @@ input:-ms-placeholder {
     }
 }*/
 
-[class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
-
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
-    /* opacity: .8; */
-
-    /* For safety - reset parent styles, that can break glyph codes*/
-    font-variant: normal;
-    text-transform: none;
-
-    /* you can be more comfortable with increased icons size */
-    font-size: 112%;
-}
-
-
 .icon-search:before { content: '\e807'; } /* '' */
-.icon-resize-full-1:before { content: '\e804'; } /* '' */
 .icon-cancel-circled2:before { content: '\e80f'; } /* '' */
 .icon-link:before { content: '\e80d'; } /* '' */
-.icon-bookmark:before { content: '\e805'; } /* '' */
-.icon-bookmark-empty:before { content: '\e806'; } /* '' */
 .icon-download-cloud:before { content: '\e811'; } /* '' */
 .icon-edit:before { content: '\e814'; } /* '' */
 .icon-menu:before { content: '\e802'; } /* '' */
-.icon-cog:before { content: '\e813'; } /* '' */
-.icon-resize-full:before { content: '\e812'; } /* '' */
 .icon-cancel-circled:before { content: '\e80e'; } /* '' */
 .icon-up-dir:before { content: '\e80c'; } /* '' */
 .icon-right-dir:before { content: '\e80b'; } /* '' */
@@ -743,4 +717,12 @@ input:-ms-placeholder {
 .icon-list-numbered:before { content: '\e801'; } /* '' */
 .icon-columns:before { content: '\e810'; } /* '' */
 .icon-list:before { content: '\e800'; } /* '' */
-.icon-resize-small:before { content: '\e808'; } /* '' */
+.icon-bookmark { content: url('../img/bookmark-off.svg'); } /* '' */
+.icon-bookmark-empty { content: url('../img/bookmark.svg') }
+.icon-settings { content: url('../img/settings.svg'); }
+.icon-fullscreen-full { content: url('../img/fullscreen.svg') }
+.icon-fullscreen-small { content: url('../img/fullscreen-exit.svg') }
+.icon-minimize{ content: url('../img/minimize.svg') }
+.icon-maximize{ content: url('../img/maximize.svg') }
+.icon-maximize-exit{ content: url('../img/maximize-exit.svg') }
+.icon-close{ content: url('../img/close.svg');}

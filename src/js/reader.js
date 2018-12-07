@@ -1,3 +1,5 @@
+const remote = require('electron').remote;
+
 var EPUBJS = EPUBJS || {};
 EPUBJS.reader = {};
 EPUBJS.reader.plugins = {}; //-- Attach extra Controllers as plugins (like search?)
@@ -99,20 +101,24 @@ EPUBJS.reader.BookmarksController = function() {
 };
 
 EPUBJS.reader.ControlsController = function(book) {
-	var reader = this;
-	var rendition = this.rendition;
+	let reader = this;
+	let rendition = this.rendition;
+	let win = remote.getCurrentWindow();
 
-	var $store = $("#store"),
+	let $store = $("#store"),
 			$fullscreen = $("#fullscreen"),
-			$fullscreenicon = $("#fullscreenicon"),
-			$cancelfullscreenicon = $("#cancelfullscreenicon"),
+			/*$fullscreenicon = $("#fullscreenicon"),
+			$cancelfullscreenicon = $("#cancelfullscreenicon"),*/
 			$slider = $("#slider"),
 			$main = $("#main"),
 			$sidebar = $("#sidebar"),
 			$settings = $("#setting"),
 			$bookmark = $("#bookmark");
+			$minimize = $("#minimize");
+			$maximize = $("#maximize");
+			$close = $("#close");
 
-	$slider.on("click", function () {
+	/*$slider.on("click", function () {
 		if(reader.sidebarOpen) {
 			reader.SidebarController.hide();
 			$slider.addClass("icon-menu");
@@ -122,27 +128,23 @@ EPUBJS.reader.ControlsController = function(book) {
 			$slider.addClass("icon-right");
 			$slider.removeClass("icon-menu");
 		}
-	});
+	});*/
 
-	if(typeof screenfull !== 'undefined') {
-		$fullscreen.on("click", function() {
-			screenfull.toggle($('#container')[0]);
-		});
-		if(screenfull.raw) {
-			document.addEventListener(screenfull.raw.fullscreenchange, function() {
-					fullscreen = screenfull.isFullscreen;
-					if(fullscreen) {
-						$fullscreen
-							.addClass("icon-resize-small")
-							.removeClass("icon-resize-full");
-					} else {
-						$fullscreen
-							.addClass("icon-resize-full")
-							.removeClass("icon-resize-small");
-					}
-			});
+	$fullscreen.on("click", function() {
+		let isFullScreen = win.isFullScreen();
+		if(isFullScreen){
+			win.setFullScreen(false);
+			$fullscreen
+				.addClass("icon-fullscreen-full")
+				.removeClass("icon-fullscreen-small");
 		}
-	}
+		else{
+			win.setFullScreen(true);
+			$fullscreen
+				.addClass("icon-fullscreen-small")
+				.removeClass("icon-fullscreen-full");
+		}
+	})
 
 	$settings.on("click", function() {
 		reader.SettingsController.show();
@@ -166,6 +168,46 @@ EPUBJS.reader.ControlsController = function(book) {
 
 	});
 
+
+	$minimize.on("click", function() {
+		//if fullscreen exit
+		if(win.isFullScreen()){
+			win.setFullScreen(false);
+			$fullscreen
+				.addClass("icon-resize-full")
+				.removeClass("icon-resize-small");
+		}
+		win.minimize();
+	});
+
+	$maximize.on("click", function() {
+		//if fullscreen exit it
+		if(win.isFullScreen()){
+			win.setFullScreen(false);
+			$fullscreen
+			.addClass("icon-resize-full")
+			.removeClass("icon-resize-small");
+		}
+
+		// toogling maximize
+		if(win.isMaximized()){
+			win.unmaximize()
+			$maximize
+			.addClass("icon-maximize")
+			.removeClass("icon-maximize-exit")
+		}
+		else{
+			win.maximize();
+			$maximize
+			.addClass("icon-maximize-exit")
+			.removeClass("icon-maximize")
+		}
+	})
+
+	$close.on("click", function() {
+		win.close();
+	});
+
 	rendition.on('relocated', function(location){
 		var cfi = location.start.cfi;
 		var cfiFragment = "#" + cfi;
@@ -175,7 +217,7 @@ EPUBJS.reader.ControlsController = function(book) {
 			$bookmark
 				.removeClass("icon-bookmark")
 				.addClass("icon-bookmark-empty");
-		} else { //-- Bookmarked
+		} else {
 			$bookmark
 				.addClass("icon-bookmark")
 				.removeClass("icon-bookmark-empty");
