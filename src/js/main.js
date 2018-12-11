@@ -49,4 +49,6 @@ function createWindow(){
     win.loadFile(path.join(__dirname,'..','html','library.html'));
 }
 
-app.on('ready',createWindow)
+app.on('ready',createWindow);
+
+console.log(app.getPath('userData'));
