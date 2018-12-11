@@ -14,21 +14,22 @@
 
     <!-- fix for electron -->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
     <script src="../js/libs/jquery.min.js"></script>
     <script src="../js/libs/zip.min.js"></script>
 
     <!-- File Storage -->
     <!-- <script src="../js/libs/localforage.min.js"></script> -->
 
-    <!-- Rsvp -->
-    <script src="../js/libs/rsvp.min.js"></script>
-
     <!-- Render -->
     <script src="../js/libs/epub.js"></script>
 
+    <!-- Rsvp -->
+    <script src="../js/libs/rsvp.min.js"></script>
+
     <!-- Reader -->
     <script src="../js/core.js"></script>
-    <script src="../js/Reader.js"></script>
+    <script src="../js/controller.js"></script>
     <script src="../js/reader.js"></script>
 
     <!--Plugins -->
@@ -84,7 +85,7 @@
                 <span id="chapter-title"></span>
             </div>
             <div id="title-controls">
-                <a id="bookmark" class="icon-bookmark-empty">Bookmark</a>
+                <a id="bookmark" class="icon-bookmark-empty"></a>
                 <a id="setting" class="icon-settings"></a>
                 <a id="fullscreen" class="icon-fullscreen-full"></a>
                 <a id="minimize" class="icon-minimize"></a>
