@@ -19,22 +19,15 @@ body {
     width: 100%;
     height: 100%;
     right: 0;
-    /* left: 40px; */
-    /* -webkit-transform: translate(40px, 0);
-    -moz-transform: translate(40px, 0); */
     border-radius: 10px;
     background: #fff;
     overflow: hidden;
-    -webkit-transition: -webkit-transform .4s, width .2s;
-    -moz-transition: -webkit-transform .4s, width .2s;
-    -ms-transition: -webkit-transform .4s, width .2s;
 }
 
 #titlebar {
     height: 8%;
     min-height: 20px;
     padding: 5px;
-    /* margin: 0 50px 0 50px; */
     position: relative;
     color: #4f4f4f;
     font-weight: 100;
@@ -42,6 +35,7 @@ body {
     opacity: .5;
     text-align: center;
     -webkit-transition: opacity .5s;
+    -webkit-app-region: drag;
     z-index: 10;
 }
 
@@ -57,6 +51,7 @@ body {
     display: inline-block;
     opacity: .5;
     padding: 5px;
+    -webkit-app-region: no-drag;
     border-radius: 100%;
 }
 

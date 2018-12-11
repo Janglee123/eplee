@@ -1,25 +1,14 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <link rel="stylesheet" href="../css/normalize.css">
     <link rel="stylesheet" href="../css/reader.css">
-    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/normalize.css">
 
     <!-- fix for electron -->
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
 
     <script src="../js/libs/jquery.min.js"></script>
     <script src="../js/libs/zip.min.js"></script>
-
-    <!-- File Storage -->
-    <!-- <script src="../js/libs/localforage.min.js"></script> -->
 
     <!-- Render -->
     <script src="../js/libs/epub.js"></script>
@@ -31,9 +20,6 @@
     <script src="../js/core.js"></script>
     <script src="../js/controller.js"></script>
     <script src="../js/reader.js"></script>
-
-    <!--Plugins -->
-    <!-- <script src="../js/plugins/search.js"></script> -->
 
     <script>
         "use strict";
@@ -76,14 +62,17 @@
     </div> -->
     <div id="main">
         <div id="titlebar">
-            <div id="opener">
-                <!-- <a id="slider" class="icon-menu">Menu</a> -->
-            </div>
-                <div id="metainfo" style="-webkit-app-region: drag;">
+
+            <!-- <div id="opener">
+                <a id="slider" class="icon-menu">Menu</a>
+            </div> -->
+
+            <div id="metainfo" >
                 <span id="book-title"></span>
                 <span id="title-seperator">-</span>
                 <span id="chapter-title"></span>
             </div>
+
             <div id="title-controls">
                 <a id="bookmark" class="icon-bookmark-empty"></a>
                 <a id="setting" class="icon-settings"></a>
@@ -94,13 +83,14 @@
             </div>
         </div>
 
-        <a id="prev" class="arrow"></a>
+        <div id="prev" class="arrow"></div>
         <div id="viewer" style="user-select: none"></div>
-        <a id="next" class="arrow"></a>
+        <div id="next" class="arrow"></div>
 
         <div id="loader"><img src="../img/loader.gif"></div>
     </div>
-    <div class="modal md-effect-1" id="settings-modal">
+
+    <!-- <div class="modal md-effect-1" id="settings-modal">
         <div class="md-content">
             <h3>Settings</h3>
             <div>
@@ -111,6 +101,6 @@
             <div class="closer icon-cancel-circled"></div>
         </div>
     </div>
-    <div class="overlay"></div>
+    <div class="overlay"></div> -->
 </body>
 </html>
