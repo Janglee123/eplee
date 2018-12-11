@@ -1,0 +1,13 @@
+.button{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    padding: 5px;
+    -webkit-app-region: no-drag;
+    border-radius: 100%;
+    user-select: none;
+}
+
+.button:hover{
+    background-color: rgba(48,48,48,0.2);
+}

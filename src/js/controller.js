@@ -1,9 +1,6 @@
-const remote = require('electron').remote;
-
 var EPUBJS = EPUBJS || {};
 EPUBJS.reader = {};
 EPUBJS.reader.plugins = {}; //-- Attach extra Controllers as plugins (like search?)
-console.log(EPUBJS);
 
 (function(root, $) {
 
@@ -46,7 +43,7 @@ EPUBJS.reader.BookmarksController = function() {
 
 	var createBookmarkItem = function(cfi) {
 		var listitem = document.createElement("li"),
-				link = document.createElement("a");
+		link = document.createElement("a");
 
 		listitem.id = "bookmark-"+counter;
 		listitem.classList.add('list_item');
@@ -65,9 +62,9 @@ EPUBJS.reader.BookmarksController = function() {
 		link.classList.add('bookmark_link');
 
 		link.addEventListener("click", function(event){
-				var cfi = this.getAttribute('href');
-				rendition.display(cfi);
-				event.preventDefault();
+			var cfi = this.getAttribute('href');
+			rendition.display(cfi);
+			event.preventDefault();
 		}, false);
 
 		listitem.appendChild(link);
@@ -103,131 +100,63 @@ EPUBJS.reader.BookmarksController = function() {
 EPUBJS.reader.ControlsController = function(book) {
 	let reader = this;
 	let rendition = this.rendition;
-	let win = remote.getCurrentWindow();
 
 	let $store = $("#store"),
-			$fullscreen = $("#fullscreen"),
-			/*$fullscreenicon = $("#fullscreenicon"),
-			$cancelfullscreenicon = $("#cancelfullscreenicon"),*/
-			$slider = $("#slider"),
-			$main = $("#main"),
-			$sidebar = $("#sidebar"),
-			$settings = $("#setting"),
-			$bookmark = $("#bookmark");
-			$minimize = $("#minimize");
-			$maximize = $("#maximize");
-			$close = $("#close");
+	$slider = $("#slider"),
+	$main = $("#main"),
+	$sidebar = $("#sidebar");
+	$bookmark = $("#bookmark");
 
 	/*$slider.on("click", function () {
-		if(reader.sidebarOpen) {
-			reader.SidebarController.hide();
-			$slider.addClass("icon-menu");
-			$slider.removeClass("icon-right");
-		} else {
-			reader.SidebarController.show();
-			$slider.addClass("icon-right");
-			$slider.removeClass("icon-menu");
-		}
-	});*/
+	if(reader.sidebarOpen) {
+	reader.SidebarController.hide();
+	$slider.addClass("icon-menu");
+	$slider.removeClass("icon-right");
+} else {
+reader.SidebarController.show();
+$slider.addClass("icon-right");
+$slider.removeClass("icon-menu");
+}
+});*/
 
-	$fullscreen.on("click", function() {
-		let isFullScreen = win.isFullScreen();
-		if(isFullScreen){
-			win.setFullScreen(false);
-			$fullscreen
-				.addClass("icon-fullscreen-full")
-				.removeClass("icon-fullscreen-small");
-		}
-		else{
-			win.setFullScreen(true);
-			$fullscreen
-				.addClass("icon-fullscreen-small")
-				.removeClass("icon-fullscreen-full");
-		}
-	})
+$bookmark.on("click", function() {
+	var cfi = reader.rendition.currentLocation().start.cfi;
+	var bookmarked = reader.isBookmarked(cfi);
 
-	$settings.on("click", function() {
-		reader.SettingsController.show();
-	});
+	if(bookmarked === -1) { //-- Add bookmark
+		reader.addBookmark(cfi);
+		$bookmark
+		.addClass("icon-bookmark")
+		.removeClass("icon-bookmark-empty");
+	} else { //-- Remove Bookmark
+		reader.removeBookmark(cfi);
+		$bookmark
+		.removeClass("icon-bookmark")
+		.addClass("icon-bookmark-empty");
+	}
 
-	$bookmark.on("click", function() {
-		var cfi = reader.rendition.currentLocation().start.cfi;
-		var bookmarked = reader.isBookmarked(cfi);
+});
 
-		if(bookmarked === -1) { //-- Add bookmark
-			reader.addBookmark(cfi);
-			$bookmark
-				.addClass("icon-bookmark")
-				.removeClass("icon-bookmark-empty");
-		} else { //-- Remove Bookmark
-			reader.removeBookmark(cfi);
-			$bookmark
-				.removeClass("icon-bookmark")
-				.addClass("icon-bookmark-empty");
-		}
+rendition.on('relocated', function(location){
+	var cfi = location.start.cfi;
+	var cfiFragment = "#" + cfi;
+	//-- Check if bookmarked
+	var bookmarked = reader.isBookmarked(cfi);
+	if(bookmarked === -1) { //-- Not bookmarked
+		$bookmark
+		.removeClass("icon-bookmark")
+		.addClass("icon-bookmark-empty");
+	} else {
+		$bookmark
+		.addClass("icon-bookmark")
+		.removeClass("icon-bookmark-empty");
+	}
 
-	});
+	reader.currentLocationCfi = cfi;
 
-
-	$minimize.on("click", function() {
-		//if fullscreen exit
-		if(win.isFullScreen()){
-			win.setFullScreen(false);
-			$fullscreen
-				.addClass("icon-resize-full")
-				.removeClass("icon-resize-small");
-		}
-		win.minimize();
-	});
-
-	$maximize.on("click", function() {
-		//if fullscreen exit it
-		if(win.isFullScreen()){
-			win.setFullScreen(false);
-			$fullscreen
-			.addClass("icon-resize-full")
-			.removeClass("icon-resize-small");
-		}
-
-		// toogling maximize
-		if(win.isMaximized()){
-			win.unmaximize()
-			$maximize
-			.addClass("icon-maximize")
-			.removeClass("icon-maximize-exit")
-		}
-		else{
-			win.maximize();
-			$maximize
-			.addClass("icon-maximize-exit")
-			.removeClass("icon-maximize")
-		}
-	})
-
-	$close.on("click", function() {
-		win.close();
-	});
-
-	rendition.on('relocated', function(location){
-		var cfi = location.start.cfi;
-		var cfiFragment = "#" + cfi;
-		//-- Check if bookmarked
-		var bookmarked = reader.isBookmarked(cfi);
-		if(bookmarked === -1) { //-- Not bookmarked
-			$bookmark
-				.removeClass("icon-bookmark")
-				.addClass("icon-bookmark-empty");
-		} else {
-			$bookmark
-				.addClass("icon-bookmark")
-				.removeClass("icon-bookmark-empty");
-		}
-
-		reader.currentLocationCfi = cfi;
-
-		// Update the History Location
-		if(reader.settings.history &&
-				window.location.hash != cfiFragment) {
+	// Update the History Location
+	if(reader.settings.history &&
+		window.location.hash != cfiFragment) {
 			// Add CFI fragment to the history
 			history.pushState({}, '', cfiFragment);
 		}
@@ -239,17 +168,17 @@ EPUBJS.reader.ControlsController = function(book) {
 
 EPUBJS.reader.MetaController = function(meta) {
 	var title = meta.title,
-			author = meta.creator;
+	author = meta.creator;
 
 	var $title = $("#book-title"),
-			$author = $("#chapter-title"),
-			$dash = $("#title-seperator");
+	$author = $("#chapter-title"),
+	$dash = $("#title-seperator");
 
-		document.title = title+" – "+author;
+	document.title = title+" – "+author;
 
-		$title.html(title);
-		$author.html(author);
-		$dash.show();
+	$title.html(title);
+	$author.html(author);
+	$dash.show();
 };
 
 EPUBJS.reader.NotesController = function() {
@@ -286,7 +215,7 @@ EPUBJS.reader.NotesController = function() {
 			range = doc.caretPositionFromPoint(e.clientX, e.clientY);
 			textNode = range.offsetNode;
 			offset = range.offset;
-		// WebKit
+			// WebKit
 		} else if (doc.caretRangeFromPoint) {
 			range = doc.caretRangeFromPoint(e.clientX, e.clientY);
 			textNode = range.startContainer;
@@ -300,7 +229,7 @@ EPUBJS.reader.NotesController = function() {
 					break;
 				}
 			}
-			}
+		}
 
 		// Find the end of the sentance
 		offset = textNode.textContent.indexOf(".", offset);
@@ -383,15 +312,15 @@ EPUBJS.reader.NotesController = function() {
 
 		var showPop = function(){
 			var poppos,
-					iheight = renderer.height,
-					iwidth = renderer.width,
-			 		tip,
-					pop,
-					maxHeight = 225,
-					itemRect,
-					left,
-					top,
-					pos;
+			iheight = renderer.height,
+			iwidth = renderer.width,
+			tip,
+			pop,
+			maxHeight = 225,
+			itemRect,
+			left,
+			top,
+			pos;
 
 
 			//-- create a popup with endnote inside of it
@@ -520,33 +449,33 @@ EPUBJS.reader.NotesController = function() {
 
 	/*
 	renderer.registerHook("beforeChapterDisplay", function(callback, renderer){
-		var chapter = renderer.currentChapter;
-		annotations.forEach(function(note) {
-			var cfi = epubcfi.parse(note.anchor);
-			if(cfi.spinePos === chapter.spinePos) {
-				try {
-					placeMarker(note);
-				} catch(e) {
-					console.log("anchoring failed", note.anchor);
-				}
-			}
-		});
-		callback();
-	}, true);
-	*/
+	var chapter = renderer.currentChapter;
+	annotations.forEach(function(note) {
+	var cfi = epubcfi.parse(note.anchor);
+	if(cfi.spinePos === chapter.spinePos) {
+	try {
+	placeMarker(note);
+} catch(e) {
+console.log("anchoring failed", note.anchor);
+}
+}
+});
+callback();
+}, true);
+*/
 
-	return {
-		"show" : show,
-		"hide" : hide
-	};
+return {
+	"show" : show,
+	"hide" : hide
+};
 };
 
 EPUBJS.reader.ReaderController = function(book) {
 	var $main = $("#main"),
-			$divider = $("#divider"),
-			$loader = $("#loader"),
-			$next = $("#next"),
-			$prev = $("#prev");
+	$divider = $("#divider"),
+	$loader = $("#loader"),
+	$next = $("#next"),
+	$prev = $("#prev");
 	var reader = this;
 	var book = this.book;
 	var rendition = this.rendition;
@@ -619,7 +548,7 @@ EPUBJS.reader.ReaderController = function(book) {
 				$prev.removeClass("active");
 			}, 100);
 
-			 e.preventDefault();
+			e.preventDefault();
 		}
 		if(e.keyCode == 39) {
 
@@ -637,7 +566,7 @@ EPUBJS.reader.ReaderController = function(book) {
 				$next.removeClass("active");
 			}, 100);
 
-			 e.preventDefault();
+			e.preventDefault();
 		}
 	}
 
@@ -697,7 +626,7 @@ EPUBJS.reader.SettingsController = function() {
 	var book = this.book;
 	var reader = this;
 	var $settings = $("#settings-modal"),
-			$overlay = $(".overlay");
+	$overlay = $(".overlay");
 
 	var show = function() {
 		$settings.addClass("md-show");
@@ -730,7 +659,7 @@ EPUBJS.reader.SidebarController = function(book) {
 	var reader = this;
 
 	var $sidebar = $("#sidebar"),
-			$panels = $("#panels");
+	$panels = $("#panels");
 
 	var activePanel = "Toc";
 
@@ -782,7 +711,7 @@ EPUBJS.reader.TocController = function(toc) {
 	var rendition = this.rendition;
 
 	var $list = $("#tocView"),
-			docfrag = document.createDocumentFragment();
+	docfrag = document.createDocumentFragment();
 
 	var currentChapter = false;
 
@@ -793,8 +722,8 @@ EPUBJS.reader.TocController = function(toc) {
 
 		toc.forEach(function(chapter) {
 			var listitem = document.createElement("li"),
-					link = document.createElement("a");
-					toggle = document.createElement("a");
+			link = document.createElement("a");
+			toggle = document.createElement("a");
 
 			var subitems;
 
@@ -835,9 +764,9 @@ EPUBJS.reader.TocController = function(toc) {
 
 	var chapterChange = function(e) {
 		var id = e.id,
-				$item = $list.find("#toc-"+id),
-				$current = $list.find(".currentChapter"),
-				$open = $list.find('.openChapter');
+		$item = $list.find("#toc-"+id),
+		$current = $list.find(".currentChapter"),
+		$open = $list.find('.openChapter');
 
 		if($item.length){
 
@@ -860,32 +789,32 @@ EPUBJS.reader.TocController = function(toc) {
 
 	$list.append(docfrag);
 	$list.find(".toc_link").on("click", function(event){
-			var url = this.getAttribute('href');
+		var url = this.getAttribute('href');
 
-			event.preventDefault();
+		event.preventDefault();
 
-			//-- Provide the Book with the url to show
-			//   The Url must be found in the books manifest
-			rendition.display(url);
+		//-- Provide the Book with the url to show
+		//   The Url must be found in the books manifest
+		rendition.display(url);
 
-			$list.find(".currentChapter")
-					.addClass("openChapter")
-					.removeClass("currentChapter");
+		$list.find(".currentChapter")
+		.addClass("openChapter")
+		.removeClass("currentChapter");
 
-			$(this).parent('li').addClass("currentChapter");
+		$(this).parent('li').addClass("currentChapter");
 
 	});
 
 	$list.find(".toc_toggle").on("click", function(event){
-			var $el = $(this).parent('li'),
-					open = $el.hasClass("openChapter");
+		var $el = $(this).parent('li'),
+		open = $el.hasClass("openChapter");
 
-			event.preventDefault();
-			if(open){
-				$el.removeClass("openChapter");
-			} else {
-				$el.addClass("openChapter");
-			}
+		event.preventDefault();
+		if(open){
+			$el.removeClass("openChapter");
+		} else {
+			$el.addClass("openChapter");
+		}
 	});
 
 	return {

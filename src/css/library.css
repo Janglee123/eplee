@@ -1,0 +1,38 @@
+body{
+    background: #fff;
+}
+
+#titlebar {
+    height: 4%;
+    /*min-height: 20px;*/
+    padding: 5px;
+    position: relative;
+    color: #4f4f4f;
+    -webkit-app-region: drag;
+    z-index: 10;
+    float: right;
+    user-select: none;
+    overflow: hidden;
+}
+/*
+a{
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    padding: 5px;
+    -webkit-app-region: no-drag;
+    border-radius: 100%;
+}
+
+a:hover {
+    background-color: rgba(48,48,48,0.2);
+}*/
+
+.icon-add{ content: url('../img/library-plus.svg');}
+.icon-settings { content: url('../img/settings.svg'); }
+.icon-fullscreen-full { content: url('../img/fullscreen.svg') }
+.icon-fullscreen-small { content: url('../img/fullscreen-exit.svg') }
+.icon-minimize{ content: url('../img/minimize.svg') }
+.icon-maximize{ content: url('../img/maximize.svg') }
+.icon-maximize-exit{ content: url('../img/maximize-exit.svg') }
+.icon-close{ content: url('../img/close.svg');}
