@@ -22,7 +22,7 @@ function createWindow(){
         console.log('openDialog open');
         let pathtoepub = dialog.showOpenDialog(
             {
-                filters:[{ name: 'ePub', extensions: 'epub' }],
+                filters:[{ name: 'ePub', extensions: ['epub'] }],
                 properties:['openFile'],
             }
         );
@@ -30,11 +30,6 @@ function createWindow(){
             return;
         }
         pathtoepub = pathtoepub[0];
-        console.log(pathtoepub);
-        if(!pathtoepub.endsWith('.epub')){
-            dialog.showMessageBox({message:'Please select ePub file'});
-            return;
-        }
 
         win.loadURL(url.format({
             slashes: true,

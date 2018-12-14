@@ -153,7 +153,6 @@ rendition.on('relocated', function(location){
 	}
 
 	reader.currentLocationCfi = cfi;
-
 	// Update the History Location
 	if(reader.settings.history &&
 		window.location.hash != cfiFragment) {
@@ -174,7 +173,7 @@ EPUBJS.reader.MetaController = function(meta) {
 	$author = $("#chapter-title"),
 	$dash = $("#title-seperator");
 
-	document.title = title+" – "+author;
+	document.title = title+" - "+author;
 
 	$title.html(title);
 	$author.html(author);

@@ -1,0 +1,50 @@
+#titlebar {
+    max-height: 25px;
+    position: relative;
+    color: #000;
+    text-align: center;
+    -webkit-app-region: drag;
+    overflow: hidden;
+    z-index: 3;
+}
+
+#titlebar #left {
+    float: left;
+    display: inline-block;
+}
+
+#titlebar #center {
+    display: inline-block;
+}
+
+#titlebar #right {
+    float: right;
+    display: inline-block;
+}
+
+#titlebar a {
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    padding: 5px;
+    -webkit-app-region: no-drag;
+    border-radius: 100%;
+}
+
+#titlebar a:hover {
+    background-color: rgba(200, 200, 200);
+}
+
+#titlebar a:active {
+    opacity: 1;
+    color: rgba(0,0,0,.6);
+}
+
+.icon-add { content: url('../img/library-plus.svg') }
+.icon-settings { content: url('../img/settings.svg'); }
+.icon-fullscreen-full { content: url('../img/fullscreen.svg') }
+.icon-fullscreen-small { content: url('../img/fullscreen-exit.svg') }
+.icon-minimize{ content: url('../img/minimize.svg') }
+.icon-maximize{ content: url('../img/maximize.svg') }
+.icon-maximize-exit{ content: url('../img/maximize-exit.svg') }
+.icon-close{ content: url('../img/close.svg');}
