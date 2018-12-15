@@ -1,9 +1,10 @@
 #titlebar {
-    max-height: 25px;
+    top: 5px;
+    height: 40px;
     position: relative;
     color: #000;
     vertical-align: middle;
-    
+    margin: auto;
     text-align: center;
     -webkit-app-region: drag;
     overflow: hidden;
@@ -17,6 +18,7 @@
 
 #titlebar #center {
     display: inline-block;
+    vertical-align: -10px;
 }
 
 #titlebar #right {
@@ -42,6 +44,8 @@
     color: rgba(0,0,0,.6);
 }
 
+.icon-back{ content: url('../img/back.svg')}
+.icon-library{ content: url('../img/library.svg')}
 .icon-add { content: url('../img/library-plus.svg') }
 .icon-settings { content: url('../img/settings.svg'); }
 .icon-fullscreen-full { content: url('../img/fullscreen.svg') }

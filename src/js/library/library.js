@@ -39,15 +39,12 @@ LIBRARY.addBook = function(files){
             getCover.fromFilePath(file,coverDir,function(err, coverPath){
                 if (err){
                     coverPath = path.join(coverDir,'default.jpg')
-                    throw err;
+                    console.error(err);
                 }
                 let newCoverPath = path.join(coverDir,book.id.toString());
                 book.cover = newCoverPath;
                 fs.renameSync(coverPath,newCoverPath);
-
                 let bookJson = JSON.stringify(book);
-                console.log(bookJson);
-
                 fs.writeFile(path.join(bookDir,book.id.toString()+'.json'), JSON.stringify(book), { flag: 'w' },(err)=>{
                     if (err) throw err;
                 });
@@ -59,6 +56,7 @@ LIBRARY.addBook = function(files){
 };
 
 LIBRARY.loadBooks = function(){
+    $('#lib').html('');
     fs.readdir(bookDir, (err, files) => {
         if (err) throw err;
         files.forEach(file => {
