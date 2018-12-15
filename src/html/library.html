@@ -3,22 +3,23 @@
 <head>
 	<title>Eplee</title>
 	<link rel="stylesheet" href="../css/titlebar.css">
-    <link rel="stylesheet" href="../css/library.css">
+	<link rel="stylesheet" href="../css/library.css">
 	<link rel="stylesheet" href="../css/normalize.css">
-	
 
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-        <script src="../js/libs/jquery.min.js"></script>
-		<script src="../js/libs/zip.min.js"></script>
-		<script src="../js/libs/epub.js"></script>
-        <script src="../js/titlebar.js"></script>
-		<script src="../js/library/library.js"></script>
-    <script>if (window.module) module = window.module;</script>
+
+	<script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+	<script src="../js/libs/jquery.min.js"></script>
+	<script src="../js/libs/zip.min.js"></script>
+	<script src="../js/libs/epub.js"></script>
+	<script src="../js/titlebar.js"></script>
+	<script src="../js/library/library.js"></script>
+	<script>if (window.module) module = window.module;</script>
 
 </head>
-<body style="background:#fff">
+<body>
+	<div id="main">
+		
 		<div id="titlebar">
-
 			<div id="left">
 				<a id="add" class="icon-add button"></a>
 			</div>
@@ -35,9 +36,10 @@
 				<a id="close" class="icon-close button"></a>
 			</div>
 		</div>
-		<div id="main">
-			<div id = "lib">
-			</div>
+
+		<div id = "lib">
 		</div>
+
+	</div>
 </body>
 </html>

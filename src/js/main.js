@@ -14,7 +14,7 @@ function createWindow(){
         frame: false,
         webSecurity: false,
         useContentSize: true,
-            transparent: true,
+        transparent: true,
         icon: path.join(__dirname,'..','img','icons','64x64.png')
     });
 
@@ -44,6 +44,5 @@ function createWindow(){
     win.loadFile(path.join(__dirname,'..','html','library.html'));
 }
 
-app.on('ready',createWindow);
-
-console.log(app.getPath('userData'));
+app.on('ready',() => setTimeout(createWindow, 100));
+app.disableHardwareAcceleration()
