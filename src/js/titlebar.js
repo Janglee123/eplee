@@ -38,7 +38,7 @@ $(document).ready(function(){
 		}
 		else{
 			win.maximize();
-			$maximize
+			$(maximize)
 			.addClass("icon-maximize-exit")
 			.removeClass("icon-maximize")
 		}
