@@ -73,11 +73,11 @@ EPUBJS.Reader = function(bookPath, _options) {
 
 	book.ready.then(function () {
 		reader.ReaderController = EPUBJS.reader.ReaderController.call(reader, book);
-		reader.SettingsController = EPUBJS.reader.SettingsController.call(reader, book);
 		reader.ControlsController = EPUBJS.reader.ControlsController.call(reader, book);
-		reader.SidebarController = EPUBJS.reader.SidebarController.call(reader, book);
 		reader.BookmarksController = EPUBJS.reader.BookmarksController.call(reader, book);
-		reader.NotesController = EPUBJS.reader.NotesController.call(reader, book);
+		//reader.SettingsController = EPUBJS.reader.SettingsController.call(reader, book);
+		//reader.SidebarController = EPUBJS.reader.SidebarController.call(reader, book);
+		//reader.NotesController = EPUBJS.reader.NotesController.call(reader, book);
 
 		window.addEventListener("hashchange", this.hashChanged.bind(this), false);
 
@@ -274,7 +274,6 @@ EPUBJS.Reader.prototype.unload = function(){
 		this.saveSettings();
 	}
 };
-
 
 EPUBJS.Reader.prototype.hashChanged = function(){
 	var hash = window.location.hash.slice(1);
