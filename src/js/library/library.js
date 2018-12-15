@@ -1,39 +1,82 @@
 const url = require('url');
 const path  = require('path');
-var fs = require('fs');
-var epubParser = require('epub-metadata-parser');
+const fs = require('fs');
+const getCover = require('epub-cover-extractor');
 const dialog = remote.dialog;
 const app = remote.app;
+LIBRARY = {};
+epub = new ePub();
 
-LIBRARY = LIBRARY || {};
-
-LIBRARY.addBook = function(bookPath){
-    coverDir = path.join(app.getPath('userData'),'covers');
-    if(!fs.existsSync(coverDir)){
-        fs.mkdirSync(coverDir, { recursive: true }, (err) => {
-            if (err) throw err;
-
-        });
-    }
-    bookDir = path.join(app.getPath('userData'),'books');
-    if(!fs.existsSync(bookDir)){
-        fs.mkdirSync(bookDir, { recursive: true }, (err) => {
-            if (err) throw err;
-        });
-    }
-
-    files.forEach(function(file){
-        book = {}
-        book.path = file
-        console.log(file);
+coverDir = path.join(app.getPath('userData'),'covers');
+if(!fs.existsSync(coverDir)){
+    fs.mkdirSync(coverDir, { recursive: true }, (err) => {
+        if (err) throw err;
 
     });
 }
+bookDir = path.join(app.getPath('userData'),'books');
+if(!fs.existsSync(bookDir)){
+    fs.mkdirSync(bookDir, { recursive: true }, (err) => {
+        if (err) throw err;
+    });
+}
+
+LIBRARY.addBook = function(files){
+
+    files.forEach(file => {
+
+        let book = {}
+        book.id = new Date().getTime();
+        book.path = file;
+        book.title = '';
+        epub = new ePub(file);
+
+        epub.loaded.metadata.then((metadata) => {
+            book.title = metadata.title;
+            book.author = metadata.creator
+            book.publisher = metadata.publisher
+
+            getCover.fromFilePath(file,coverDir,function(err, coverPath){
+                if (err){
+                    coverPath = path.join(coverDir,'default.jpg')
+                    throw err;
+                }
+                let newCoverPath = path.join(coverDir,book.id.toString());
+                book.cover = newCoverPath;
+                fs.renameSync(coverPath,newCoverPath);
+
+                let bookJson = JSON.stringify(book);
+                console.log(bookJson);
+
+                fs.writeFile(path.join(bookDir,book.id.toString()+'.json'), JSON.stringify(book), { flag: 'w' },(err)=>{
+                    if (err) throw err;
+                });
+            });
+        });
+    });
+};
+
+LIBRARY.loadBooks = function(){
+    fs.readdir(bookDir, (err, files) => {
+        if (err) throw err;
+        files.forEach(file => {
+            let book = require(path.join(bookDir,file));
+            let title = book.title;
+            let cover = book.cover;
+            let len = title.length
+            if(title.length > 30){
+                title = title.slice(0,30) + '...';
+            }
+            $('#lib').append(`<a><img  src = "${cover}">${title}</a>`)
+        })
+    })
+};
 
 
 $(document).ready(function(){
+    LIBRARY.loadBooks();
     $('#add').on("click", function(){
-		let files = dialog.showOpenDialog(
+        let files = dialog.showOpenDialog(
             {
                 filters:[{ name: 'ePub', extensions: ['epub'] }],
                 properties:['openFile','multiSelections'],
@@ -42,7 +85,6 @@ $(document).ready(function(){
         if(!files){
             return;
         }
-
-
-	});
+        LIBRARY.addBook(files);
+    });
 });
