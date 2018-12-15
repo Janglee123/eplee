@@ -2,6 +2,8 @@
     max-height: 25px;
     position: relative;
     color: #000;
+    vertical-align: middle;
+    
     text-align: center;
     -webkit-app-region: drag;
     overflow: hidden;

@@ -54,6 +54,8 @@ LIBRARY.addBook = function(files){
             });
         });
     });
+
+    LIBRARY.loadBooks();
 };
 
 LIBRARY.loadBooks = function(){
@@ -67,7 +69,16 @@ LIBRARY.loadBooks = function(){
             if(title.length > 30){
                 title = title.slice(0,30) + '...';
             }
-            $('#lib').append(`<a><img  src = "${cover}">${title}</a>`)
+
+            let address = url.format({
+                slashes: true,
+                protocol: 'file:',
+                pathname: path.join(__dirname,'..','html','reader.html'),
+                query: {
+                    bookPath:book.path,
+                }
+            })
+            $('#lib').append(`<a href = "${address}" ><img src = "${cover}">${title}</a>`)
         })
     })
 };
@@ -87,4 +98,8 @@ $(document).ready(function(){
         }
         LIBRARY.addBook(files);
     });
+
+    $('.book').on("click", function(){
+        console.log('click');
+    })
 });

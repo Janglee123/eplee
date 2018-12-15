@@ -6,22 +6,29 @@ body{
     top: 50px;
     background: #fff0;
     z-index: -1;
+    user-select: none;
+
 }
 
 #lib a{
     margin: 10px;
     text-align: center;
+    vertical-align: middle;
     width: 150px;
     height: 250px;
     display: inline-block;
     border: 1px solid;
-    border-radius: 15px;
+    border-radius: 10px;
+}
+
+#lib a:hover{
+    background: rgb(200, 200, 200);
 }
 
 #lib img{
     display: inline-block;
     height: 200px;
     width: 150px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
