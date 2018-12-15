@@ -1,6 +1,6 @@
 #titlebar {
     top: 5px;
-    height: 40px;
+    height: 30px;
     position: relative;
     color: #000;
     vertical-align: middle;
@@ -12,6 +12,7 @@
 }
 
 #titlebar #left {
+    margin-left: 5px;
     float: left;
     display: inline-block;
 }
@@ -24,6 +25,7 @@
 #titlebar #right {
     float: right;
     display: inline-block;
+    margin-right: 5px;
 }
 
 #titlebar a {
