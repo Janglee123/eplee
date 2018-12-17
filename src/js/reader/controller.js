@@ -102,10 +102,20 @@ EPUBJS.reader.ControlsController = function(book) {
 	let rendition = this.rendition;
 
 	let $store = $("#store"),
-	$slider = $("#slider"),
-	$main = $("#main"),
-	$sidebar = $("#sidebar");
+	//$s ￼ ￼lider = $("#slider"),
+	//$main = $("#main"),
+	//$sidebar = $("#sidebar"),
 	$bookmark = $("#bookmark");
+
+	$('#library').on("click", ()=>{
+		const remote = require('electron').remote;
+		const path  = require('path');
+		
+		let win = remote.getCurrentWindow();
+
+		win.loadFile(path.join(__dirname,'..','html','library.html'));
+
+	});
 
 	$bookmark.on("click", function() {
 		var cfi = reader.rendition.currentLocation().start.cfi;
