@@ -44,7 +44,8 @@
   "dependencies": {
     "electron-localshortcut": "^3.1.0",
     "epub-cover-extractor": "^1.0.3",
-    "epub-metadata-parser": "^1.1.14"
+    "epub-metadata-parser": "^1.1.14",
+    "nedb": "^1.8.0"
   },
   "repository": {
     "type": "git",
