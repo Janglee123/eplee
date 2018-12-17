@@ -7,99 +7,90 @@ const dialog = remote.dialog;
 const app = remote.app;
 const db = new Datastore({ filename: path.join(app.getPath('userData'),'database.db') });
 epub = new ePub();
-LIBRARY = {};
-
+Library = {};
 db.loadDatabase();
-db.find({}, function (err, count) {
-    console.log(count);
-});
-coverDir = path.join(app.getPath('userData'),'covers');
+
+const coverDir = path.join(app.getPath('userData'),'covers');
 if(!fs.existsSync(coverDir)){
     fs.mkdirSync(coverDir, { recursive: true }, (err) => {
         if (err) throw err;
     });
 }
-bookDir = path.join(app.getPath('userData'),'books');
-if(!fs.existsSync(bookDir)){
-    fs.mkdirSync(bookDir, { recursive: true }, (err) => {
-        if (err) throw err;
-    });
-}
 
-LIBRARY.addBook = function(files){
-
+Library.addBook = function(files){
     files.forEach(file => {
-
-        let book = {}
-        //book.id = new Date().getTime();
-        book.path = file;
         epub = new ePub(file);
 
         epub.loaded.metadata.then((metadata) => {
-            book.title = metadata.title;
-            book.author = metadata.creator
-            book.publisher = metadata.publisher
-
-            getCover.fromFilePath(file,coverDir,function(err, coverPath){
+            getCover.fromFilePath(file, coverDir, (err, coverPath) => {
                 if (err){
-                    var newCoverPath = path.join(coverDir,'default.jpg')
-                    console.error(err);
+                     newCoverPath = path.join('..','img','default-cover.jpg');
                 }
                 else{
-                    var newCoverPath = path.join(coverDir,book.title.replace(/ /g,''));
+                    var newCoverPath = path.join(coverDir, metadata.title.replace(/ /g,''));
                     fs.renameSync(coverPath,newCoverPath);
                 }
+
+                let book = {}
+                book.title = metadata.title;
+                book.author = metadata.creator
+                book.publisher = metadata.publisher
+                book.path = file;
                 book.cover = newCoverPath;
 
                 db.find( book, (err, result) => {
                     if (err) console.error(err);
-                    if(result.length != 0){
-                        console.log(book);
-                    }
-                    else {
+                    if(result.length == 0){
                         console.log('New Book, adding to database');
                         db.insert(book, (err, newb) => {
                             if (err) console.error(err);
-                            console.log('added' + newb);
-                        })
+                            Library.loadBook(book);
+                        });
                     }
                 });
             });
         });
     });
-
-    LIBRARY.loadBooks();
 };
 
-LIBRARY.loadBooks = function(){
-    $('#lib').html('');
-
+Library.load = function(){
     db.find({}, (err, result) => {
         if (err) console.error(err);
         result.forEach(row => {
-            let title = row.title;
-            let cover = row.cover;
-
-            if(title.length > 30){
-                title = title.slice(0,30) + '...';
-            }
-
-            let address = url.format({
-                slashes: true,
-                protocol: 'file:',
-                pathname: path.join(__dirname,'..','html','reader.html'),
-                query: {
-                    bookPath:row.path,
-                }
-            })
-            $('#lib').append(`<a href = "${address}" ><img src = "${cover}">${title}</a>`)
-        })
-    })
+            Library.loadBook(row);
+        });
+    });
 };
 
+Library.loadBook = function(book){
+    let title = book.title;
+    let cover = book.cover;
+
+    if(title.length > 28){
+        title = title.slice(0,25) + '...';
+    }
+
+    let address = url.format({
+        slashes: true,
+        protocol: 'file:',
+        pathname: path.join(__dirname,'..','html','reader.html'),
+        query: {
+            bookPath:book.path,
+        }
+    })
+    $('#lib').append(`<a href = "${address}" title = "${book.title}" ><img src = "${cover}">${title}</a>`);
+
+}
+
+Library.searchBook = function(name){
+    query = new RegExp(name);
+    db.find({ title: { $regex: query }},(err, result) => {
+        console.log(result);
+    });
+};
 
 $(document).ready(function(){
-    LIBRARY.loadBooks();
+    Library.load();
     $('#add').on("click", function(){
         let files = dialog.showOpenDialog(
             {
@@ -110,10 +101,6 @@ $(document).ready(function(){
         if(!files){
             return;
         }
-        LIBRARY.addBook(files);
+        Library.addBook(files);
     });
-
-    $('.book').on("click", function(){
-        console.log('click');
-    })
 });
