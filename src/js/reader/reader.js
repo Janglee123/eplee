@@ -103,7 +103,7 @@ EPUBJS.Reader = function(bookPath, _options) {
 	});
 
 	book.loaded.navigation.then(function(navigation) {
-		reader.TocController = EPUBJS.reader.TocController.call(reader, navigation);
+		//reader.TocController = EPUBJS.reader.TocController.call(reader, navigation);
 	});
 
 	window.addEventListener("beforeunload", this.unload.bind(this), false);
