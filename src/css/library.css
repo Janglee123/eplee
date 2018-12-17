@@ -1,7 +1,6 @@
 body{
     background: #fff0;
     overflow: hidden;
-
 }
 
 #main{
@@ -16,9 +15,16 @@ body{
 
 #lib {
     top: 50px;
+    bottom: 1px;
+    left:15px;
+    right: 15px;
+
     user-select: none;
     position: absolute;
     background: #fff;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow-y: scroll;
 }
 
 #lib a{
@@ -30,6 +36,9 @@ body{
     display: inline-block;
     border: 1px solid;
     border-radius: 10px;
+    color: rgb(48, 48, 48);
+    font-style: normal;
+    text-decoration: none;
 }
 
 #lib a:hover{
