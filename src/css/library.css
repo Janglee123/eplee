@@ -11,6 +11,7 @@ body{
     top: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 #lib {
@@ -18,28 +19,34 @@ body{
     bottom: 1px;
     left:15px;
     right: 15px;
-
     user-select: none;
     position: absolute;
     background: #fff;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
 }
 
 #lib a{
-    margin: 10px;
-    text-align: center;
-    vertical-align: middle;
+    margin: 25px;
     width: 150px;
     height: 250px;
-    display: inline-block;
-    border: 1px solid;
+
+    display:  inline-grid;
+    text-align: center;
+    vertical-align: middle;
+
+    border: 1px solid rgb(175,175,175);
     border-radius: 10px;
     color: rgb(48, 48, 48);
     font-style: normal;
     text-decoration: none;
 }
+
 
 #lib a:hover{
     background: rgb(200, 200, 200);
