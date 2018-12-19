@@ -1,7 +1,10 @@
+![Logo](https://raw.githubusercontent.com/Janglee123/eplee/master/src/img/icons/128x128.png)
 # **Eplee**
 > Sweat, Simple and Beautiful
 
 - **Project is in early stage of development**. However you can use it.
+
+![](https://raw.githubusercontent.com/Janglee123/eplee/master/Screenshoots/Screenshot%20from%202018-12-19%2022-33-06.png)
 
 ## Basic Controles
 - change font size with ctrl+/-
