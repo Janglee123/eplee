@@ -8,13 +8,17 @@ const app = remote.app;
 const db = new Datastore({ filename: path.join(app.getPath('userData'),'database.db') });
 epub = new ePub();
 Library = {};
-db.loadDatabase();
 
-const coverDir = path.join(app.getPath('userData'),'covers');
-if(!fs.existsSync(coverDir)){
-    fs.mkdirSync(coverDir, { recursive: true }, (err) => {
-        if (err) throw err;
-    });
+
+Library.init = function(){
+    db.loadDatabase();
+
+    const coverDir = path.join(app.getPath('userData'),'covers');
+    if(!fs.existsSync(coverDir)){
+        fs.mkdirSync(coverDir, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
+    }
 }
 
 Library.addBook = function(files){
@@ -83,15 +87,36 @@ Library.loadBook = function(book){
 }
 
 Library.searchBook = function(name){
-    query = new RegExp(name);
+    query = new RegExp(name,'i');
     db.find({ title: { $regex: query }},(err, result) => {
-        console.log(result);
+        if (err) console.error(err);
+        result.forEach(row => {
+            Library.loadBook(row);
+        });
     });
 };
 
 $(document).ready(function(){
+
+    Library.init();
+
+    if( remote.process.argv[1].endsWith('.epub') && fs.existsSync(remote.process.argv[1])){
+        Library.addBook([remote.process.argv[1]]);
+
+        let address = url.format({
+            slashes: true,
+            protocol: 'file:',
+            pathname: path.join(__dirname,'..','html','reader.html'),
+            query: {
+                bookPath:remote.process.argv[1],
+            }
+        })
+        win.loadURL(address);
+    }
+
     Library.load();
-    $('#add').on("click", function(){
+    
+    $('#add').on("click",()=>{
         let files = dialog.showOpenDialog(
             {
                 filters:[{ name: 'ePub', extensions: ['epub'] }],
@@ -103,4 +128,21 @@ $(document).ready(function(){
         }
         Library.addBook(files);
     });
+
+    $('#search').on("click", ()=>{
+        $('#search-box')
+            .toggle()
+            .focus();
+    });
+
+    $('#search-box').on('change past keyup', function(){
+        $('#lib').empty();
+        Library.searchBook($(this).val());
+    });
+
+    $('#search-box').on('blur', function(){
+        if($(this).val()==''){
+            $(this).toggle();
+        }
+    })
 });
