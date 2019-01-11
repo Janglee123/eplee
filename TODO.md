@@ -11,9 +11,9 @@
 - [x] ~~store info~~ create proper database
 - [x] fix duplicate book
 - [ ] add delete, serach, options in library
-- [ ] first read oop in js
 - [ ] rewrite reader
-- [ ] copy default.jpg to userdata path
+- [x] copy default.jpg to userdata path
+- [x] open with added
 - [ ] deleted file exepction
 
 ### Mid
@@ -24,6 +24,7 @@
 - [ ] auto position on resize
 - [ ] write code to exart cover
 - [ ] fix last row
+- [ ] add entry to `/usr/share/apllications/default.list`
 
 ### Low
 
