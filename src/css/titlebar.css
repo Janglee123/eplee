@@ -1,6 +1,7 @@
 #titlebar {
-    top: 5px;
-    height: 30px;
+    top: 0px;
+    height: 35px;
+    padding-top: 5px;
     position: relative;
     color: #000;
     vertical-align: middle;
@@ -9,6 +10,8 @@
     -webkit-app-region: drag;
     overflow: hidden;
     z-index: 3;
+    user-select: none;
+    background: #fff;
 }
 
 #titlebar #left {
@@ -35,6 +38,7 @@
     padding: 5px;
     -webkit-app-region: no-drag;
     border-radius: 100%;
+    opacity: 1;
 }
 
 #titlebar a:hover {
@@ -42,14 +46,32 @@
 }
 
 #titlebar a:active {
-    opacity: 1;
+    /*opacity: 1;*/
     color: rgba(0,0,0,.6);
+}
+
+#search-box{
+    border: 1px solid rgb(151, 151, 151);
+    border-radius: 40px;
+    vertical-align: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    -webkit-app-region: no-drag;
+    height: 25px;
+    display: none;
+
+}
+
+#search-box:focus{
+    outline: none;
+    border: 1px solid rgb(63, 63, 63);
 }
 
 .icon-back{ content: url('../img/back.svg')}
 .icon-library{ content: url('../img/library.svg')}
 .icon-add { content: url('../img/library-plus.svg') }
 .icon-settings { content: url('../img/settings.svg'); }
+.icon-search { content: url('../img/search.svg'); }
 .icon-fullscreen-full { content: url('../img/fullscreen.svg') }
 .icon-fullscreen-small { content: url('../img/fullscreen-exit.svg') }
 .icon-minimize{ content: url('../img/minimize.svg') }
