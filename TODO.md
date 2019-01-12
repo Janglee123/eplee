@@ -10,33 +10,34 @@
 
 - [x] ~~store info~~ create proper database
 - [x] fix duplicate book
-- [ ] add delete, serach, options in library
-- [ ] rewrite reader
+- [x] serach options in library
+- [x] delete if file not found
 - [x] copy default.jpg to userdata path
 - [x] open with added
-- [ ] deleted file exepction
+- [x] deleted file exepction
+- [ ] rewrite reader
 
 ### Mid
 - [x] transpart boarder
-- [ ] add shadow to main may be work
+- [x] add border to main
 - [x] add bw logo as default cover
-- [ ] add blur to titlebar
-- [ ] auto position on resize
+- [x] change addbook function first find then add 
+- [x] add custom sidebar
+- [x] auto position on resize
 - [ ] write code to exart cover
 - [ ] fix last row
+- [ ] short by last open
 - [ ] add entry to `/usr/share/apllications/default.list`
+- [ ] add mouse wheel support
+- [ ] Horizontal scroll bar
 
 ### Low
-
-- [ ] set min width, height
 - [x] tooltip of buttons(add title field to anchor)
-
-### features
-- [ ] Horizontal scroll bar
-- [ ] Search
-- [ ] add mouse wheel support
-
+- [ ] add blur to titlebar
+- [ ] use more light color on default cover
+- [ ] set min width, height
+- [ ] remove search fliker
 
 ## Issues
-1. open file dailog opens in background
-2. deleted files make trouble
+1. ~~open file dailog opens in background~~(in manjaro)
+2. ~~deleted files make trouble~~

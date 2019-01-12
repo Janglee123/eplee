@@ -9,6 +9,7 @@
 ## Basic Controles
 - change font size with ctrl+/-
 - Left/Right arrow to navigate
+- ctrl+click to open in new window
 
 ## Why?
 
