@@ -6,6 +6,7 @@ const getCover = require('epub-cover-extractor');
 const dialog = remote.dialog;
 const app = remote.app;
 const db = new Datastore({ filename: path.join(app.getPath('userData'),'database.db') });
+const coverDir = path.join(app.getPath('userData'),'covers');
 epub = new ePub();
 Library = {};
 
@@ -13,7 +14,6 @@ Library = {};
 Library.init = function(){
     db.loadDatabase();
 
-    const coverDir = path.join(app.getPath('userData'),'covers');
     if(!fs.existsSync(coverDir)){
         fs.mkdirSync(coverDir, { recursive: true }, (err) => {
             if (err) throw err;
@@ -41,7 +41,6 @@ Library.addBook = function(files){
                 book.publisher = metadata.publisher
                 book.path = file;
                 book.cover = newCoverPath;
-
                 db.find( book, (err, result) => {
                     if (err) console.error(err);
                     if(result.length == 0){
@@ -61,7 +60,18 @@ Library.load = function(){
     db.find({}, (err, result) => {
         if (err) console.error(err);
         result.forEach(row => {
-            Library.loadBook(row);
+            if(fs.existsSync(row.path)){
+                Library.loadBook(row);
+                console.log('Book Loaded');
+                console.log(row);
+            }
+            else{
+                console.log('Book not found');
+                console.log(row);
+                db.remove({_id:row._id},{}, err =>{
+                    if(err) console.error(err);
+                });
+            }
         });
     });
 };
@@ -83,7 +93,6 @@ Library.loadBook = function(book){
         }
     })
     $('#lib').append(`<a href = "${address}" title = "${book.title}" ><img src = "${cover}">${title}</a>`);
-
 }
 
 Library.searchBook = function(name){
@@ -96,26 +105,8 @@ Library.searchBook = function(name){
     });
 };
 
-$(document).ready(function(){
+Library.controller = function(){
 
-    Library.init();
-
-    if( remote.process.argv[1].endsWith('.epub') && fs.existsSync(remote.process.argv[1])){
-        Library.addBook([remote.process.argv[1]]);
-
-        let address = url.format({
-            slashes: true,
-            protocol: 'file:',
-            pathname: path.join(__dirname,'..','html','reader.html'),
-            query: {
-                bookPath:remote.process.argv[1],
-            }
-        })
-        win.loadURL(address);
-    }
-
-    Library.load();
-    
     $('#add').on("click",()=>{
         let files = dialog.showOpenDialog(
             {
@@ -144,5 +135,43 @@ $(document).ready(function(){
         if($(this).val()==''){
             $(this).toggle();
         }
-    })
+    });
+
+    document.on('keyDown',)
+
+    document.addEventListener('keyDonw',(e)=>{
+        let search = e.keyWhich == 83;
+        console.log(e);
+        
+        if(search){
+            $('#search-box')
+            .show()
+            .focus();
+        }
+    },false);
+}
+
+$(document).ready(function(){
+
+    Library.init();
+
+    file = remote.process.argv[1];
+    if(file != '.' && file != ''){
+        console.log('opening file : ' + file);
+        if( file.endsWith('.epub') && fs.existsSync(file)){
+            Library.addBook([file]);
+    
+            let address = url.format({
+                slashes: true,
+                protocol: 'file:',
+                pathname: path.join(__dirname,'..','html','reader.html'),
+                query: {
+                    bookPath:file,
+                }
+            })
+            win.loadURL(address);
+        }
+    }
+    Library.load();
+    Library.controller();
 });

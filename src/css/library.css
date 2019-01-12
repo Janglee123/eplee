@@ -61,3 +61,6 @@ body{
     border-top-right-radius: 10px;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}

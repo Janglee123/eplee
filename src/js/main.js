@@ -3,23 +3,30 @@ const electronLocalshortcut = require('electron-localshortcut');
 const path  = require('path');
 const url = require('url')
 
-const{app, BrowserWindow, dialog, Menu, MenuItem} = electron;
-menu = new Menu();
+const{app, BrowserWindow, dialog} = electron;
 let win;
 
-function createWindow(){
-    win = new BrowserWindow({
+let createWindow = function(){
+    let win = new BrowserWindow({
         width:1042,
         height:640,
         frame: false,
         devtools: true,
-        webSecurity: false,
+        webSecurity: true,
         useContentSize: true,
         transparent: true,
+        show: false,
         webPreferences: {
-            experimentalFeatures: true
+            nodeIntegration: true,
         },
         icon: path.join(__dirname,'..','img','icons','64x64.png')
+    });
+
+    win.loadFile(path.join(__dirname,'..','html','library.html'));
+
+    win.once('ready-to-show', () => {
+        win.show();
+        console.log('show');
     });
 
     electronLocalshortcut.register(win, 'Ctrl+O', () => {
@@ -47,12 +54,8 @@ function createWindow(){
     });
 
     electronLocalshortcut.register(win, 'Ctrl+I', () =>{
-        win.webContents.toggleDevTools()
+        win.webContents.toggleDevTools();
     });
-
-
-
-    win.loadFile(path.join(__dirname,'..','html','library.html'));
 }
 
 app.on('ready',() => setTimeout(createWindow,100));
