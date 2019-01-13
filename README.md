@@ -2,7 +2,9 @@
 # **Eplee**
 > Sweat, Simple and Beautiful
 
-- **Project is in early stage of development**. However you can use it.if you want to be part of the project, feel free to ask me anything, I am happy to answer.
+- **Project is in early stage of development**. However you can use it. 
+ff you want to be a part of the project, feel free to ask me, I am happy to answer.
+if there is any feature you missing in eplee suggest it in issue.
 
 ![](https://raw.githubusercontent.com/Janglee123/eplee/master/Screenshoots/Screenshot%20from%202018-12-19%2022-33-06.png)
 
