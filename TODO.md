@@ -37,6 +37,7 @@
 - [ ] use more light color on default cover
 - [ ] set min width, height
 - [ ] remove search fliker
+- [ ] eplee logo in background 
 
 ## Issues
 1. ~~open file dailog opens in background~~(in manjaro)
