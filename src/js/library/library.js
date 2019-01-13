@@ -92,7 +92,7 @@ Library.loadBook = function(book){
         protocol: 'file:',
         pathname: path.join(__dirname,'..','html','reader.html'),
         query: {
-            bookPath:book.newCoverPath
+            bookPath:book.path
         }
     })
     $('#lib').append(`<a href = "${address}" title = "${book.title}" ><img src = "${cover}">${title}</a>`);
