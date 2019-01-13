@@ -7,13 +7,12 @@ const dialog = remote.dialog;
 const app = remote.app;
 const db = new Datastore({ filename: path.join(app.getPath('userData'),'database.db') });
 const coverDir = path.join(app.getPath('userData'),'covers');
-epub = new ePub();
-Library = {};
 
+let Library = {};
 
 Library.init = function(){
+    console.log('Library init');
     db.loadDatabase();
-
     if(!fs.existsSync(coverDir)){
         fs.mkdirSync(coverDir, { recursive: true }, (err) => {
             if (err) throw err;
@@ -22,6 +21,7 @@ Library.init = function(){
 }
 
 Library.addBook = function(files){
+    console.log('Library addbook');
     files.forEach(file => {
         epub = new ePub(file);
 
@@ -57,8 +57,10 @@ Library.addBook = function(files){
 };
 
 Library.load = function(){
+    console.log('Library load');
     db.find({}, (err, result) => {
         if (err) console.error(err);
+        console.log(result);
         result.forEach(row => {
             if(fs.existsSync(row.path)){
                 Library.loadBook(row);
@@ -68,15 +70,16 @@ Library.load = function(){
             else{
                 console.log('Book not found');
                 console.log(row);
-                db.remove({_id:row._id},{}, err =>{
+                /*db.remove({_id:row._id},{}, err =>{
                     if(err) console.error(err);
-                });
+                });*/
             }
         });
     });
 };
 
 Library.loadBook = function(book){
+    console.log('Library loadBook');
     let title = book.title;
     let cover = book.cover;
 
@@ -89,7 +92,7 @@ Library.loadBook = function(book){
         protocol: 'file:',
         pathname: path.join(__dirname,'..','html','reader.html'),
         query: {
-            bookPath:book.path,
+            bookPath:book.newCoverPath
         }
     })
     $('#lib').append(`<a href = "${address}" title = "${book.title}" ><img src = "${cover}">${title}</a>`);
@@ -137,9 +140,7 @@ Library.controller = function(){
         }
     });
 
-    document.on('keyDown',)
-
-    document.addEventListener('keyDonw',(e)=>{
+   /* document.addEventListener('keyDonw',(e)=>{
         let search = e.keyWhich == 83;
         console.log(e);
         
@@ -148,30 +149,30 @@ Library.controller = function(){
             .show()
             .focus();
         }
-    },false);
+    },false);*/
 }
 
-$(document).ready(function(){
+Library.init();
 
-    Library.init();
+file = remote.process.argv[1];
+if(file && file != '.' && file != ''){
+    console.log('opening file : ' + file);
+    if( file.endsWith('.epub') && fs.existsSync(file)){
+        Library.addBook([file]);
 
-    file = remote.process.argv[1];
-    if(file != '.' && file != ''){
-        console.log('opening file : ' + file);
-        if( file.endsWith('.epub') && fs.existsSync(file)){
-            Library.addBook([file]);
-    
-            let address = url.format({
-                slashes: true,
-                protocol: 'file:',
-                pathname: path.join(__dirname,'..','html','reader.html'),
-                query: {
-                    bookPath:file,
-                }
-            })
-            win.loadURL(address);
-        }
+        let address = url.format({
+            slashes: true,
+            protocol: 'file:',
+            pathname: path.join(__dirname,'..','html','reader.html'),
+            query: {
+                bookPath:file,
+            }
+        })
+        win.loadURL(address);
     }
-    Library.load();
+}
+Library.load();
+
+$(document).ready(function(){
     Library.controller();
 });

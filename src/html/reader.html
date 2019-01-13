@@ -18,13 +18,13 @@
     <script src="../js/libs/rsvp.min.js"></script>
 
     <!-- Reader -->
-    <script src="../js/reader/core.js"></script>
-    <script src="../js/reader/controller.js"></script>
-    <script src="../js/reader/reader.js"></script>
+    <script src="../js/_reader/core.js"></script>
+    <script src="../js/_reader/controller.js"></script>
+    <script src="../js/_reader/reader.js"></script>
     <script src="../js/titlebar.js"></script>
 
     <script>
-        "use strict";
+       "use strict";
         document.onreadystatechange = function () {
             if (document.readyState == "complete") {
                 window.reader = ePubReader("", {
@@ -55,7 +55,7 @@
 
             <div id="right">
                 <a id="setting" title="Setting" class="icon-settings"></a>
-                <a id="fullscreen" title="Toogle Fuullscreen" class="icon-fullscreen-full"></a>
+                <a id="fullscreen" title="Toogle Fullscreen" class="icon-fullscreen-full"></a>
                 <a id="minimize" title="Minimize" class="icon-minimize"></a>
                 <a id="maximize" title="Toogle Maximize" class="icon-maximize"></a>
                 <a id="close" title="Close" class="icon-close"></a>

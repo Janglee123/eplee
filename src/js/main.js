@@ -26,7 +26,6 @@ let createWindow = function(){
 
     win.once('ready-to-show', () => {
         win.show();
-        console.log('show');
     });
 
     electronLocalshortcut.register(win, 'Ctrl+O', () => {
