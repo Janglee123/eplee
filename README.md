@@ -4,7 +4,7 @@
 
 - **Project is in early stage of development**. However you can use it. 
 ff you want to be a part of the project, feel free to ask me, I am happy to answer.
-if there is any feature you missing in eplee suggest it in issue.
+if there is any feature you think is missing in eplee suggest it in issue.
 
 ![](https://raw.githubusercontent.com/Janglee123/eplee/master/Screenshoots/Screenshot%20from%202018-12-19%2022-33-06.png)
 
