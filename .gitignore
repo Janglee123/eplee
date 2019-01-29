@@ -4,3 +4,4 @@ dist/
 out/
 temp/
 src/book.epub
+.vscode/
