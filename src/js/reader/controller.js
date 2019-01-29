@@ -51,10 +51,9 @@ Controller.onKey = function(){
         if (prev) Viewer.rendition.prev();
         if (next) Viewer.rendition.next();
         if (back) Viewer.rendition.back();
-		//Viewer.rendition.themes.fontSize(fontSize + "%");
    };
 
-   let keyDown = function(){
+   let keyDown = function(event){
         let interval = 2;
         let key = event.keyCode || event.which;
         let plus = (key == 187 || key == 107);
@@ -62,15 +61,11 @@ Controller.onKey = function(){
         let ctr = event.ctrlKey || event.metaKey;
 
         fontSize = parseInt(Viewer.rendition.themes._overrides['font-size'].value.slice(0,-1));
+        event.preventDefault();
         
-        if (plus && ctr){
-            event.preventDefault();
-		    Viewer.rendition.themes.fontSize((fontSize + interval) + "%");
-        }
-        if (minus && ctr){
-            event.preventDefault();
-		    Viewer.rendition.themes.fontSize((fontSize - interval) + "%");
-        }
+        if (plus && ctr) Viewer.rendition.themes.fontSize((fontSize + interval) + "%");
+        if (minus && ctr) Viewer.rendition.themes.fontSize((fontSize - interval) + "%");
+        
    }
     
    Viewer.rendition.on('keyup', keyUp);
