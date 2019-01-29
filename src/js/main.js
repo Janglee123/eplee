@@ -1,9 +1,18 @@
-const electron = require('electron');
+const {app, BrowserWindow, dialog} = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const path  = require('path');
-const url = require('url')
+const url = require('url');
+const fs = require('fs');
+const Datastore = require('nedb');
+const coverDir = path.join(app.getPath('userData'),'covers');
 
-const{app, BrowserWindow, dialog} = electron;
+global.path = {
+    library : path.join(__dirname, '..', 'html', 'library.html'),
+    viewer : path.join(__dirname, '..', 'html', 'viewer.html'),
+    db: path.join(app.getPath('userData'), 'database.db')
+};
+global.db = new Datastore({ filename: global.path.db });
+
 let win;
 
 let createWindow = function(){
@@ -22,10 +31,14 @@ let createWindow = function(){
         icon: path.join(__dirname,'..','img','icons','64x64.png')
     });
 
-    win.loadFile(path.join(__dirname,'..','html','library.html'));
+    win.loadFile(global.path.library);
 
     win.once('ready-to-show', () => {
         win.show();
+    });
+
+    win.on('close', () => {
+        win = null;
     });
 
     electronLocalshortcut.register(win, 'Ctrl+O', () => {
@@ -45,7 +58,7 @@ let createWindow = function(){
         win.loadURL(url.format({
             slashes: true,
             protocol: 'file:',
-            pathname: path.join(__dirname,'..','html','reader.html'),
+            pathname: global.path.viewer,
             query: {
                 bookPath:file
             }
@@ -55,7 +68,26 @@ let createWindow = function(){
     electronLocalshortcut.register(win, 'Ctrl+I', () =>{
         win.webContents.toggleDevTools();
     });
+
 }
 
-app.on('ready',() => setTimeout(createWindow,100));
+
+app.on('window-all-closed', () => {
+    app.quit()
+});
+
+app.on('ready',() => {
+    //load database
+    global.db.loadDatabase();
+
+    //
+    if(!fs.existsSync(coverDir)){
+        fs.mkdirSync(coverDir, { recursive: true }, (err) => {
+            if (err) throw err;
+        });
+    }
+
+    //hack to make tranparent window in linux 
+    setTimeout(createWindow,100)
+});
 app.disableHardwareAcceleration();
