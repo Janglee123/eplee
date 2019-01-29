@@ -1,23 +1,13 @@
 const url = require('url');
 const path  = require('path');
 const fs = require('fs');
-const Datastore = require('nedb');
 const getCover = require('epub-cover-extractor');
-const dialog = remote.dialog;
-const app = remote.app;
-const db = new Datastore({ filename: path.join(app.getPath('userData'),'database.db') });
-const coverDir = path.join(app.getPath('userData'),'covers');
-
+const db = remote.getGlobal('db');
+const coverDir = remote.getGlobal('coverDir');
 let Library = {};
 
 Library.init = function(){
     console.log('Library init');
-    db.loadDatabase();
-    if(!fs.existsSync(coverDir)){
-        fs.mkdirSync(coverDir, { recursive: true }, (err) => {
-            if (err) throw err;
-        });
-    }
 }
 
 Library.addBook = function(files){
@@ -41,6 +31,7 @@ Library.addBook = function(files){
                 book.publisher = metadata.publisher
                 book.path = file;
                 book.cover = newCoverPath;
+                book.bookmark = [];
                 db.find( book, (err, result) => {
                     if (err) console.error(err);
                     if(result.length == 0){
@@ -66,13 +57,11 @@ Library.load = function(){
                 Library.loadBook(row);
                 console.log('Book Loaded');
                 console.log(row);
+                console.log(row.path);
             }
             else{
                 console.log('Book not found');
                 console.log(row);
-                /*db.remove({_id:row._id},{}, err =>{
-                    if(err) console.error(err);
-                });*/
             }
         });
     });
@@ -88,13 +77,15 @@ Library.loadBook = function(book){
     }
 
     let address = url.format({
-        slashes: true,
+    	slashes: true,
         protocol: 'file:',
-        pathname: path.join(__dirname,'..','html','reader.html'),
+        pathname: remote.getGlobal('path').viewer,
         query: {
-            bookPath:book.path
+            bookPath:book.path,
+            id : book._id,
         }
-    })
+    });
+
     $('#lib').append(`<a href = "${address}" title = "${book.title}" ><img src = "${cover}">${title}</a>`);
 }
 
@@ -154,7 +145,9 @@ Library.controller = function(){
 
 Library.init();
 
-file = remote.process.argv[1];
+
+//add this thing to main.js
+/*file = remote.process.argv[1];
 if(file && file != '.' && file != ''){
     console.log('opening file : ' + file);
     if( file.endsWith('.epub') && fs.existsSync(file)){
@@ -170,7 +163,9 @@ if(file && file != '.' && file != ''){
         })
         win.loadURL(address);
     }
-}
+}*/
+
+
 Library.load();
 
 $(document).ready(function(){
