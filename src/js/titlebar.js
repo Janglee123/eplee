@@ -1,11 +1,10 @@
-const remote = require('electron').remote;
+const { webFrame, remote } = require('electron');
+const app = remote.app;
+const dialog = remote.dialog;
 let win = remote.getCurrentWindow();
 
-$(document).ready(function(){
 
-    $('#settings').on("click", function() {
-        reader.SettingsController.show();
-    });
+$(document).ready(function(){
 
 	$('#fullscreen').on("click", function() {
 		let isFullScreen = win.isFullScreen();
