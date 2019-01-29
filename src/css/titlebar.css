@@ -9,7 +9,7 @@
     text-align: center;
     -webkit-app-region: drag;
     overflow: hidden;
-    z-index: 3;
+    z-index: 5;
     user-select: none;
     background: #fff;
 }
@@ -17,7 +17,6 @@
 #titlebar #left {
     margin-left: 5px;
     float: left;
-    display: inline-block;
 }
 
 #titlebar #center {
@@ -27,7 +26,6 @@
 
 #titlebar #right {
     float: right;
-    display: inline-block;
     margin-right: 5px;
 }
 
@@ -36,6 +34,7 @@
     height: 20px;
     overflow: hidden;
     padding: 5px;
+    cursor: pointer;
     -webkit-app-region: no-drag;
     border-radius: 100%;
     opacity: 1;
@@ -78,3 +77,6 @@
 .icon-maximize{ content: url('../img/maximize.svg') }
 .icon-maximize-exit{ content: url('../img/maximize-exit.svg') }
 .icon-close{ content: url('../img/close.svg');}
+.icon-theme{ content: url('../img/theme.svg');}
+.icon-bookmark-empty{ content: url('../img/bookmark.svg') }
+.icon-bookmark{ content: url('../img/bookmark-off.svg') }
