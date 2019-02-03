@@ -8,7 +8,6 @@
     color: #fff;
 }
 
-.tan {
-	background: tan;
-	color: #ccc;
+.dark a{
+    color: rgb(241, 205, 0);
 }

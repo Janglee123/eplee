@@ -12,6 +12,7 @@ if there is any feature you think is missing in eplee suggest it in issue.
 - change font size with ctrl+/-
 - Left/Right arrow to navigate
 - ctrl+click to open in new window
+- ctrl+d to toggle theme
 
 ## Why?
 

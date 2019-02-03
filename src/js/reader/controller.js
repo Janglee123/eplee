@@ -1,4 +1,3 @@
-const mousetrap = require('mousetrap');
 let Controller = Viewer.Controller || {};
 
 Controller.onClick = function(){
@@ -6,7 +5,7 @@ Controller.onClick = function(){
     $('#prev').on('click',()=>{
         Viewer.rendition.prev();
     });
-    
+
     $('#next').on('click', ()=> {
         Viewer.rendition.next();
     });
@@ -20,7 +19,7 @@ Controller.onClick = function(){
     });
 
     $('#theme').on('click', () => {
-        
+
     });
 
     $('#bookmark').on('click', () => {
@@ -36,27 +35,24 @@ Controller.onClick = function(){
     });
 
     $('#search').on('click', () => {
-        
+
     });
 }
 
 Controller.onKey = function(){
 
     let keyUp = function(event){
-       // let ctr = event.ctrlKey || event.metaKey;
 
+        let ctr = event.ctrlKey || event.metaKey;
         let key = event.keyCode || event.which;
         let next = (key == 39);
         let prev = (key == 37);
-        
+        let back = (key == 8);
+        let d = (key == 68);
         if (prev) Viewer.rendition.prev();
         if (next) Viewer.rendition.next();
         if (back) Viewer.rendition.back();
-        
-        if (event.key == 'd' ) Viewer.rendition.themes.select('dark');
-        if (ctr && key == 50 ) Viewer.rendition.themes.select('tan');
-        
-        print(event);
+        if(d && ctr) Controller.theme();
     };
 
    let keyDown = function(event){
@@ -68,13 +64,11 @@ Controller.onKey = function(){
 
         fontSize = parseInt(Viewer.rendition.themes._overrides['font-size'].value.slice(0,-1));
         event.preventDefault();
-        
+
         if (plus && ctr) Viewer.rendition.themes.fontSize((fontSize + interval) + "%");
         if (minus && ctr) Viewer.rendition.themes.fontSize((fontSize - interval) + "%");
-        
-        print(event);
    }
-    
+
    Viewer.rendition.on('keyup', keyUp);
    Viewer.rendition.on('keydown', keyDown);
    document.addEventListener('keyup', keyUp, false);
@@ -88,5 +82,14 @@ Controller.rendition = function(){
 }
 
 Controller.theme = function(theme){
-    
+    if(Viewer.currentTheme == 'dark'){
+        $('#main').removeClass('dark').addClass('ligth');
+        Viewer.currentTheme = 'light';
+        rendition.themes.select('light');
+    }
+    else{
+        $('#main').removeClass('light').addClass('dark');
+        Viewer.currentTheme = 'dark';
+        rendition.themes.select('dark');
+    }
 }

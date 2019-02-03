@@ -21,21 +21,21 @@ Viewer.openBook = function(bookPath){
         width: "100%",
         height: "100%"
     });
-    
+
     rendition.back = function(){
         Viewer.history.pop(); //current location
         prevCfi = Viewer.history.pop(); //prev location
         Viewer.rendition.display(prevCfi);
     }
     rendition.themes.register('dark', remote.getGlobal('path').theme);
-    rendition.themes.register('tan', remote.getGlobal('path').theme);
+    Viewer.currentTheme = 'light';
 
     book.ready.then(() => {
         db.find({_id:Viewer.metadata._id}, (err,result) => {
             if(err) console.error(err);
-            Viewer.metadata.bookmark = result[0].bookmark;
+            //Viewer.metadata.bookmark = result[0].bookmark;
         });
-        
+
         let meta = book.package.metadata; // Metadata from the package json
 	    let toc = book.navigation.toc; // Table of Contents
 
@@ -45,7 +45,7 @@ Viewer.openBook = function(bookPath){
         $('#loader').remove();
         rendition.display();
     })
-    
+
 }
 
 Viewer.onBookReady = function(){

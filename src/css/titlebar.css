@@ -3,7 +3,6 @@
     height: 35px;
     padding-top: 5px;
     position: relative;
-    color: #000;
     vertical-align: middle;
     margin: auto;
     text-align: center;
@@ -11,7 +10,7 @@
     overflow: hidden;
     z-index: 5;
     user-select: none;
-    background: #fff;
+    background: #ffffff00;
 }
 
 #titlebar #left {
