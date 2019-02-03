@@ -9,7 +9,8 @@ const coverDir = path.join(app.getPath('userData'),'covers');
 global.path = {
     library : path.join(__dirname, '..', 'html', 'library.html'),
     viewer : path.join(__dirname, '..', 'html', 'viewer.html'),
-    db: path.join(app.getPath('userData'), 'database.db')
+    db: path.join(app.getPath('userData'), 'database.db'),
+    theme : path.join(__dirname,'..','css','theme.css'),
 };
 global.db = new Datastore({ filename: global.path.db });
 

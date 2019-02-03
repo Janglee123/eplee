@@ -21,13 +21,14 @@ Viewer.openBook = function(bookPath){
         width: "100%",
         height: "100%"
     });
-    rendition.display();
     
     rendition.back = function(){
         Viewer.history.pop(); //current location
         prevCfi = Viewer.history.pop(); //prev location
         Viewer.rendition.display(prevCfi);
     }
+    rendition.themes.register('dark', remote.getGlobal('path').theme);
+    rendition.themes.register('tan', remote.getGlobal('path').theme);
 
     book.ready.then(() => {
         db.find({_id:Viewer.metadata._id}, (err,result) => {
@@ -42,6 +43,7 @@ Viewer.openBook = function(bookPath){
         Viewer.rendition.themes.fontSize('100%');
     }).then(()=>{
         $('#loader').remove();
+        rendition.display();
     })
     
 }

@@ -43,6 +43,7 @@ Controller.onClick = function(){
 Controller.onKey = function(){
 
     let keyUp = function(event){
+       // let ctr = event.ctrlKey || event.metaKey;
 
         let key = event.keyCode || event.which;
         let next = (key == 39);
@@ -51,7 +52,12 @@ Controller.onKey = function(){
         if (prev) Viewer.rendition.prev();
         if (next) Viewer.rendition.next();
         if (back) Viewer.rendition.back();
-   };
+        
+        if (event.key == 'd' ) Viewer.rendition.themes.select('dark');
+        if (ctr && key == 50 ) Viewer.rendition.themes.select('tan');
+        
+        print(event);
+    };
 
    let keyDown = function(event){
         let interval = 2;
@@ -66,6 +72,7 @@ Controller.onKey = function(){
         if (plus && ctr) Viewer.rendition.themes.fontSize((fontSize + interval) + "%");
         if (minus && ctr) Viewer.rendition.themes.fontSize((fontSize - interval) + "%");
         
+        print(event);
    }
     
    Viewer.rendition.on('keyup', keyUp);
@@ -80,5 +87,6 @@ Controller.rendition = function(){
     });
 }
 
-Controller.theme = function(){
+Controller.theme = function(theme){
+    
 }

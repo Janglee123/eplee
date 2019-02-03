@@ -42,4 +42,4 @@
 ## Issues
 1. ~~open file dailog opens in background~~(in manjaro)
 2. ~~deleted files make trouble~~
-3. navigation keys not working
+3. navigation keys not working, strange bug with keys on manjaro 

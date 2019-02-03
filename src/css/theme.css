@@ -1,0 +1,14 @@
+.light {
+    background: #fff;
+    color: #000;
+}
+
+.dark {
+    background: rgb(48, 48, 48);
+    color: #fff;
+}
+
+.tan {
+	background: tan;
+	color: #ccc;
+}
