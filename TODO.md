@@ -15,10 +15,14 @@
 - [x] copy default.jpg to userdata path
 - [x] open with added
 - [x] deleted file exepction
-- [ ] rewrite reader
+- [x] rewrite reader
+- [ ] Add bookmarks
+- [ ] Add toc
+- [ ] Horizontal scroll bar
+- [ ] fix cover thumbviews
 
 ### Mid
-- [x] transpart boarder
+- [x] transparent boarder
 - [x] add border to main
 - [x] add bw logo as default cover
 - [x] change addbook function first find then add 
@@ -29,7 +33,6 @@
 - [ ] short by last open
 - [ ] add entry to `/usr/share/apllications/default.list`
 - [ ] add mouse wheel support
-- [ ] Horizontal scroll bar
 
 ### Low
 - [x] tooltip of buttons(add title field to anchor)
@@ -42,4 +45,4 @@
 ## Issues
 1. ~~open file dailog opens in background~~(in manjaro)
 2. ~~deleted files make trouble~~
-3. navigation keys not working, strange bug with keys on manjaro 
+3. ~~navigation keys not working~~
