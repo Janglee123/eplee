@@ -33,6 +33,7 @@
 - [ ] short by last open
 - [ ] add entry to `/usr/share/apllications/default.list`
 - [ ] add mouse wheel support
+- [ ] add theme to toc
 
 ### Low
 - [x] tooltip of buttons(add title field to anchor)
@@ -41,7 +42,7 @@
 - [ ] set min width, height
 - [ ] remove search fliker
 - [ ] eplee logo in background 
-
+- [ ] fix z-indexes 
 ## Issues
 1. ~~open file dailog opens in background~~(in manjaro)
 2. ~~deleted files make trouble~~

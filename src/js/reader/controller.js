@@ -39,6 +39,11 @@ Controller.onClick = function(){
     });
 }
 
+Controller.onTocItemClick = function(herf){
+    console.log(herf);
+    Viewer.rendition.display(herf);
+}
+
 Controller.onKey = function(){
 
     let keyUp = function(event){

@@ -1,14 +1,15 @@
 #titlebar {
     top: 0px;
     height: 35px;
+    width:100%;
     padding-top: 5px;
-    position: relative;
+    position: fixed;
     vertical-align: middle;
     margin: auto;
     text-align: center;
     -webkit-app-region: drag;
     overflow: hidden;
-    z-index: 5;
+    z-index: 15;
     user-select: none;
     background: #ffffff00;
 }

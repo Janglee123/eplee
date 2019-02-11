@@ -28,7 +28,7 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
-    z-index: 10;
+    z-index: 3;
     border-radius: 100%;
     user-select: none;
 }
@@ -39,7 +39,7 @@
 
 .arrow:hover {
     opacity: .8;
-    background-color: rgba(48,48,48,0.2);
+    background-color: rgba(48, 48, 48, 0.2);
 }
 
 #loader {
@@ -48,4 +48,40 @@
     left: 50%;
     top: 50%;
     margin: -33px 0 0 -33px;
+}
+
+#nav {
+    padding-top: 40px;
+    padding-left: 5px;
+    top: 2px;
+    bottom: 2px;
+    width: 400px;
+    left: -375px;
+    transition: left 0.4s;
+    z-index: 5;
+    position: fixed;
+    background: linear-gradient(to right, #fff 0%, #fff 75%, rgba(255, 255, 255, 0) 100%);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+#nav:hover {
+    left: 2px;
+}
+
+#toc {
+    color: #000;
+    height: 95%;
+    padding-left: 15px;
+    padding-right: 100px;
+    overflow-y: scroll;
+}
+
+#toc h3, h4, h5{
+    cursor: pointer;
+}
+
+
+::-webkit-scrollbar {
+    display: none;
 }

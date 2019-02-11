@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="../css/viewer.css">
     <link rel="stylesheet" href="../css/titlebar.css">
@@ -7,7 +8,12 @@
     <link rel="stylesheet" href="../css/theme.css">
 
     <!-- fix for electron -->
-    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+    <script>
+        if (typeof module === 'object') {
+            window.module = module;
+            module = undefined;
+        }
+    </script>
 
     <script src="../js/libs/jquery.min.js"></script>
     <script src="../js/libs/zip.min.js"></script>
@@ -19,28 +25,30 @@
     <script src="../js/libs/rsvp.min.js"></script>
 
     <!-- Reader -->
-    <script src="../js/titlebar.js"></script>    
+    <script src="../js/titlebar.js"></script>
     <script src="../js/reader/viewer.js"></script>
     <script src="../js/reader/controller.js"></script>
 
-    <script>if (window.module) module = window.module;</script>
+    <script>
+        if (window.module) module = window.module;
+    </script>
 
 </head>
 
 <body>
     <div id="main" class="light">
+        
+        
         <div id="titlebar">
-
-            <div id = "left">
+            <div id="left">
                 <a id="back" title="Back" class="icon-back"></a>
                 <a id="library" title="Back to Library" class="icon-library"></a>
                 <a id="bookmark" title="Toogle Bookmark" class="icon-bookmark-empty"></a>
             </div>
-
             <div id="center">
                 <span id="book-title"> </span>
             </div>
-
+            
             <div id="right">
                 <a id="theme" title="theme" class="icon-theme"></a>
                 <a id="fullscreen" title="Toogle Fullscreen" class="icon-fullscreen-full"></a>
@@ -49,14 +57,20 @@
                 <a id="close" title="Close" class="icon-close"></a>
             </div>
         </div>
-
+        
+        <div id='nav'>
+            <div id="toc">
+                Table of Content
+            </div>
+        </div>
         <!--<div id="theme-layer" class="layer"></div>-->
         <div id="prev" class="arrow"></div>
         <div id="viewer"></div>
         <div id="next" class="arrow"></div>
         <!--<div id="sroller" class="bar"></div>-->
 
-       <div id="loader"><img src="../img/timer-sand.svg" width = 100px ></div>
+        <div id="loader"><img src="../img/timer-sand.svg" width=100px></div>
     </div>
 </body>
+
 </html>
