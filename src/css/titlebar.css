@@ -1,11 +1,11 @@
 #titlebar {
     top: 0px;
-    height: 35px;
-    width:100%;
-    padding-top: 5px;
+    height: 40px;
+    line-height: 0.7;
+    width: -webkit-fill-available;
     position: fixed;
     vertical-align: middle;
-    margin: auto;
+    margin: 5px 2px;
     text-align: center;
     -webkit-app-region: drag;
     overflow: hidden;

@@ -16,10 +16,11 @@
 - [x] open with added
 - [x] deleted file exepction
 - [x] rewrite reader
+- [x] Add toc
 - [ ] Add bookmarks
-- [ ] Add toc
 - [ ] Horizontal scroll bar
 - [ ] fix cover thumbviews
+- [ ] fix css
 
 ### Mid
 - [x] transparent boarder
@@ -28,7 +29,7 @@
 - [x] change addbook function first find then add 
 - [x] add custom sidebar
 - [x] auto position on resize
-- [ ] write code to exart cover
+- [ ] write code to extract cover
 - [ ] fix last row
 - [ ] short by last open
 - [ ] add entry to `/usr/share/apllications/default.list`

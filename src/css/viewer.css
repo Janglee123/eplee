@@ -53,8 +53,8 @@
 #nav {
     padding-top: 40px;
     padding-left: 5px;
-    top: 2px;
-    bottom: 2px;
+    top: 1px;
+    bottom: 1px;
     width: 400px;
     left: -375px;
     transition: left 0.4s;
@@ -63,10 +63,11 @@
     background: linear-gradient(to right, #fff 0%, #fff 75%, rgba(255, 255, 255, 0) 100%);
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
+    border-left: 1px solid #303030;
 }
 
 #nav:hover {
-    left: 2px;
+    left: 0px;
 }
 
 #toc {
