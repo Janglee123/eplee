@@ -70,8 +70,8 @@ Controller.onKey = function(){
         fontSize = parseInt(Viewer.rendition.themes._overrides['font-size'].value.slice(0,-1));
         event.preventDefault();
 
-        if (plus && ctr) Viewer.rendition.themes.fontSize((fontSize + interval) + "%");
-        if (minus && ctr) Viewer.rendition.themes.fontSize((fontSize - interval) + "%");
+        if (plus && ctr) Viewer.rendition.themes.fontSize((fontSize + interval) + "px");
+        if (minus && ctr) Viewer.rendition.themes.fontSize((fontSize - interval) + "px");
    }
 
    Viewer.rendition.on('keyup', keyUp);
@@ -87,8 +87,8 @@ Controller.rendition = function(){
 }
 
 Controller.theme = function(theme){
-    if(Viewer.currentTheme == 'dark'){
-        $('#main').removeClass('dark').addClass('ligth');
+    if(Viewer.currentTheme === 'dark'){
+        $('#main').removeClass('dark').addClass('light');
         Viewer.currentTheme = 'light';
         rendition.themes.select('light');
     }

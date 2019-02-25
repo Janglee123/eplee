@@ -26,7 +26,7 @@ Viewer.openBook = function (bookPath) {
         Viewer.rendition.display(prevCfi);
     }
     rendition.themes.register('dark', remote.getGlobal('path').theme);
-    rendition.themes.fontSize('100%');
+    rendition.themes.fontSize('16px');
     Viewer.currentTheme = 'light';
 
     book.ready.then(() => {
@@ -70,27 +70,37 @@ Viewer.removeBookmark = function (cfi) {
 
 Viewer.loadToc = function (toc) {
     $toc = $('#toc');
-    
+
+    let validateHref = function (href) {
+        if (href.startsWith('..'))
+            href = href.substring(2);
+        if (href.startsWith('/'))
+            href = href.substring(1);
+        return href
+    }
+
     toc.forEach(h3 => {
-        $toc.append(`<h3 onclick="Viewer.Controller.onTocItemClick('${h3.href}')" >${h3.label}</h3>`);
+        href = validateHref(h3.href);
+        console.log(href);
+        $toc.append(`<h3 onclick="Viewer.Controller.onTocItemClick('${href}')" >${h3.label}</h3>`);
         if (h3.subitems) {
-            
             h3.subitems.forEach(h4 => {
-                $toc.append(`<h4 onclick="Viewer.Controller.onTocItemClick('${h4.href}')">${h4.label}</h4>`);
+                href = validateHref(h4.href);
+                console.log(href);
+                $toc.append(`<h4 onclick="Viewer.Controller.onTocItemClick('${href}')">${h4.label}</h4>`);
                 if (h4.subitems) {
-                    
                     h4.subitems.forEach(h5 => {
-                        $toc.append(`<h5 onclick="Viewer.Controller.onTocItemClick('${h5.href}')" >${h5.label}</h5>`);
+                        href = validateHref(h5.href);
+                        console.log(href);
+                        $toc.append(`<h5 onclick="Viewer.Controller.onTocItemClick('${href}')" >${h5.label}</h5>`);
                     });
-                    
                 }
             });
-            
         }
     });
 }
 
-Viewer.search = function () {}
+Viewer.search = function () { }
 
 $(document).ready(() => {
 

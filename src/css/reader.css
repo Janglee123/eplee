@@ -69,9 +69,6 @@ body {
 #sidebar {
     background: #6b6b6b;
     position: absolute;
-    /* left: -260px; */
-    /* -webkit-transform: translate(-260px, 0);
-    -moz-transform: translate(-260px, 0); */
     top: 0;
     min-width: 300px;
     width: 25%;
@@ -81,28 +78,6 @@ body {
     -ms-transition: -moz-transform .5s;
 
     overflow: hidden;
-}
-
-#sidebar.open {
-    /* left: 0; */
-    /* -webkit-transform: translate(0, 0);
-    -moz-transform: translate(0, 0); */
-}
-
-#main.closed {
-    /* left: 300px; */
-    -webkit-transform: translate(300px, 0);
-    -moz-transform: translate(300px, 0);
-    -ms-transform: translate(300px, 0);
-}
-
-#main.single {
-    width: 75%;
-}
-
-#main.single #viewer {
-    /*width: 60%;
-    margin-left: 20%; */
 }
 
 #panels {

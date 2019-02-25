@@ -56,14 +56,14 @@
     top: 1px;
     bottom: 1px;
     width: 400px;
-    left: -375px;
-    transition: left 0.4s;
+    left: -390px;
+    transition: left 0.3s;
     z-index: 5;
     position: fixed;
-    background: linear-gradient(to right, #fff 0%, #fff 75%, rgba(255, 255, 255, 0) 100%);
+    background: inherit;
+    /* background: linear-gradient(to right,inherit 0%,inherit 75%, rgba(255, 255, 255, 0) 100%); */
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
-    border-left: 1px solid #303030;
 }
 
 #nav:hover {
@@ -71,17 +71,25 @@
 }
 
 #toc {
-    color: #000;
+    color:inherit;
     height: 95%;
     padding-left: 15px;
-    padding-right: 100px;
+    padding-right: 15px;
     overflow-y: scroll;
+    border: 1px solid; 
+    border-color: inherit;
+    border-radius: 15px;
 }
 
 #toc h3, h4, h5{
     cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 400;
 }
 
+#toc h3{
+}
 
 ::-webkit-scrollbar {
     display: none;
