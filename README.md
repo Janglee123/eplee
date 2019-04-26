@@ -3,7 +3,7 @@
 
 - **Project is in early stage of development**. However you can use it. 
 
-**Pull Requests are welecome**
+**Pull Requests are welcome**
 
 ### Development
 
