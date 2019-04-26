@@ -6,8 +6,10 @@
 body {
     background: rgba(0,0,0,0);
     overflow: hidden;
-    font-family: Bookerly;
+    font-family: Quicksand;
     box-sizing: border-box;
+    scroll-behavior: smooth;
+    border: 1px solid #303030;
 }
 
 #main {
@@ -17,6 +19,5 @@ body {
     right: 0px;
     bottom: 0px;
     border-radius: 15px;
-    border: 1px solid #303030;
     overflow: hidden;
 }

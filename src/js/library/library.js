@@ -5,7 +5,6 @@ const getCover = require('epub-cover-extractor');
 const db = remote.getGlobal('db');
 const coverDir = remote.getGlobal('path').coverDir;
 let Library = {};
-
 Library.init = function () {
     console.log('Library init');
 }
@@ -96,8 +95,13 @@ Library.loadBook = function (book) {
 
 Library.searchBook = function (name) {
     query = new RegExp(name, 'i');
+    console.log({query});
     db.find({ title: { $regex: query } }, (err, result) => {
-        if (err) console.error(err);
+        console.log({result});
+        if (err){
+            console.error(err);
+            return;
+        }
         result.forEach(row => {
             Library.loadBook(row);
         });
@@ -135,42 +139,9 @@ Library.controller = function () {
             $(this).toggle();
         }
     });
-
-    /* document.addEventListener('keyDonw',(e)=>{
-         let search = e.keyWhich == 83;
-         console.log(e);
-         
-         if(search){
-             $('#search-box')
-             .show()
-             .focus();
-         }
-     },false);*/
 }
 
 Library.init();
-
-
-//add this thing to main.js
-/*file = remote.process.argv[1];
-if(file && file != '.' && file != ''){
-    console.log('opening file : ' + file);
-    if( file.endsWith('.epub') && fs.existsSync(file)){
-        Library.addBook([file]);
-
-        let address = url.format({
-            slashes: true,
-            protocol: 'file:',
-            pathname: path.join(__dirname,'..','html','reader.html'),
-            query: {
-                bookPath:file,
-            }
-        })
-        win.loadURL(address);
-    }
-}*/
-
-
 Library.load();
 
 $(document).ready(function () {

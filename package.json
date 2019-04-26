@@ -1,6 +1,6 @@
 {
-  "name": "Eplee",
-  "version": "0.1.0",
+  "name": "eplee",
+  "version": "0.1.2",
   "license": "MIT",
   "description": "Sweat,Simple,Stupid ePub reader",
   "author": "Patel Meru <merupatel123@gmail.com> (janglee123.github.io)",
@@ -17,7 +17,6 @@
     "appId": "eplee",
     "linux": {
       "target": [
-        "AppImage",
         "deb",
         "pacman"
       ],

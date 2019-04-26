@@ -67,6 +67,9 @@ let createWindow = function () {
     electronLocalshortcut.register(win, 'Ctrl+I', () => {
         win.webContents.toggleDevTools();
     });
+    electronLocalshortcut.register(win, 'Ctrl+R', () => {
+        win.reload();
+    });
 }
 
 
