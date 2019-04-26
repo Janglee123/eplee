@@ -1,26 +1,39 @@
-![Logo](https://raw.githubusercontent.com/Janglee123/eplee/master/src/img/icons/128x128.png)
 # **Eplee**
 > Sweat, Simple and Beautiful
 
 - **Project is in early stage of development**. However you can use it. 
-ff you want to be a part of the project, feel free to ask me, I am happy to answer.
-if there is any feature you think is missing in eplee suggest it in issue.
 
-![](https://raw.githubusercontent.com/Janglee123/eplee/master/Screenshoots/Screenshot%20from%202018-12-19%2022-33-06.png)
+**Pull Requests are welecome**
 
-## Basic Controles
-- change font size with ctrl+/-
-- Left/Right arrow to navigate
-- ctrl+click to open in new window
-- ctrl+d to toggle theme
+### Development
 
-## Why?
+Clone this repository, install dependencies and run using either `dev` or `build` command.
 
-## Development
-1. `git clone https://github.com/Janglee123/eplee.git`
-2. `cd eplee`
-3. `npm install`
-4. `npm start`
+```bash
+# Clone this repository
+git clone https://github.com/janglee123/eplee
 
-## Building
-- `npm run dist`
+# change directory to cloned path
+cd eplee
+
+# Install dependencies
+yarn 
+
+# Run in `DEV` mode
+yarn run dev
+
+# Build installer for this app
+yarn run build
+```
+### Library / Tool / Framework used
+- [vuejs](https://vuejs.org/)
+- [semantic ui](https://semantic-ui.com/) / [semantic-ui-vue](https://semantic-ui-vue.github.io/#/)
+- [vue-electron-template](https://github.com/mubaidr/vue-electron-template) 
+
+### Project structure
+
+`src/main` contains electron main script.
+
+`src/renderer` contains vue-js application.
+
+`src/share` contains commone script.
