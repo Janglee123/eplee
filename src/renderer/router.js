@@ -1,8 +1,8 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from '@/renderer/components/Home'
-import Reader from '@/renderer/components/Reader'
-Vue.use(Router)
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from '@/renderer/components/Home';
+import Reader from '@/renderer/components/Reader';
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -12,9 +12,9 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/reader',
-      name:'Reader',
-      component: Reader,//() => import('@/renderer/components/Reader'),
+      path: '/reader/:id',
+      name: 'Reader',
+      component: Reader, // () => import('@/renderer/components/Reader'),
       props: true,
     },
     {
@@ -22,4 +22,4 @@ export default new Router({
       redirect: '/',
     },
   ],
-})
+});

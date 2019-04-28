@@ -1,29 +1,29 @@
-/* eslint-disable */
-import { app, BrowserWindow } from 'electron'
-/* eslint-enable */
-const pkg = require('../../package.json')
-const { productName } = pkg.build
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { app, BrowserWindow } from 'electron';
 
-process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true
+const pkg = require('../../package.json');
+const { productName } = pkg.build;
 
-const isDev = process.env.NODE_ENV === 'development'
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
-let mainWindow
+const isDev = process.env.NODE_ENV === 'development';
+
+let mainWindow;
 
 if (isDev) {
   // eslint-disable-next-line
-  require('electron-debug')()
+  require('electron-debug')();
 }
 
 async function installDevTools() {
   try {
     // eslint-disable-next-line
-    require('devtron').install()
+    require('devtron').install();
     // eslint-disable-next-line
-    require('vue-devtools').install()
+    require('vue-devtools').install();
   } catch (err) {
     // eslint-disable-next-line
-    console.error(err)
+    console.error(err);
   }
 }
 
@@ -43,54 +43,65 @@ function createWindow() {
     show: false,
     frame: false,
     transparent: true,
-  })
+  });
 
   if (isDev) {
-    mainWindow.loadURL('http://localhost:9080')
+    mainWindow.loadURL('http://localhost:9080');
   } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`)
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
 
     global.__static = require('path')
       .join(__dirname, '/static')
-      .replace(/\\/g, '\\\\')
+      .replace(/\\/g, '\\\\');
   }
 
   // Show when loaded
   mainWindow.on('ready-to-show', () => {
-    mainWindow.setTitle(productName)
-    mainWindow.show()
-    mainWindow.focus()
+    mainWindow.setTitle(productName);
+    mainWindow.show();
+    mainWindow.focus();
 
     if (isDev || process.argv.indexOf('--debug') !== -1) {
-      mainWindow.webContents.openDevTools()
+      mainWindow.webContents.openDevTools();
     }
-  })
+  });
+
+  const { webContents } = mainWindow;
+  webContents.on('did-finish-load', () => {
+    webContents.setZoomFactor(1);
+    webContents.setVisualZoomLevelLimits(1, 1);
+    webContents.setLayoutZoomLevelLimits(0, 0);
+  });
 
   mainWindow.on('closed', () => {
-    mainWindow = null
-  })
+    mainWindow = null;
+  });
 }
 
 app.on('ready', () => {
-  app.setName(productName)
-  //hack to make tranparent window in linux 
-  setTimeout(createWindow, 500)
+  app.setName(productName);
+  // hack to make tranparent window in linux
+  setTimeout(createWindow, 500);
 
   if (isDev) {
-    installDevTools()
+    installDevTools();
   }
-})
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
-})
+});
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    createWindow();
   }
-})
+});
 
+// disable it for transparency
 app.disableHardwareAcceleration();
+
+// disable zooming
+app.commandLine.appendSwitch('disable-pinch');
