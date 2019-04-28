@@ -18,6 +18,7 @@ module.exports = {
   rules: {
     semi: 0,
     'comma-dangle': 0,
+    "no-console": 0,
     'global-require': 0,
     'import/no-unresolved': 0,
     'no-param-reassign': 0,
@@ -27,6 +28,7 @@ module.exports = {
     'no-multi-assign': 0,
     'no-underscore-dangle': 0,
     'linebreak-style': 0,
+    "allowForLoopAfterthoughts": true,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
   },
