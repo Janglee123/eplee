@@ -41,7 +41,8 @@ function createWindow() {
       webSecurity: false,
     },
     show: false,
-    // frame: false,
+    frame: false,
+    transparent: true,
   })
 
   if (isDev) {
@@ -72,7 +73,8 @@ function createWindow() {
 
 app.on('ready', () => {
   app.setName(productName)
-  createWindow()
+  //hack to make tranparent window in linux 
+  setTimeout(createWindow, 500)
 
   if (isDev) {
     installDevTools()
@@ -90,3 +92,5 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+app.disableHardwareAcceleration();

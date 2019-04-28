@@ -27,7 +27,7 @@ yarn run build
 ```
 ### Library / Tool / Framework used
 - [vuejs](https://vuejs.org/)
-- [semantic ui](https://semantic-ui.com/) / [semantic-ui-vue](https://semantic-ui-vue.github.io/#/)
+- [element ui](https://element.eleme.io/#/en-US)
 - [vue-electron-template](https://github.com/mubaidr/vue-electron-template) 
 
 ### Project structure

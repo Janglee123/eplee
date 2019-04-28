@@ -8,11 +8,14 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Home',
       component: Home,
     },
     {
       path: '/reader',
-      component: Reader,
+      name:'Reader',
+      component: Reader,//() => import('@/renderer/components/Reader'),
+      props: true,
     },
     {
       path: '*',

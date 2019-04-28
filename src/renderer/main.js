@@ -1,14 +1,19 @@
 import Vue from 'vue';
-import SuiVue from 'semantic-ui-vue';
-import 'semantic-ui/dist/semantic.min.css'
-
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import VueElectron from 'vue-electron'
+import VueBus from 'vue-bus';
 import App from './App';
 import router from './router';
 import store from './store';
 
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
-Vue.use(SuiVue);
+
+Vue.use(ElementUI);
+Vue.use(VueElectron);
+Vue.use(VueBus);
+
 Vue.use(require('vue-electron'));
 /* eslint-disable no-new */
 new Vue({

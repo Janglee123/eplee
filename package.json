@@ -62,9 +62,10 @@
     }
   },
   "dependencies": {
-    "semantic-ui-vue": "^0.8.1",
-    "semantic-ui": "^2.4.2",
+    "element-ui": "^2.8.2",
+    "epubjs": "^0.3.84",
     "vue": "^2.6.10",
+    "vue-bus": "^1.2.1",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.6",
     "vuex": "^3.1.0"
