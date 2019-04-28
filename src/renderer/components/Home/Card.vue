@@ -1,10 +1,10 @@
 <template>
-    <sui-card class="raised link" style="width:170px ; height:250px">
-      <sui-image src="src/renderer/assets/default-cover.jpg" style="width:auto ; height:200px"/>
-      <sui-card-content>
-        <center><sui-card-contant>{{ title }}</sui-card-contant></center>
-      </sui-card-content>
-    </sui-card>
+  <router-link :to="{ name: 'Reader', params: { id } }">
+    <el-card shadow="hover" class="box-card" :body-style="{ padding: '0px' }">
+      <el-image :src="imgSrc"></el-image>
+      <div class="title">{{title}}</div>
+    </el-card>
+  </router-link>
 </template>
 
 <script>
@@ -19,10 +19,31 @@ export default {
       default: 'src/renderer/assets/default-cover.jpg',
       type: String,
     },
+    id:{
+      default:0,
+      type:Number,
+    }
   },
 };
 </script>
 
 <style>
+.box-card {
+  width: 170px;
+  height: 250px;
+  background: #fff;
+}
 
+.el-image {
+  width: 100%;
+  height: 200px;
+}
+
+.title {
+  width: 100%;
+  height: 50px;
+  display: inline-grid;
+  align-content: center;
+  text-align: center;
+}
 </style>
