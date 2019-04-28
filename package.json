@@ -31,15 +31,14 @@
       "build/*"
     ],
     "linux": {
-      "icon": "build/icons/32x32.png",
+      "icon": "build/icons/512x512.png",
       "target": [
-        "deb",
-        "snap",
         "AppImage"
       ]
     },
     "mac": {
       "category": "public.app-category.utilities",
+      "icon": "build/icons/512x512.png",
       "target": [
         "dmg",
         "zip"
@@ -53,7 +52,7 @@
     },
     "productName": "Eplee",
     "win": {
-      "icon": "build/icons/32x32.png",
+      "icon": "build/icons/512x512.png",
       "target": [
         "nsis",
         "zip",
