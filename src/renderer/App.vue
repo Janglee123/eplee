@@ -1,22 +1,29 @@
 <template>
   <div id="app">
     <div class="content-custom">
-      <transition
-        name="slide-right"
-        mode="out-in"
-      >
-        <router-view />
-      </transition>
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ImageParsing',
-}
+  name: 'Eplee',
+  data(){
+    return{
+    }
+  }
+};
 </script>
 
-<style lang="sass">
-  
+<style>
+::-webkit-scrollbar {
+  display: none;
+}
+
+#app{
+  background: #fff;
+  border-radius: 10px;
+}
+
 </style>
