@@ -107,9 +107,6 @@ export default {
     };
   },
   mounted(){
-    // this.$mousetrap.bind(['command+o', 'ctrl+o'], this.onAdd);
-    // this.$mousetrap.bind(['command+x', 'ctrl+x'], this.onAdd);
-    // console.log(this.$bind)
     this.$bind(this.$electron.remote.getCurrentWindow(),'CommandOrControl+O', this.onAdd);
   },
   methods: {
@@ -149,7 +146,8 @@ export default {
 
 <style scoped>
 .el-header {
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  backdrop-filter: blur(40px);
   color: #333;
   border-top-left-radius: 9px;
   border-top-right-radius: 9px;
@@ -160,10 +158,6 @@ export default {
   z-index: 2;
   -webkit-app-region: drag !important;
   -webkit-user-select: none;
-}
-
-.shadow {
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 #left {

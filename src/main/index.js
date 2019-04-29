@@ -39,6 +39,7 @@ function createWindow() {
       nodeIntegration: true,
       nodeIntegrationInWorker: false,
       webSecurity: false,
+      experimentalFeatures: true,
     },
     show: false,
     frame: false,
@@ -66,12 +67,12 @@ function createWindow() {
     }
   });
 
-  const { webContents } = mainWindow;
-  webContents.on('did-finish-load', () => {
-    webContents.setZoomFactor(1);
-    webContents.setVisualZoomLevelLimits(1, 1);
-    webContents.setLayoutZoomLevelLimits(0, 0);
-  });
+  // const { webContents } = mainWindow;
+  // webContents.on('did-finish-load', () => {
+  //   webContents.setZoomFactor(1);
+  //   webContents.setVisualZoomLevelLimits(1, 1);
+  //   webContents.setLayoutZoomLevelLimits(0, 0);
+  // });
 
   mainWindow.on('closed', () => {
     mainWindow = null;

@@ -39,13 +39,15 @@ export default {
   },
 
   mounted() {
-
     this.bookList = this.$db.getList().map(book => {
-        book.title = book.title.length > 35 ? `${book.title.substring(0, 35)  }...` : book.title;
-        return book;
+      book.title =
+        book.title.length > 35
+          ? `${book.title.substring(0, 35)}...`
+          : book.title;
+      return book;
     });
 
-    this.$bus.on('add-button',()=>{
+    this.$bus.on('add-button', () => {
       this.addFiles();
     });
   },
@@ -66,13 +68,13 @@ export default {
     },
 
     addToDB(file) {
-      file = `file://${  file}`;
-      console.log({file});
+      file = `file://${file}`;
+      console.log({ file });
       const book = new Book(file);
       book.ready.then(() => {
         console.log(book);
         const meta = book.package.metadata;
-        console.log({meta});
+        console.log({ meta });
         const entity = {
           id: file,
           title: meta.title,
@@ -82,7 +84,10 @@ export default {
         };
         this.$db.insert(entity);
 
-        entity.title = entity.title.length > 35 ? `${entity.title.substring(0, 35)  }...` : entity.title;
+        entity.title =
+          entity.title.length > 35
+            ? `${entity.title.substring(0, 35)}...`
+            : entity.title;
         this.bookList.push(entity);
       });
     },
@@ -103,26 +108,6 @@ export default {
   height: -webkit-fill-available;
 }
 
-.el-input {
-  border-radius: 30px;
-}
-
-.el-header {
-  background-color: #ffffff;
-  color: #333;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
-  /* border-bottom: 1px solid #d7dae2; */
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  text-align: center;
-  vertical-align: middle;
-  padding: 5px;
-  height: 50px;
-  z-index: 2;
-  -webkit-app-region: drag !important;
-  -webkit-user-select: none;
-}
-
 ul {
   list-style: none;
   margin: auto;
@@ -132,14 +117,15 @@ ul {
 }
 
 li {
-  margin-left: 25px;
-  margin-right: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
   margin-top: 25px;
-  width: 170px;
+  min-width: 170px;
+  flex-grow: 1;
 }
 
 li a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 #left {

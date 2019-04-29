@@ -6,11 +6,11 @@
       menu
       :title="title"
     />
+    <sidebar
+      v-if="isMenuVisible"
+      :toc="toc"
+    />
     <el-main class="container">
-      <sidebar
-        v-if="isMenuVisible"
-        :toc="toc"
-      />
       <el-button
         id="prev"
         circle
