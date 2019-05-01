@@ -5,23 +5,31 @@
   - [x] open file
   - [x] changing Font size (ctrl+up/down)
   - [x] navigation left/right
-- [ ] fix scrolling in sidebar (https://github.com/ElemeFE/element/issues/10198)
-- [ ] fix ToC navigation 
-- [ ] write code to extract cover
-- [ ] bookmarks
-- [ ] Horizontal scroll bar
+- [x] fix scrolling in sidebar (https://github.com/ElemeFE/element/issues/10198)
+- [x] fix ToC navigation 
+- [x] write code to extract cover
+- [x] use url encoder
+- [x] bookmarks
+      - [ ] get toc name from href
+- [ ] ~~Horizontal scroll bar~~
 - [ ] set up vue-router with animation
 
 # Mid
 
-- [ ] responsive margin
 - [ ] short by last open
-- [ ] improve db
+- [x] improve db
 - [ ] add touch gestuers
+- [ ] open https links in browser
 
 # Low
 
 - [ ] set min width, height
 - [ ] eplee logo in background
-- [ ] dynamic shadow in Titlebar home page
-- [ ] fix default cover size
+- [ ] ~~dynamic shadow in Titlebar home page~~
+- [x] fix default cover size
+
+
+#ui 
+- [ ] display bookmarks
+- [ ] display info
+- [ ] responsive margin

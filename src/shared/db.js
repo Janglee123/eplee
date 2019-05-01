@@ -1,53 +1,205 @@
 import fs from 'fs';
-import path from 'path';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { remote } from 'electron';
 
-// use appData path insted of userData path
-// https://discuss.atom.io/t/app-getpath-userdata-seems-to-give-the-wrong-path/26006
-const appData = remote.app.getPath('appData');
+class Database {
+  /**
+   * Main constructor, manages existing storage file and parses options against default ones.
+   * @param {string} filePath The path of the file to use as storage.
+   * @constructor
+   */
 
-const db = {
-  dbPath: '',
-  new(name) {
-    this.dbPath = path.join(appData, 'eplee', `${name}.json`);
-
-    if (fs.existsSync(this.dbPath)) {
-      console.log(`${this.dbPath} found`);
-      const rawfile = fs.readFileSync(this.dbPath);
-      this.db = JSON.parse(rawfile);
+  constructor(filePath) {
+    // Mandatory arguments check
+    if (!filePath || !filePath.length) {
+      throw new Error('Missing file path argument.');
     } else {
-      console.log(`${this.dbPath}.json not found`);
-
-      this.db = {};
-      fs.writeFileSync(this.dbPath, JSON.stringify(this.db));
-      console.log(`${this.dbPath}.json created`);
+      this.filePath = filePath;
     }
-  },
 
-  syncDb() {
-    // hack to wait untile wait for insert queue
-    clearTimeout(this.refreshTimer);
-    this.refreshTimer = setTimeout(() => {
-      const str = JSON.stringify(this.db);
-      fs.writeFileSync(this.dbPath, str);
-    }, 500);
-  },
+    // Storage initialization
+    this.storage = {};
 
-  insert(entity) {
-    const id = entity.id.toString();
-    this.db[id] = entity;
-    this.syncDb();
-  },
+    // File existence check
+    let stats;
 
-  remove(entity) {
-    delete this.db[entity.id.toString()];
-    this.syncDb();
-  },
+    try {
+      stats = fs.statSync(filePath);
+    } catch (err) {
+      if (!err) {
+        console.info(`${filePath} found`);
+      }
+      if (err.code === 'ENOENT') {
+        /* File doesn't exist if app is opened first time, create a new file */
+        fs.writeFileSync(filePath, JSON.stringify(this.storage));
+        stats = fs.statSync(filePath);
+      } else {
+        // Other error
+        throw new Error(
+          `Error while checking for existence of path "${filePath}": ${err}`
+        );
+      }
+    }
 
-  getList() {
-    return Object.values(this.db);
-  },
-};
+    /* File exists */
+    try {
+      // eslint-disable-next-line no-bitwise
+      fs.accessSync(filePath, fs.constants.R_OK | fs.constants.W_OK);
+    } catch (err) {
+      throw new Error(
+        `Cannot read & write on path "${filePath}". Check permissions!`
+      );
+    }
 
-export default db;
+    if (stats.size > 0) {
+      let data;
+      try {
+        data = fs.readFileSync(filePath);
+        this.storage = JSON.parse(data);
+      } catch (err) {
+        throw err; // TODO: Do something meaningful
+      }
+    }
+
+    /* wrtie to local file before exit to save new changes */
+
+    // do something when app is closing
+    process.on('exit', this.sync);
+
+    // catches ctrl+c event
+    process.on('SIGINT', this.sync);
+
+    // catches "kill pid" (for example: nodemon restart)
+    process.on('SIGUSR1', this.sync);
+    process.on('SIGUSR2', this.sync);
+
+    // catches uncaught exceptions
+    process.on('uncaughtException', this.sync);
+
+    remote.app.on('before-quit', this.sync);
+
+    // store a states of writing cycle to avoid data loss
+    this.isWriting = false;
+    this.hasChanges = false;
+  }
+
+  /**
+   * Validates the contents of a JSON file.
+   * @param {string} fileContent
+   * @returns {boolean} `true` if content is ok, throws error if not.
+   */
+
+  /**
+   * Creates or modifies a key in the database.
+   * @param {string} key The key to create or alter.
+   * @param {object} value Whatever to store in the key. You name it, just keep it JSON-friendly.
+   */
+  insert(key, value) {
+    this.storage[key] = value;
+    this.hasChanges = true;
+    this.async();
+  }
+
+  /**
+   * Extracts the value of a key from the database.
+   * @param {string} key The key to search for.
+   * @returns {object|undefined} The value of the key or `undefined` if it doesn't exist.
+   */
+  get(key) {
+    return Object.prototype.hasOwnProperty.call(this.storage, key)
+      ? this.storage[key]
+      : undefined;
+  }
+
+  /**
+   * Checks if a key is contained in the database.
+   * @param {string} key The key to search for.
+   * @returns {boolean} `True` if it exists, `false` if not.
+   */
+  has(key) {
+    return Object.prototype.hasOwnProperty.call(this.storage, key);
+  }
+
+  /**
+   * Deletes a key from the database.
+   * @param {string} key The key to delete.
+   * @returns {boolean|undefined} `true` if the deletion succeeded, `false` if there was an error, or `undefined` if the key wasn't found.
+   */
+  remove(key) {
+    let check = Object.prototype.hasOwnProperty.call(this.storage, key)
+      ? delete this.storage[key]
+      : undefined;
+
+    this.hasChanges = true;
+    this.async();
+
+    return check;
+  }
+
+  /**
+   * Give array of all values
+   * @returns {Array} with values
+   */
+
+  getAll() {
+    return Object.values(this.storage);
+  }
+
+  /**
+   * Deletes all keys from the database.
+   * @returns {object} The JSONdb instance itself.
+   */
+  removeAll() {
+    this.storage = {};
+    this.async();
+  }
+
+  /*
+   * sync db and remove storage from memory
+   */
+  close() {
+    this.sync();
+    delete this;
+  }
+
+  /**
+   * Writes the local storage object to disk.
+   */
+  sync() {
+    try {
+      fs.writeFileSync(this.filePath, JSON.stringify(this.storage, null, 4));
+    } catch (err) {
+      if (err.code === 'EACCES') {
+        throw new Error(`Cannot access path "${this.filePath}".`);
+      } else {
+        throw new Error(
+          `Error while writing to path "${this.filePath}": ${err}`
+        );
+      }
+    }
+  }
+
+  async() {
+    if (this.isWriting) {
+      return;
+    }
+    try {
+      this.isWriting = true;
+      fs.writeFile(
+        this.filePath,
+        JSON.stringify(this.storage, null, 4),{},
+        err => {
+          this.isWriting = false;
+          if (this.hasChanges) {
+            this.hasChanges = false;
+            this.async();
+          }
+        }
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
+}
+
+export default Database;

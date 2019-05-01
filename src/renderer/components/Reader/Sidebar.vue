@@ -1,35 +1,21 @@
 <template>
   <div class="sidebar">
-    <el-tabs
-      stretch
-      value="toc"
-    >
-      <el-tab-pane
-        label="toc"
-        name="toc"
-      >
+    <el-tabs stretch value="toc">
+      <el-tab-pane label="toc" name="toc">
         <span slot="label">
-          <i class="el-icon-notebook-2" />
+          <i class="el-icon-notebook-2"/>
         </span>
-        <el-tree
-          :data="toc"
-          @node-click="tocNodeClick"
-        />
+        <el-tree :data="toc" @node-click="NodeClick"/>
       </el-tab-pane>
-      <el-tab-pane
-        label="Bookmarks"
-        name="bookmarks"
-      >
+
+      <el-tab-pane label="Bookmarks" name="bookmarks">
         <span slot="label">
-          <i class="el-icon-collection-tag" />
+          <i class="el-icon-collection-tag"/>
         </span>
       </el-tab-pane>
-      <el-tab-pane
-        label="Info"
-        name="info"
-      >
+      <el-tab-pane label="Info" name="info">
         <span slot="label">
-          <i class="el-icon-warning-outline" />
+          <i class="el-icon-warning-outline"/>
         </span>
       </el-tab-pane>
     </el-tabs>
@@ -39,22 +25,32 @@
 <script>
 export default {
   name: 'Sidebar',
+
   props: {
-    toc: {
-      default: () => [],
+    bookmarks: {
       type: Array,
+      default: () => {},
     },
   },
+
+  data() {
+    return {
+      toc: [],
+    };
+  },
+
   methods: {
-    tocNodeClick(item) {
-      console.log(item);
-      this.$bus.emit('toc-item-clicked', item.herf);
+    setToc(toc) {
+      this.toc = toc;
+    },
+    NodeClick(item) {
+      this.$bus.emit('toc-item-clicked', item.href);
     },
   },
 };
 </script>
 
-<style scoped>
+<style scopped>
 .sidebar {
   border: 1px solid #d7dae2;
   position: absolute;
@@ -64,10 +60,10 @@ export default {
   width: 350px;
   user-select: none;
 }
+</style>
 
+<style>
 .el-tabs {
-  /* border-top: 1px solid #d7dae2; */
-  /* border-bottom: 1px solid #d7dae2; */
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -75,7 +71,8 @@ export default {
 
 .el-tab-pane {
   height: 100%;
-  bottom: 45px;
+  color: #fff;
+  background: #fff;
 }
 
 .el-tabs__content {

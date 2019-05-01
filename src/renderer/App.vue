@@ -1,14 +1,10 @@
 <template>
-  <div id="app">
-    <div class="content-custom">
       <router-view />
-    </div>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'Eplee',
+  name: 'App',
   data(){
     return{
     }
@@ -17,13 +13,15 @@ export default {
 </script>
 
 <style>
+
 ::-webkit-scrollbar {
   display: none;
 }
 
-#app{
-  background: #fff;
-  border-radius: 10px;
+html, body{
+  margin: 0px;
+  width: 100%;
+  height: 100%;
 }
 
 </style>

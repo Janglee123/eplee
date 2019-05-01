@@ -3,10 +3,9 @@ import { app, BrowserWindow } from 'electron';
 
 const pkg = require('../../package.json');
 const { productName } = pkg.build;
+const isDev = process.env.NODE_ENV === 'development';
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
-
-const isDev = process.env.NODE_ENV === 'development';
 
 let mainWindow;
 

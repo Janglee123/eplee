@@ -1,16 +1,7 @@
 <template>
-  <el-header
-    height="45px"
-    :class="{shadow:shadow}"
-  >
+  <el-header height="45px" :class="{shadow:shadow}">
     <span id="left">
-      <el-button
-        v-if="add"
-        size="small"
-        icon="el-icon-plus"
-        circle
-        @click="onAdd"
-      />
+      <el-button v-if="add" size="small" icon="el-icon-plus" circle plain @click="onAdd"/>
 
       <el-input
         v-if="search"
@@ -22,26 +13,16 @@
         clearable
       />
 
+      <el-button v-if="back" size="small" icon="el-icon-back" circle plain @click="onBack"/>
+      <el-button v-if="library" size="small" icon="el-icon-s-grid" circle plain @click="onLibrary"/>
+      <el-button v-if="menu" size="small" icon="el-icon-more" circle plain @click="onMenu"/>
       <el-button
-        v-if="back"
+        v-if="bookmark"
         size="small"
-        icon="el-icon-back"
+        icon="el-icon-collection-tag"
         circle
-        @click="onBack"
-      />
-      <el-button
-        v-if="library"
-        size="small"
-        icon="el-icon-s-grid"
-        circle
-        @click="onLibrary"
-      />
-      <el-button
-        v-if="menu"
-        size="small"
-        icon="el-icon-more"
-        circle
-        @click="onMenu"
+        plain
+        @click="onBookmark"
       />
     </span>
     <span id="center">{{ title }}</span>
@@ -50,20 +31,19 @@
         size="small"
         icon="el-icon-minus"
         circle
+        plain
+        type="success"
         @click="minimizeWindow"
       />
       <el-button
         size="small"
         icon="el-icon-full-screen"
         circle
+        plain
+        type="warning"
         @click="maximizeWindow"
       />
-      <el-button
-        size="small"
-        icon="el-icon-close"
-        circle
-        @click="closeWindow"
-      />
+      <el-button size="small" icon="el-icon-close" circle plain type="danger" @click="closeWindow"/>
     </span>
   </el-header>
 </template>
@@ -96,18 +76,26 @@ export default {
       default: false,
       type: Boolean,
     },
-    title:{
+    bookmark: {
+      default: false,
+      type: Boolean,
+    },
+    title: {
       default: 'Eplee',
       type: String,
-    }
+    },
   },
   data() {
     return {
       searchText: '',
     };
   },
-  mounted(){
-    this.$bind(this.$electron.remote.getCurrentWindow(),'CommandOrControl+O', this.onAdd);
+  mounted() {
+    this.$bind(
+      this.$electron.remote.getCurrentWindow(),
+      'CommandOrControl+O',
+      this.onAdd
+    );
   },
   methods: {
     closeWindow() {
@@ -118,28 +106,30 @@ export default {
     },
     maximizeWindow() {
       const win = this.$electron.remote.getCurrentWindow();
-      if(win.isMaximized()){
-        win.unmaximize() 
-      } 
-      else{
+      if (win.isMaximized()) {
+        win.unmaximize();
+      } else {
         win.maximize();
       }
     },
-    onAdd(){
+    onAdd() {
       this.$bus.emit('add-button');
     },
-    onSearchTextChange(){
+    onSearchTextChange() {
       this.$bus.emit('search-input');
     },
-    onBack(){
+    onBack() {
       this.$bus.emit('back-button');
     },
-    onLibrary(){
+    onLibrary() {
       this.$bus.emit('library-button');
     },
-    onMenu(){
+    onMenu() {
       this.$bus.emit('menu-button');
-    }
+    },
+    onBookmark() {
+      this.$bus.emit('bookmark-button');
+    },
   },
 };
 </script>

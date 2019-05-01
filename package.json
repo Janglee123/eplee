@@ -61,9 +61,12 @@
     }
   },
   "dependencies": {
+    "blob-to-buffer": "^1.2.8",
     "electron-localshortcut": "^3.1.0",
     "element-ui": "^2.8.2",
     "epubjs": "^0.3.84",
+    "file-url": "^3.0.0",
+    "save-file": "^2.3.1",
     "vue": "^2.6.10",
     "vue-bus": "^1.2.1",
     "vue-electron": "^1.0.6",

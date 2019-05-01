@@ -1,30 +1,15 @@
 <template>
-  <el-container direction="vertical">
-    <titlebar
-      back
-      library
-      menu
-      :title="title"
-    />
-    <sidebar
-      v-if="isMenuVisible"
-      :toc="toc"
-    />
+  <el-container v-show="isReady" direction="vertical">
+    <titlebar back library menu bookmark :title="title"/>
+    <sidebar v-show="isMenuVisible" ref="sidebar" :bookmark="info.bookmarks || []"/>
     <el-main class="container">
-      <el-button
-        id="prev"
-        circle
-        icon="el-icon-arrow-left"
-        @click="prevPage"
-      />
-      <div id="reader" />
-      <el-button
-        id="next"
-        circle
-        icon="el-icon-arrow-right"
-        @click="nextPage"
-      />
+      <el-button id="prev" circle icon="el-icon-arrow-left" @click="prevPage"/>
+      <div id="reader"/>
+      <el-button id="next" circle icon="el-icon-arrow-right" @click="nextPage"/>
     </el-main>
+    <footer>
+      <el-slider></el-slider>
+    </footer>
   </el-container>
 </template>
 
@@ -44,18 +29,20 @@ export default {
   data() {
     return {
       isMenuVisible: false,
+      isReady: false,
       title: '',
       toc: [],
-      meta: {},
+      info: {},
       path: '',
-      fontSize:14,
+      fontSize: 14,
     };
   },
 
   mounted() {
-    this.path = this.$route.params.id;
+    let id = this.$route.params.id;
+    this.info = this.$db.get(id);
+    this.book = new Book(this.info.path);
 
-    this.book = new Book(this.path);
     this.rendition = new Rendition(this.book, {
       width: '100%',
       height: '100%',
@@ -64,30 +51,57 @@ export default {
     this.$bus.on('library-button', () => {
       this.$router.push('/');
     });
+
     this.$bus.on('menu-button', () => {
       this.isMenuVisible = !this.isMenuVisible;
     });
-    this.$bus.on('toc-item-clicked', (herf)=>{
-      console.log(herf);
+
+    this.$bus.on('toc-item-clicked', herf => {
       this.rendition.display(herf);
+      this.isMenuVisible = false;
     });
 
-    this.$bind(this.$electron.remote.getCurrentWindow(),'Left', this.prevPage);
-    this.$bind(this.$electron.remote.getCurrentWindow(),'Right', this.nextPage);
-    this.$bind(this.$electron.remote.getCurrentWindow(),'CommandOrControl+Up', this.increseFontSize);
-    this.$bind(this.$electron.remote.getCurrentWindow(),'CommandOrControl+Down', this.decreaseFontSize);
+    this.$bus.on('bookmark-button', () => {
+      this.toogleBookmark();
+    });
 
+    this.$bind(this.$electron.remote.getCurrentWindow(), 'Left', this.prevPage);
+    this.$bind(
+      this.$electron.remote.getCurrentWindow(),
+      'Right',
+      this.nextPage
+    );
+    this.$bind(
+      this.$electron.remote.getCurrentWindow(),
+      'CommandOrControl+Up',
+      this.increseFontSize
+    );
+    this.$bind(
+      this.$electron.remote.getCurrentWindow(),
+      'CommandOrControl+Down',
+      this.decreaseFontSize
+    );
 
     this.book.ready
       .then(() => {
         this.meta = this.book.package.metadata;
-        this.toc = this.parshToc(this.book.navigation.toc); 
+        this.toc = this.parshToc(this.book.navigation.toc);
         this.title = this.meta.title;
+
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
         this.rendition.themes.fontSize(`${this.fontSize}px`);
         this.rendition.display(1);
+
+        this.$refs.sidebar.setToc(this.toc);
+        // this.$refs.sidebar.setBookmarks(this.info.bookmarks);
+      })
+      .then(() => {
+        this.isReady = true;
+        console.log(this.book);
+        console.log(this.rendition);
+        console.log(this.rendition.currentLocation());
       });
   },
   methods: {
@@ -97,29 +111,58 @@ export default {
     prevPage() {
       this.rendition.prev();
     },
-    increseFontSize(){
+    increseFontSize() {
       this.fontSize += 2;
-      this.rendition.themes.fontSize(`${this.fontSize  }px`);
+      this.rendition.themes.fontSize(`${this.fontSize}px`);
       this.$message({
-          message: `Font Size : ${  this.fontSize  }px`,
-          center: true,
-          duration: 1000,
+        message: `Font Size : ${this.fontSize}px`,
+        center: true,
+        duration: 500,
       });
     },
-    decreaseFontSize(){
+    decreaseFontSize() {
       this.fontSize -= 2;
-      this.rendition.themes.fontSize(`${this.fontSize  }px`);
+      this.rendition.themes.fontSize(`${this.fontSize}px`);
       this.$message({
-          message: `Font Size : ${  this.fontSize  }px`,
-          center: true,
-          duration: 1000,
-
+        message: `Font Size : ${this.fontSize}px`,
+        center: true,
+        duration: 500,
       });
     },
+
+    toogleBookmark() {
+      /**
+       * prefred structure of bookmark
+       *  let bookmark = {
+       *  title:'',// title of page of topic where bookmark is placed
+       *  cfi:'', // cfi of location
+       *  href:'' // href of location
+       * }
+       */
+
+      let location = this.rendition.location;
+      let href = location.start.href;
+      let cfi = location.start.cfi;
+      let title = this.currentSubTitle || href;
+
+      let bookmark = {
+        label: title,
+        cfi: cfi,
+        href: href,
+      }
+      let index = this.info.bookmarks.find(item => item.cfi === cfi);
+      if (!index) {
+        this.info.bookmarks.push(bookmark);
+      } else {
+        this.info.bookmarks.splice(index, 1);
+      }
+      this.$db.insert(this.info.id, this.info);
+    },
+
     parshToc(toc) {
       const tocTree = [];
 
-      const validateHref = (href) => {
+      const validateHref = href => {
         if (href.startsWith('..')) href = href.substring(2);
         if (href.startsWith('/')) href = href.substring(1);
         return href;
@@ -127,7 +170,7 @@ export default {
 
       // create Toc tree recursively
       const createTree = (toc, parrent) => {
-        for (let i = 0; i < toc.length; i+=1) {
+        for (let i = 0; i < toc.length; i += 1) {
           parrent[i] = {
             label: toc[i].label.trim(),
             children: [],
@@ -177,7 +220,7 @@ export default {
   user-select: none;
   width: 80%;
   height: 100%;
-  flex-grow: 1;
+  flex-grow: 2;
   flex-basis: auto;
 }
 
@@ -186,4 +229,15 @@ export default {
   flex-grow: 0;
   flex-basis: auto;
 }
+
+footer{
+  width: 100%;
+}
+
+.el-slider {
+  margin-left: 5%;
+  margin-right: 5%;
+  width: 90%;  
+}
+
 </style>

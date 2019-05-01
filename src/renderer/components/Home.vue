@@ -1,20 +1,10 @@
 <template>
   <el-container direction="vertical">
-    <titlebar
-      add
-      search
-      shadow
-    />
+    <titlebar add search shadow/>
     <el-main>
       <ul>
-        <li
-          v-for="book in bookList"
-          :key="book.id"
-        >
-          <card
-            :id="book.id"
-            :title="book.title"
-          />
+        <li v-for="book in bookList" :key="book.id">
+          <card :id="book.id" :title="book.title" :imgSrc="book.coverPath"/>
         </li>
       </ul>
     </el-main>
@@ -22,10 +12,11 @@
 </template>
 
 <script>
-import { Book } from 'epubjs';
+import path from 'path';
+import fileUrl from 'file-url';
 import Card from './Home/Card';
 import Titlebar from './Titlebar';
-
+import { storeCover, getInfo } from '../../shared/dbUtilis.js';
 export default {
   name: 'Home',
   components: {
@@ -39,17 +30,12 @@ export default {
   },
 
   mounted() {
-    this.bookList = this.$db.getList().map(book => {
-      book.title =
-        book.title.length > 35
-          ? `${book.title.substring(0, 35)}...`
-          : book.title;
-      return book;
-    });
+    this.bookList = this.$db.getAll();
 
     this.$bus.on('add-button', () => {
       this.addFiles();
     });
+
   },
 
   methods: {
@@ -58,44 +44,42 @@ export default {
         filters: [{ name: 'ePub', extensions: ['epub'] }],
         properties: ['openFile', 'multiSelections'],
       });
-      if (!files) {
-        return;
+      if (files) {
+        files.forEach(file => {
+          this.addToDB(file);
+        });
       }
-
-      files.forEach(file => {
-        this.addToDB(file);
-      });
     },
 
     addToDB(file) {
-      file = `file://${file}`;
-      console.log({ file });
-      const book = new Book(file);
-      book.ready.then(() => {
-        console.log(book);
-        const meta = book.package.metadata;
-        console.log({ meta });
-        const entity = {
-          id: file,
-          title: meta.title,
-          author: meta.creator,
-          publisher: meta.publisher,
-          path: file,
-        };
-        this.$db.insert(entity);
+      getInfo(file, (info, book) => {
+        const key = info.id;
+        if (this.$db.has(key)) {
+          return;
+        }
 
-        entity.title =
-          entity.title.length > 35
-            ? `${entity.title.substring(0, 35)}...`
-            : entity.title;
-        this.bookList.push(entity);
+        let coverPath = path.join(this.$dataPath, 'cover', key);
+        info.coverPath = fileUrl(coverPath);
+
+        try {
+          storeCover(book, coverPath, () => {
+            this.$db.insert(key, info);
+            this.bookList.push(info);
+          });
+        } catch (err) {
+          console.log(err);
+        }
       });
     },
   },
 };
+
+
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import "../assets/style";
+
 .el-container {
   position: absolute;
   top: 0px;
@@ -104,7 +88,7 @@ export default {
   left: 0px;
   border: 1px solid #d7dae2;
   background-color: #ffffff;
-  border-radius: 15px;
+  border-radius: @border-radius;
   height: -webkit-fill-available;
 }
 
@@ -113,15 +97,15 @@ ul {
   margin: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: space-between;
 }
 
 li {
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-top: 25px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 30px;
   min-width: 170px;
-  flex-grow: 1;
+  max-width: 170px;
 }
 
 li a {
