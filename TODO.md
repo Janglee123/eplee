@@ -13,6 +13,7 @@
       - [ ] get toc name from href
 - [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744) 
 - [ ] set up vue-router with animation
+- [ ] reduce build size
 
 # Mid
 
@@ -22,6 +23,8 @@
 - [ ] open https links in browser
 - [ ] center title in titlebar
 - [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
+- [ ] smooth scrolling in home
+
 # Low
 
 - [ ] set min width, height
