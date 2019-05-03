@@ -36,7 +36,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
 .box-card {
   width: 170px;
   height: 250px;
