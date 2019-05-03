@@ -66,6 +66,7 @@
     "element-ui": "^2.8.2",
     "epubjs": "^0.3.84",
     "file-url": "^3.0.0",
+    "magic-grid": "^3.2.4",
     "save-file": "^2.3.1",
     "vue": "^2.6.10",
     "vue-bus": "^1.2.1",

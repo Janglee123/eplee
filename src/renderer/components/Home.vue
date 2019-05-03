@@ -1,21 +1,10 @@
 <template>
 	<el-container direction="vertical">
-		<titlebar
-			add
-			backdrop
-			shadow
-		/>
+		<titlebar add backdrop shadow />
 		<el-main>
-			<ul>
-				<li
-					v-for="book in bookList"
-					:key="book.id"
-				>
-					<card
-						:id="book.id"
-						:title="book.title"
-						:img-src="book.coverPath"
-					/>
+			<ul id="list">
+				<li v-for="book in bookList" :key="book.id">
+					<card :id="book.id" :title="book.title" :img-src="book.coverPath" />
 				</li>
 			</ul>
 		</el-main>
@@ -25,6 +14,7 @@
 <script>
 import path from 'path';
 import fileUrl from 'file-url';
+import MagicGrid from 'magic-grid';
 import Card from './Home/Card';
 import Titlebar from './Titlebar';
 import { storeCover, getInfo } from '../../shared/dbUtilis.js';
@@ -46,7 +36,17 @@ export default {
     this.$bus.on('add-button', () => {
       this.addFiles();
     });
+
+    const magicGrid = new MagicGrid({
+      container: '#list',
+      static: false,
+      items: this.bookList.length,
+      gutter: 30, 
+      animate: true, 
+    });
+  magicGrid.listen();
   },
+  
 
   methods: {
     addFiles() {
@@ -102,18 +102,12 @@ export default {
 
 ul {
   list-style: none;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
   padding: 0px;
 }
 
 li {
-  margin: 16px;
   min-width: 170px;
   max-width: 170px;
-  align-self: left;
 }
 
 li a {
