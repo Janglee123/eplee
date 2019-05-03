@@ -34,6 +34,8 @@ function createWindow() {
     // useContentSize: true,
     width: 960,
     height: 640,
+    minWidth: 480,
+    minHeight: 320,
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: false,
