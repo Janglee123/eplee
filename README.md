@@ -4,7 +4,7 @@
 Sweat, Simple and Beautiful ePub reader
 </div>
 
-Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI.  **Project is in the early stage of development**.  If you'd like to help support the project, please consider giving developer time on the project (Join discord channel).
+Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI.  **Project is in the early stage of development**.  If you'd like to help support the project, please consider giving developer time on the project (join our discord [server](https://discord.gg/nrt3QKN)).
 
 ## Screenshots
 <img src="https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_2.png" margin=auto>
@@ -46,7 +46,7 @@ yarn run dev
 
 ## Contributing
 
-When contributing to this repository, please first discuss the change you wish to make on Discord [server] before making a change.
+When contributing to this repository, please first discuss the change you wish to make on Discord [server](https://discord.gg/nrt3QKN) before making a change.
 
 ## License
 
