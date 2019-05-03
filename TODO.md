@@ -11,29 +11,34 @@
 - [x] use url encoder
 - [x] bookmarks
       - [ ] get toc name from href
-- [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744) 
-- [ ] set up vue-router with animation
-- [ ] reduce build size
+- [ ] add open with
+- [ ] add search in home 
 
 # Mid
 
-- [ ] short by last open
 - [x] improve db
-- [ ] add touch gestuers
-- [ ] open https links in browser
-- [ ] center title in titlebar
-- [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
-- [ ] smooth scrolling in home
+- [x] open https links in browser
 
 # Low
 
-- [ ] set min width, height
-- [ ] eplee logo in background
-- [ ] ~~dynamic shadow in Titlebar home page~~
+- [x] set min width, height
 - [x] fix default cover size
 
+# ui 
 
-#ui 
-- [ ] display bookmarks
-- [ ] display info
-- [ ] responsive margin
+- [x] display bookmarks
+- [x] responsive margin in home
+
+# Queue
+
+- [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
+- [ ] set up vue-router with animation
+- [ ] reduce build size
+- [ ] short by last open
+- [ ] add touch gestuers
+- [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
+
+# Issue
+
+- [ ] epub without cover is not opening
+- [ ] title of books goes out of card
