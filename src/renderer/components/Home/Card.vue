@@ -1,19 +1,19 @@
 <template>
-  <router-link :to="{ name: 'Reader', params: { id } }">
-    <el-card
-      shadow="hover"
-      class="box-card"
-      :body-style="{ padding: '0px' }"
-    >
-      <el-image
-        :src="imgSrc"
-        :fit="'cover'"
-      />
-      <div class="title">
-        {{ title }}
-      </div>
-    </el-card>
-  </router-link>
+	<router-link :to="{ name: 'Reader', params: { id } }">
+		<el-card
+			shadow="hover"
+			class="box-card"
+			:body-style="{ padding: '0px' }"
+		>
+			<el-image
+				:src="imgSrc"
+				:fit="'fill'"
+			/>
+			<div class="title">
+				{{ title }}
+			</div>
+		</el-card>
+	</router-link>
 </template>
 
 <script>
@@ -41,6 +41,7 @@ export default {
   width: 170px;
   height: 250px;
   background: #fff;
+  user-select: none;
 }
 
 .el-image {

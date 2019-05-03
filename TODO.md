@@ -11,7 +11,7 @@
 - [x] use url encoder
 - [x] bookmarks
       - [ ] get toc name from href
-- [ ] ~~Horizontal scroll bar~~
+- [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744) 
 - [ ] set up vue-router with animation
 
 # Mid
@@ -20,7 +20,8 @@
 - [x] improve db
 - [ ] add touch gestuers
 - [ ] open https links in browser
-
+- [ ] center title in titlebar
+- [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
 # Low
 
 - [ ] set min width, height

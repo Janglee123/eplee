@@ -1,28 +1,48 @@
 <template>
-  <el-container v-show="isReady" direction="vertical">
-    <titlebar back library menu bookmark :title="title"/>
-    <sidebar v-show="isMenuVisible" ref="sidebar" :bookmark="info.bookmarks || []"/>
-    <el-main class="container">
-      <el-button id="prev" circle icon="el-icon-arrow-left" @click="prevPage"/>
-      <div id="reader"/>
-      <el-button id="next" circle icon="el-icon-arrow-right" @click="nextPage"/>
-    </el-main>
-    <footer>
+	<el-container direction="vertical">
+		<titlebar
+			back
+			library
+			menu
+			bookmark
+			:title="title"
+			:bookmarks="info.bookmarks"
+			:toc="toc"
+		/>
+		<el-main class="container">
+			<el-button
+				id="prev"
+				circle
+				size="small"
+				icon="el-icon-arrow-left"
+				@click="prevPage"
+			/>
+			<div
+				id="reader"
+				v-loading="!isReady"
+			/>
+			<el-button
+				id="next"
+				circle
+				size="small"
+				icon="el-icon-arrow-right"
+				@click="nextPage"
+			/>
+		</el-main>
+		<!-- <el-footer>
       <el-slider></el-slider>
-    </footer>
-  </el-container>
+    </el-footer>-->
+	</el-container>
 </template>
 
 <script>
 import { Book, Rendition } from 'epubjs';
 import Titlebar from './Titlebar';
-import Sidebar from './Reader/Sidebar';
 
 export default {
   name: 'Reader',
   components: {
     Titlebar,
-    Sidebar,
   },
   props: {},
 
@@ -39,7 +59,7 @@ export default {
   },
 
   mounted() {
-    let id = this.$route.params.id;
+    const {id} = this.$route.params;
     this.info = this.$db.get(id);
     this.book = new Book(this.info.path);
 
@@ -61,8 +81,12 @@ export default {
       this.isMenuVisible = false;
     });
 
-    this.$bus.on('bookmark-button', () => {
-      this.toogleBookmark();
+    this.$bus.on('add-bookmark-button', () => {
+      this.addBookmark();
+    });
+
+    this.$bus.on('remove-bookmark-button', bookmark => {
+      this.removeBookmark(bookmark);
     });
 
     this.$bind(this.$electron.remote.getCurrentWindow(), 'Left', this.prevPage);
@@ -87,21 +111,18 @@ export default {
         this.meta = this.book.package.metadata;
         this.toc = this.parshToc(this.book.navigation.toc);
         this.title = this.meta.title;
-
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
         this.rendition.themes.fontSize(`${this.fontSize}px`);
         this.rendition.display(1);
 
-        this.$refs.sidebar.setToc(this.toc);
-        // this.$refs.sidebar.setBookmarks(this.info.bookmarks);
+        // this.$refs.sidebar.setToc(this.toc);
       })
       .then(() => {
         this.isReady = true;
         console.log(this.book);
         console.log(this.rendition);
-        console.log(this.rendition.currentLocation());
       });
   },
   methods: {
@@ -130,9 +151,16 @@ export default {
       });
     },
 
-    toogleBookmark() {
+    removeBookmark(bookmark) {
+      const index = this.info.bookmarks.findIndex(
+        item => item.cfi === bookmark.cfi
+      );
+      this.info.bookmarks.splice(index, 1);
+      this.$db.insert(this.info.id, this.info);
+    },
+    addBookmark() {
       /**
-       * prefred structure of bookmark
+       * prefred structure of bookmark object
        *  let bookmark = {
        *  title:'',// title of page of topic where bookmark is placed
        *  cfi:'', // cfi of location
@@ -140,22 +168,18 @@ export default {
        * }
        */
 
-      let location = this.rendition.location;
-      let href = location.start.href;
-      let cfi = location.start.cfi;
-      let title = this.currentSubTitle || href;
+      const {location} = this.rendition;
+      const {href} = location.start;
+      const {cfi} = location.start;
+      const title = this.currentSubTitle || href;
 
-      let bookmark = {
+      const bookmark = {
         label: title,
-        cfi: cfi,
-        href: href,
-      }
-      let index = this.info.bookmarks.find(item => item.cfi === cfi);
-      if (!index) {
-        this.info.bookmarks.push(bookmark);
-      } else {
-        this.info.bookmarks.splice(index, 1);
-      }
+        cfi,
+        href,
+      };
+
+      this.info.bookmarks.push(bookmark);
       this.$db.insert(this.info.id, this.info);
     },
 
@@ -189,7 +213,10 @@ export default {
 };
 </script>
 
-<style scoped>
+
+<style lang="less" scoped>
+@import '../assets/style';
+
 .el-container {
   position: absolute;
   top: 0px;
@@ -200,7 +227,7 @@ export default {
   width: 100%;
   border: 1px solid #d7dae2;
   background-color: #ffffff;
-  border-radius: 15px;
+  border-radius: @border-radius;
 }
 
 .el-main {
@@ -230,14 +257,17 @@ export default {
   flex-basis: auto;
 }
 
-footer{
+footer {
   width: 100%;
 }
 
 .el-slider {
   margin-left: 5%;
   margin-right: 5%;
-  width: 90%;  
+  width: 90%;
 }
+</style>
 
+
+<style>
 </style>

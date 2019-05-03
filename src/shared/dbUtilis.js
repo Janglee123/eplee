@@ -14,13 +14,13 @@ function storeCover(book, path, cb) {
   book.loaded.cover.then(cover => {
     try {
       book.archive.getBlob(cover).then(blb => {
-        toBuffer(blb, function(err, buffer) {
+        toBuffer(blb, (err, buffer) => {
           if (err) throw err;
-          save(buffer, path).then(()=>{
+          save(buffer, path).then(() => {
             if (cb) {
               cb(path);
             }
-          })
+          });
         });
       });
     } catch (err) {
@@ -37,9 +37,10 @@ function storeCover(book, path, cb) {
 
 function genrateKey(filePath) {
   if (!filePath || typeof filePath !== 'string') {
-    return;
+    return '';
   }
-  return filePath.replace(/[\/ \.]/g, '');
+  // eslint-disabled-next-line no-useless-escape
+  return filePath.replace(/[\/\.]/g, '');
 }
 
 /**
@@ -55,21 +56,21 @@ function getInfo(filePath, callback) {
   }
 
   // create a key from path
-  let key = genrateKey(filePath);
+  const key = genrateKey(filePath);
 
   // file load on file protocol
-  let uri = fileUrl(filePath);
+  const uri = fileUrl(filePath);
   const book = new Book(uri);
 
   book.ready.then(() => {
     const meta = book.package.metadata;
-    let info = {
+    const info = {
       id: key,
       title: meta.title,
       author: meta.creator,
       publisher: meta.publisher,
       path: uri,
-      bookmarks:[],
+      bookmarks: [],
     };
     if (callback) {
       callback(info, book);

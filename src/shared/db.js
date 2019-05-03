@@ -126,7 +126,7 @@ class Database {
    * @returns {boolean|undefined} `true` if the deletion succeeded, `false` if there was an error, or `undefined` if the key wasn't found.
    */
   remove(key) {
-    let check = Object.prototype.hasOwnProperty.call(this.storage, key)
+    const check = Object.prototype.hasOwnProperty.call(this.storage, key)
       ? delete this.storage[key]
       : undefined;
 
@@ -185,17 +185,17 @@ class Database {
     }
     try {
       this.isWriting = true;
-      fs.writeFile(
-        this.filePath,
-        JSON.stringify(this.storage, null, 4),{},
-        err => {
-          this.isWriting = false;
-          if (this.hasChanges) {
-            this.hasChanges = false;
-            this.async();
-          }
+      const jsonString = JSON.stringify(this.storage, null, 4);
+      fs.writeFile(this.filePath, jsonString, {}, err => {
+        if (err) {
+          throw err;
         }
-      );
+        this.isWriting = false;
+        if (this.hasChanges) {
+          this.hasChanges = false;
+          this.async();
+        }
+      });
     } catch (err) {
       throw err;
     }

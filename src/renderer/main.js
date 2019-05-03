@@ -3,6 +3,7 @@ import { remote } from 'electron';
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/en';
 import VueElectron from 'vue-electron';
 import VueBus from 'vue-bus';
 import electronLocalshortcut from 'electron-localshortcut';
@@ -15,7 +16,7 @@ import Database from '../shared/db';
 Vue.config.productionTip = false;
 Vue.config.devtools = true;
 
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale });
 Vue.use(VueElectron);
 Vue.use(VueBus);
 // Vue.use(require('vue-electron'));

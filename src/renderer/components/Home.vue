@@ -1,14 +1,25 @@
 <template>
-  <el-container direction="vertical">
-    <titlebar add search shadow/>
-    <el-main>
-      <ul>
-        <li v-for="book in bookList" :key="book.id">
-          <card :id="book.id" :title="book.title" :imgSrc="book.coverPath"/>
-        </li>
-      </ul>
-    </el-main>
-  </el-container>
+	<el-container direction="vertical">
+		<titlebar
+			add
+			backdrop
+			shadow
+		/>
+		<el-main>
+			<ul>
+				<li
+					v-for="book in bookList"
+					:key="book.id"
+				>
+					<card
+						:id="book.id"
+						:title="book.title"
+						:img-src="book.coverPath"
+					/>
+				</li>
+			</ul>
+		</el-main>
+	</el-container>
 </template>
 
 <script>
@@ -35,7 +46,6 @@ export default {
     this.$bus.on('add-button', () => {
       this.addFiles();
     });
-
   },
 
   methods: {
@@ -58,27 +68,25 @@ export default {
           return;
         }
 
-        let coverPath = path.join(this.$dataPath, 'cover', key);
+        const coverPath = path.join(this.$dataPath, 'cover', key);
         info.coverPath = fileUrl(coverPath);
 
-        try {
-          storeCover(book, coverPath, () => {
+        storeCover(book, coverPath, () => {
+          try {
             this.$db.insert(key, info);
-            this.bookList.push(info);
-          });
-        } catch (err) {
-          console.log(err);
-        }
+          } catch (err) {
+            console.log(err);
+          }
+          this.bookList.push(info);
+        });
       });
     },
   },
 };
-
-
 </script>
 
 <style lang="less" scoped>
-@import "../assets/style";
+@import '../assets/style';
 
 .el-container {
   position: absolute;
@@ -97,15 +105,15 @@ ul {
   margin: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  padding: 0px;
 }
 
 li {
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 30px;
+  margin: 16px;
   min-width: 170px;
   max-width: 170px;
+  align-self: left;
 }
 
 li a {
@@ -119,7 +127,6 @@ li a {
 }
 
 #center {
-  /* float: left; */
   left: 50%;
   right: 50%;
 }

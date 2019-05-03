@@ -1,25 +1,40 @@
 <template>
-  <div class="sidebar">
-    <el-tabs stretch value="toc">
-      <el-tab-pane label="toc" name="toc">
-        <span slot="label">
-          <i class="el-icon-notebook-2"/>
-        </span>
-        <el-tree :data="toc" @node-click="NodeClick"/>
-      </el-tab-pane>
+	<div class="sidebar">
+		<el-tabs
+			stretch
+			value="toc"
+		>
+			<el-tab-pane
+				label="toc"
+				name="toc"
+			>
+				<span slot="label">
+					<i class="el-icon-notebook-2" />
+				</span>
+				<el-tree
+					:data="toc"
+					@node-click="NodeClick"
+				/>
+			</el-tab-pane>
 
-      <el-tab-pane label="Bookmarks" name="bookmarks">
-        <span slot="label">
-          <i class="el-icon-collection-tag"/>
-        </span>
-      </el-tab-pane>
-      <el-tab-pane label="Info" name="info">
-        <span slot="label">
-          <i class="el-icon-warning-outline"/>
-        </span>
-      </el-tab-pane>
-    </el-tabs>
-  </div>
+			<el-tab-pane
+				label="Bookmarks"
+				name="bookmarks"
+			>
+				<span slot="label">
+					<i class="el-icon-collection-tag" />
+				</span>
+			</el-tab-pane>
+			<el-tab-pane
+				label="Info"
+				name="info"
+			>
+				<span slot="label">
+					<i class="el-icon-warning-outline" />
+				</span>
+			</el-tab-pane>
+		</el-tabs>
+	</div>
 </template>
 
 <script>
@@ -63,7 +78,7 @@ export default {
 </style>
 
 <style>
-.el-tabs {
+/* .el-tabs {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -85,7 +100,11 @@ export default {
   overflow: auto;
 }
 
+.el-tabs__header{
+  margin: 0px;
+}
+
 ::-webkit-scrollbar {
   display: none;
-}
+} */
 </style>

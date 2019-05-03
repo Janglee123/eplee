@@ -1,51 +1,122 @@
 <template>
-  <el-header height="45px" :class="{shadow:shadow}">
-    <span id="left">
-      <el-button v-if="add" size="small" icon="el-icon-plus" circle plain @click="onAdd"/>
+	<el-header
+		height="40px"
+		:class="{backdrop:backdrop}"
+	>
+		<span id="left">
+			<el-button
+				v-if="add"
+				size="small"
+				icon="el-icon-plus"
+				circle
+				@click="onAdd"
+			/>
+			<el-input
+				v-if="search"
+				v-model="searchText"
+				size="small"
+				placeholder="search"
+			/>
+			<el-button-group>
+				<el-button
+					v-if="back"
+					size="small"
+					icon="el-icon-back"
+					circle
+					@click="onBack"
+				/>
+				<el-button
+					v-if="library"
+					size="small"
+					icon="el-icon-s-grid"
+					circle
+					@click="onLibrary"
+				/>
+			</el-button-group>
+			<el-popover
+				v-if="menu"
+				placement="bottom"
+				width="350"
+				trigger="hover"
+			>
+				<div class="el-popover__title">Table of Content</div>
+				<el-button
+					slot="reference"
+					size="small"
+					icon="el-icon-reading"
+					circle
+				/>
+				<el-tree
+					:data="toc"
+					@node-click="onNodeClick"
+				/>
+			</el-popover>
+			<el-popover
+				v-if="bookmark"
+				placement="bottom"
+				width="350"
+				trigger="hover"
+			>
+				<div class="el-popover__title">
+					Bookmarks
+					<el-button
+						size="mini"
+						icon="el-icon-plus"
+						circle
+						@click="onAddBookmark"
+					/>
+				</div>
+				<el-button
+					v-if="menu"
+					slot="reference"
+					size="small"
+					icon="el-icon-collection-tag"
+					circle
+				/>
+				<!-- <el-tree :data="bookmarks" @node-click="onNodeClick"/> -->
 
-      <el-input
-        v-if="search"
-        v-model="searchText"
-        style="width:200px; margin-left:5px;"
-        prefix-icon="el-icon-search"
-        size="small"
-        placeholder="Search"
-        clearable
-      />
-
-      <el-button v-if="back" size="small" icon="el-icon-back" circle plain @click="onBack"/>
-      <el-button v-if="library" size="small" icon="el-icon-s-grid" circle plain @click="onLibrary"/>
-      <el-button v-if="menu" size="small" icon="el-icon-more" circle plain @click="onMenu"/>
-      <el-button
-        v-if="bookmark"
-        size="small"
-        icon="el-icon-collection-tag"
-        circle
-        plain
-        @click="onBookmark"
-      />
-    </span>
-    <span id="center">{{ title }}</span>
-    <span id="right">
-      <el-button
-        size="small"
-        icon="el-icon-minus"
-        circle
-        plain
-        type="success"
-        @click="minimizeWindow"
-      />
-      <el-button
-        size="small"
-        icon="el-icon-full-screen"
-        circle
-        plain
-        type="warning"
-        @click="maximizeWindow"
-      />
-      <el-button size="small" icon="el-icon-close" circle plain type="danger" @click="closeWindow"/>
-    </span>
-  </el-header>
+				<el-tree
+					:data="bookmarks"
+					node-key="id"
+				>
+					<span
+						slot-scope="{ node }"
+						class="custom-tree-node"
+					>
+						<span>{{ node.label }}</span>
+						<span>
+							<el-button
+								type="text"
+								icon="el-icon-close"
+								@click="() => onRemoveBookmark(node)"
+							/>
+						</span>
+					</span>
+				</el-tree>
+			</el-popover>
+		</span>
+		<span id="center">{{ title }}</span>
+		<span id="right">
+			<el-button
+				size="small"
+				icon="el-icon-minus"
+				circle
+				@click="minimizeWindow"
+			/>
+			<el-button
+				size="small"
+				icon="el-icon-full-screen"
+				circle
+				@click="maximizeWindow"
+			/>
+			<el-button
+				size="small"
+				icon="el-icon-close"
+				circle
+				@click="closeWindow"
+			/>
+		</span>
+	</el-header>
 </template>
 
 <script>
@@ -80,9 +151,21 @@ export default {
       default: false,
       type: Boolean,
     },
+    backdrop: {
+      default: false,
+      type: Boolean,
+    },
     title: {
       default: 'Eplee',
       type: String,
+    },
+    toc: {
+      default: () => {},
+      type: Array,
+    },
+    bookmarks: {
+      default: () => {},
+      type: Array,
     },
   },
   data() {
@@ -127,45 +210,93 @@ export default {
     onMenu() {
       this.$bus.emit('menu-button');
     },
-    onBookmark() {
-      this.$bus.emit('bookmark-button');
+    onAddBookmark() {
+      this.$bus.emit('add-bookmark-button');
+    },
+    onRemoveBookmark(bookmark) {
+      this.$bus.emit('remove-bookmark-button', bookmark);
+    },
+    onNodeClick(item) {
+      this.$bus.emit('toc-item-clicked', item.cfi || item.href);
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import '../assets/style';
+
 .el-header {
-  /* background-color: #ffffff; */
-  backdrop-filter: blur(40px);
-  color: #333;
-  border-top-left-radius: 9px;
-  border-top-right-radius: 9px;
   text-align: center;
   vertical-align: middle;
-  padding: 5px;
-  height: 50px;
-  z-index: 2;
+  padding: @padding;
   -webkit-app-region: drag !important;
   -webkit-user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+.backdrop {
+  backdrop-filter: blur(40px);
+}
+.el-button {
+  margin-left: @margin;
+  background: #fff0;
 }
 
 #left {
-  left: 10px;
   float: left;
   -webkit-app-region: no-drag !important;
+  vertical-align: sub;
+}
+
+#left .el-button:first-of-type {
+  margin-left: 0px;
 }
 
 #center {
-  /* float: left; */
   left: 50%;
   right: 50%;
+  vertical-align: sub;
+  font-size: 16px;
+  color: #333;
 }
 
 #right {
-  right: 10px;
   float: right;
   -webkit-app-region: no-drag !important;
+  vertical-align: sub;
+}
+
+.el-input {
+  width: 200px;
+  border-radius: 100px;
+}
+
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+  margin: 5px;
 }
 </style>
 
+
+<style>
+[class*=' el-icon-'],
+[class^='el-icon-'] {
+  height: 11px;
+  width: 12px;
+}
+
+.el-popover {
+  height: 90%;
+}
+
+.el-tree {
+  max-height: 95%;
+  overflow: auto;
+}
+
+</style>
