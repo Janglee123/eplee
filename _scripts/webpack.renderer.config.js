@@ -6,9 +6,7 @@ const webpack = require('webpack')
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const PurgecssPlugin = require('purgecss-webpack-plugin')
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const { dependencies, devDependencies, build } = require('../package.json')
@@ -41,7 +39,7 @@ const config = {
       {
         test: /\.scss$/,
         use: [
-          isDevMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+          'vue-style-loader',
           'css-loader',
           'sass-loader',
         ],
@@ -49,7 +47,7 @@ const config = {
       {
         test: /\.sass$/,
         use: [
-          isDevMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+          'vue-style-loader',
           'css-loader',
           'sass-loader?indentedSyntax',
         ],
@@ -57,7 +55,7 @@ const config = {
       {
         test: /\.less$/,
         use: [
-          isDevMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+          'vue-style-loader',
           'css-loader',
           'less-loader',
         ],
@@ -65,7 +63,7 @@ const config = {
       {
         test: /\.css$/,
         use: [
-          isDevMode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
+          'vue-style-loader',
           'css-loader',
         ],
       },
@@ -170,9 +168,6 @@ if (isDevMode) {
     new ScriptExtHtmlWebpackPlugin({
       async: [/runtime/],
       defaultAttribute: 'defer',
-    }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
     }),
     new PurgecssPlugin({
       paths: fg.sync([`./src/renderer/**/*`], {
