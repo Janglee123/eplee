@@ -1,33 +1,10 @@
 <template>
 	<el-container direction="vertical">
-		<titlebar
-			back
-			library
-			menu
-			bookmark
-			:title="title"
-			:bookmarks="info.bookmarks"
-			:toc="toc"
-		/>
+		<titlebar back library menu bookmark :title="title" :bookmarks="info.bookmarks" :toc="toc" />
 		<el-main class="container">
-			<el-button
-				id="prev"
-				circle
-				size="small"
-				icon="el-icon-arrow-left"
-				@click="prevPage"
-			/>
-			<div
-				id="reader"
-				v-loading="!isReady"
-			/>
-			<el-button
-				id="next"
-				circle
-				size="small"
-				icon="el-icon-arrow-right"
-				@click="nextPage"
-			/>
+			<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
+			<div id="reader" v-loading="!isReady" />
+			<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 		</el-main>
 		<!-- <el-footer>
       <el-slider></el-slider>
@@ -59,7 +36,7 @@ export default {
   },
 
   mounted() {
-    const {id} = this.$route.params;
+    const { id } = this.$route.params;
     this.info = this.$db.get(id);
     this.book = new Book(this.info.path);
 
@@ -76,7 +53,7 @@ export default {
       this.isMenuVisible = !this.isMenuVisible;
     });
 
-    this.$bus.on('toc-item-clicked', herf => {
+    this.$bus.on('toc-item-clicked', (herf) => {
       this.rendition.display(herf);
       this.isMenuVisible = false;
     });
@@ -85,7 +62,7 @@ export default {
       this.addBookmark();
     });
 
-    this.$bus.on('remove-bookmark-button', bookmark => {
+    this.$bus.on('remove-bookmark-button', (bookmark) => {
       this.removeBookmark(bookmark);
     });
 
@@ -168,9 +145,9 @@ export default {
        * }
        */
 
-      const {location} = this.rendition;
-      const {href} = location.start;
-      const {cfi} = location.start;
+      const { location } = this.rendition;
+      const { href } = location.start;
+      const { cfi } = location.start;
       const title = this.currentSubTitle || href;
 
       const bookmark = {
@@ -186,20 +163,26 @@ export default {
     parshToc(toc) {
       const tocTree = [];
 
-      const validateHref = href => {
-        if (href.startsWith('..')) href = href.substring(2);
-        if (href.startsWith('/')) href = href.substring(1);
+      const validateHref = (href) => {
+        if (href.startsWith('..')) {
+          href = href.substring(2);
+        }
+        if (href.startsWith('/')) {
+          href = href.substring(1);
+        }
         return href;
       };
 
       // create Toc tree recursively
       const createTree = (toc, parrent) => {
         for (let i = 0; i < toc.length; i += 1) {
+
           parrent[i] = {
             label: toc[i].label.trim(),
             children: [],
             href: validateHref(toc[i].href),
           };
+          
           if (toc[i].subitems) {
             createTree(toc[i].subitems, parrent[i].children);
           }

@@ -163,7 +163,26 @@ class Database {
   }
 
   /**
-   * Writes the local storage object to disk.
+   * simply search item by given key and its value with regex
+   * @param {String} key The key whos value is checked
+   * @param {regex} reg The regex to test with value of key
+   * @returns {Array} Array with all objects that pass the test
+   */
+
+  search(key, reg) {
+    const result = [];
+    Object.values(this.storage).forEach(item => {
+      if (item[key]) {
+        if (reg.test(item[key])) {
+          result.push(item);
+        }
+      }
+    });
+    return result;
+  }
+
+  /**
+   * Writes the local storage object to disk synchronously.
    */
   sync() {
     try {
@@ -178,6 +197,11 @@ class Database {
       }
     }
   }
+
+  /**
+   * Writes the local storage object to disk in asynchronous manner
+   * with managing states to avoid corruption of file
+   */
 
   async() {
     if (this.isWriting) {

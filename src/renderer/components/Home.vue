@@ -55,7 +55,7 @@ export default {
         properties: ['openFile', 'multiSelections'],
       });
       if (files) {
-        files.forEach(file => {
+        files.forEach((file) => {
           this.addToDB(file);
         });
       }
