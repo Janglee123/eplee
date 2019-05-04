@@ -6,13 +6,12 @@
   - [x] changing Font size (ctrl+up/down)
   - [x] navigation left/right
 - [x] fix scrolling in sidebar (https://github.com/ElemeFE/element/issues/10198)
-- [x] fix ToC navigation 
+- [x] fix ToC navigation
 - [x] write code to extract cover
 - [x] use url encoder
-- [x] bookmarks
-      - [ ] get toc name from href
+- [x] bookmarks - [ ] get toc name from href
 - [ ] add open with
-- [ ] add search in home 
+- [ ] add search in home
 
 # Mid
 
@@ -24,7 +23,7 @@
 - [x] set min width, height
 - [x] fix default cover size
 
-# ui 
+# ui
 
 - [x] display bookmarks
 - [x] responsive margin in home

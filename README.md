@@ -4,15 +4,16 @@
 Sweat, Simple and Beautiful ePub reader
 </div>
 
-Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI.  **Project is in the early stage of development**.  If you'd like to help support the project, please consider giving developer time on the project (join our discord [server](https://discord.gg/nrt3QKN)).
+Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI. **Project is in the early stage of development**. If you'd like to help support the project, please consider giving developer time on the project (join our discord [server](https://discord.gg/nrt3QKN)).
 
 ## Screenshots
+
 <img src="https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_2.png" margin=auto>
 <img src="https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_1.png" margin=auto>
 
-## Installing 
+## Installing
 
-Grab the latest release [here](https://github.com/Janglee123/eplee/releases)     
+Grab the latest release [here](https://github.com/Janglee123/eplee/releases)
 
 ## Development
 
@@ -29,16 +30,19 @@ cd eplee
 ```
 
 3. Install dependencies
+
 ```bash
-yarn 
+yarn
 ```
 
 4. Start app
+
 ```bash
 yarn run dev
 ```
 
 ## Built With
+
 - [vuejs](https://vuejs.org/)
 - [element ui](https://element.eleme.io/#/en-US)
 - [vue-electron-template](https://github.com/mubaidr/vue-electron-template)
