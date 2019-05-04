@@ -1,12 +1,14 @@
-const path = require('path')
+const path = require('path');
 // eslint-disable-next-line
-const webpack = require('webpack')
+const webpack = require('webpack');
 
-const { dependencies, devDependencies, build } = require('../package.json')
+const { dependencies, devDependencies, build } = require('../package.json');
 
-const externals = Object.keys(dependencies).concat(Object.keys(devDependencies))
-const isDevMode = process.env.NODE_ENV === 'development'
-const whiteListedModules = []
+const externals = Object.keys(dependencies).concat(
+  Object.keys(devDependencies)
+);
+const isDevMode = process.env.NODE_ENV === 'development';
+const whiteListedModules = [];
 
 const config = {
   mode: process.env.NODE_ENV,
@@ -52,6 +54,6 @@ const config = {
     extensions: ['.js', '.json', '.node'],
   },
   target: 'electron-main',
-}
+};
 
-module.exports = config
+module.exports = config;

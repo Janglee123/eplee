@@ -1,20 +1,22 @@
-const path = require('path')
+const path = require('path');
 
 /* eslint-disable*/
-const fg = require('fast-glob')
-const webpack = require('webpack')
+const fg = require('fast-glob');
+const webpack = require('webpack');
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
-const PurgecssPlugin = require('purgecss-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+const PurgecssPlugin = require('purgecss-webpack-plugin');
 
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const { dependencies, devDependencies, build } = require('../package.json')
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { dependencies, devDependencies, build } = require('../package.json');
 /* eslint-enable */
 
-const externals = Object.keys(dependencies).concat(Object.keys(devDependencies))
-const isDevMode = process.env.NODE_ENV === 'development'
-const whiteListedModules = ['vue']
+const externals = Object.keys(dependencies).concat(
+  Object.keys(devDependencies)
+);
+const isDevMode = process.env.NODE_ENV === 'development';
+const whiteListedModules = ['vue'];
 
 const config = {
   mode: process.env.NODE_ENV,
@@ -38,34 +40,19 @@ const config = {
     rules: [
       {
         test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        use: ['vue-style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.sass$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader?indentedSyntax',
-        ],
+        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax'],
       },
       {
         test: /\.less$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'less-loader',
-        ],
+        use: ['vue-style-loader', 'css-loader', 'less-loader'],
       },
       {
         test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-        ],
+        use: ['vue-style-loader', 'css-loader'],
       },
       {
         test: /\.html$/,
@@ -155,14 +142,14 @@ const config = {
     extensions: ['.js', '.vue', '.json', '.css', 'sass', 'scss', '.node'],
   },
   target: 'electron-renderer',
-}
+};
 
 /**
  * Adjust rendererConfig for production settings
  */
 if (isDevMode) {
   // any dev only config
-  config.plugins.push(new webpack.HotModuleReplacementPlugin())
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
 } else {
   config.plugins.push(
     new ScriptExtHtmlWebpackPlugin({
@@ -181,7 +168,7 @@ if (isDevMode) {
     //     to: path.join(__dirname, '../dist/data'),
     //   },
     // ])
-  )
+  );
 }
 
-module.exports = config
+module.exports = config;
