@@ -11,9 +11,9 @@ import fileUrl from 'file-url';
  */
 
 function storeCover(book, path, cb) {
-  book.loaded.cover.then(cover => {
+  book.loaded.cover.then( (cover) => {
     try {
-      book.archive.getBlob(cover).then(blb => {
+      book.archive.getBlob(cover).then( (blb) => {
         toBuffer(blb, (err, buffer) => {
           if (err) throw err;
           save(buffer, path).then(() => {

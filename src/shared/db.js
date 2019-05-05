@@ -171,7 +171,7 @@ class Database {
 
   search(key, reg) {
     const result = [];
-    Object.values(this.storage).forEach(item => {
+    Object.values(this.storage).forEach((item) => {
       if (item[key]) {
         if (reg.test(item[key])) {
           result.push(item);
@@ -210,7 +210,7 @@ class Database {
     try {
       this.isWriting = true;
       const jsonString = JSON.stringify(this.storage, null, 4);
-      fs.writeFile(this.filePath, jsonString, {}, err => {
+      fs.writeFile(this.filePath, jsonString, {}, (err) => {
         if (err) {
           throw err;
         }

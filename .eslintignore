@@ -3,3 +3,5 @@ test/unit/*.js
 test/e2e/*.js
 **.min.js
 assets/
+src/shared/db.js
+src/shared/dbUtils.js
