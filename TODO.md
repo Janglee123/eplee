@@ -10,7 +10,7 @@
 - [x] write code to extract cover
 - [x] use url encoder
 - [x] bookmarks - [ ] get toc name from href
-- [ ] add open with
+- [x] add open with
 - [ ] add search in home
 
 # Mid
@@ -22,6 +22,7 @@
 
 - [x] set min width, height
 - [x] fix default cover size
+- [x] create ctrl+shift+i shortcut to open dev tools in production mode
 
 # ui
 

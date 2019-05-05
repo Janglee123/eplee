@@ -76,7 +76,19 @@ async function restartElectron() {
   const { pid } = electronProcess || {};
   await killElectron(pid);
 
-  electronProcess = spawn(electron, [path.join(__dirname, '../dist/main.js')]);
+  let args = [path.join(__dirname, '../dist/main.js'), ...process.argv];
+  console.log('dev-runner', args);
+  electronProcess = spawn(electron, args);
+
+  electronProcess.stdout.on('data', data => {
+    let log = 'Electron Main Process :: \n';
+    data = data.toString().split(/\r?\n/);
+    data.forEach(line => {
+      log += `${line}\n`;
+    });
+
+    console.log(log);
+  });
 
   // eslint-disable-next-line
   electronProcess.on('exit', (code, signal) => {

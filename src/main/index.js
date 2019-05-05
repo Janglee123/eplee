@@ -41,6 +41,7 @@ function createWindow() {
       nodeIntegrationInWorker: false,
       webSecurity: false,
       experimentalFeatures: true,
+      additionalArguments: [...process.argv],
     },
     show: false,
     frame: false,
@@ -50,7 +51,9 @@ function createWindow() {
   if (isDev) {
     mainWindow.loadURL('http://localhost:9080');
   } else {
-    mainWindow.loadURL(`file://${__dirname}/index.html`);
+    mainWindow.loadURL(
+      `file://${__dirname}/index.html?path=${process.argv[1]}`
+    );
 
     global.__static = require('path')
       .join(__dirname, '/static')
@@ -67,13 +70,6 @@ function createWindow() {
       mainWindow.webContents.openDevTools();
     }
   });
-
-  // const { webContents } = mainWindow;
-  // webContents.on('did-finish-load', () => {
-  //   webContents.setZoomFactor(1);
-  //   webContents.setVisualZoomLevelLimits(1, 1);
-  //   webContents.setLayoutZoomLevelLimits(0, 0);
-  // });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
