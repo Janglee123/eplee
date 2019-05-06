@@ -52,3 +52,11 @@ before_cache:
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
+
+deploy:
+  provider: releases
+  api_key: $GH_TOKEN
+  file: "build/**.AppImage"
+  skip_cleanup: true
+  on:
+    tags: true
