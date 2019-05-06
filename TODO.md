@@ -9,9 +9,10 @@
 - [x] fix ToC navigation
 - [x] write code to extract cover
 - [x] use url encoder
-- [x] bookmarks - [ ] get toc name from href
-- [x] add open with
-- [ ] add search in home
+- [x] bookmarks
+  - [ ] get toc name from href
+- [x] add open with(**testing required**)
+- [x] add search in book
 
 # Mid
 
@@ -31,12 +32,14 @@
 
 # Queue
 
+- [ ] add search in home
 - [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
 - [ ] set up vue-router with animation
 - [ ] reduce build size
 - [ ] short by last open
 - [ ] add touch gestuers
 - [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
+- [ ] setup azure pipeline and travic ci
 
 # Issue
 

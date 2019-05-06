@@ -1,6 +1,17 @@
 <template>
 	<el-container direction="vertical">
-		<titlebar back library menu bookmark :title="title" :bookmarks="info.bookmarks" :toc="toc" />
+		<titlebar
+			ref="titlebar"
+			back
+			library
+			menu
+			bookmark
+			search
+			:title="title"
+			:bookmarks="info.bookmarks"
+			:toc="toc"
+			:search-result="searchResult"
+		/>
 		<el-main class="container">
 			<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
 			<div id="reader" v-loading="!isReady" />
@@ -29,6 +40,7 @@ export default {
       isReady: false,
       title: '',
       toc: [],
+      searchResult: [],
       info: {},
       path: '',
       fontSize: 14,
@@ -64,6 +76,10 @@ export default {
 
     this.$bus.on('remove-bookmark-button', (bookmark) => {
       this.removeBookmark(bookmark);
+    });
+
+    this.$bus.on('search-input', (text) => {
+      this.search(text);
     });
 
     this.$bind(this.$electron.remote.getCurrentWindow(), 'Left', this.prevPage);
@@ -103,6 +119,24 @@ export default {
       });
   },
   methods: {
+    search(q) {
+      return Promise.all(
+        this.book.spine.spineItems.map(item =>
+          item
+            .load(this.book.load.bind(this.book))
+            .then(item.find.bind(item, q))
+            .finally(item.unload.bind(item))
+        )
+      )
+        .then(results => results.flat())
+        .then((results) => {
+          this.searchResult = results.map((result) => {
+            result.label = result.excerpt;
+            return result;
+          });
+        });
+    },
+
     nextPage() {
       this.rendition.next();
     },
@@ -176,13 +210,12 @@ export default {
       // create Toc tree recursively
       const createTree = (toc, parrent) => {
         for (let i = 0; i < toc.length; i += 1) {
-
           parrent[i] = {
             label: toc[i].label.trim(),
             children: [],
             href: validateHref(toc[i].href),
           };
-          
+
           if (toc[i].subitems) {
             createTree(toc[i].subitems, parrent[i].children);
           }

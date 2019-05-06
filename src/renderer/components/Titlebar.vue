@@ -1,120 +1,54 @@
 <template>
-	<el-header
-		height="40px"
-		:class="{backdrop:backdrop}"
-	>
+	<el-header height="40px" :class="{backdrop:backdrop}">
 		<span id="left">
-			<el-button
-				v-if="add"
-				size="small"
-				icon="el-icon-plus"
-				circle
-				@click="onAdd"
-			/>
-			<el-input
-				v-if="search"
-				v-model="searchText"
-				size="small"
-				placeholder="search"
-			/>
+			<el-button v-if="add" size="small" icon="el-icon-plus" circle @click="onAdd" />
+      
 			<el-button-group>
-				<el-button
-					v-if="back"
-					size="small"
-					icon="el-icon-back"
-					circle
-					@click="onBack"
-				/>
-				<el-button
-					v-if="library"
-					size="small"
-					icon="el-icon-s-grid"
-					circle
-					@click="onLibrary"
-				/>
+				<el-button v-if="back" size="small" icon="el-icon-back" circle @click="onBack" />
+				<el-button v-if="library" size="small" icon="el-icon-s-grid" circle @click="onLibrary" />
 			</el-button-group>
-			<el-popover
-				v-if="menu"
-				placement="bottom"
-				width="350"
-				trigger="hover"
-			>
+      
+			<el-popover v-if="menu" placement="bottom" width="350" trigger="hover">
 				<div class="el-popover__title">Table of Content</div>
-				<el-button
-					slot="reference"
-					size="small"
-					icon="el-icon-reading"
-					circle
-				/>
-				<el-tree
-					:data="toc"
-					@node-click="onNodeClick"
-				/>
+				<el-button slot="reference" size="small" icon="el-icon-reading" circle />
+				<el-tree :data="toc" @node-click="onNodeClick" />
 			</el-popover>
-			<el-popover
-				v-if="bookmark"
-				placement="bottom"
-				width="350"
-				trigger="hover"
-			>
+      
+			<el-popover v-if="bookmark" placement="bottom" width="350" trigger="hover">
 				<div class="el-popover__title">
 					Bookmarks
-					<el-button
-						size="mini"
-						icon="el-icon-plus"
-						circle
-						@click="onAddBookmark"
-					/>
+					<el-button size="mini" icon="el-icon-plus" circle @click="onAddBookmark" />
 				</div>
-				<el-button
-					v-if="menu"
-					slot="reference"
-					size="small"
-					icon="el-icon-collection-tag"
-					circle
-				/>
-				<!-- <el-tree :data="bookmarks" @node-click="onNodeClick"/> -->
-
-				<el-tree
-					:data="bookmarks"
-					node-key="id"
-				>
-					<span
-						slot-scope="{ node }"
-						class="custom-tree-node"
-					>
+				<el-button v-if="menu" slot="reference" size="small" icon="el-icon-collection-tag" circle />
+				<el-tree :data="bookmarks" node-key="id">
+					<span slot-scope="{ node }" class="custom-tree-node">
 						<span>{{ node.label }}</span>
 						<span>
-							<el-button
-								type="text"
-								icon="el-icon-close"
-								@click="() => onRemoveBookmark(node)"
-							/>
+							<el-button type="text" icon="el-icon-close" @click="() => onRemoveBookmark(node)" />
 						</span>
 					</span>
 				</el-tree>
 			</el-popover>
+      
+			<!-- search in book for words -->
+			<el-popover v-if="search" placement="bottom" width="350" trigger="hover">
+				<el-button slot="reference" size="small" icon="el-icon-search" circle />
+				<div class="el-popover__title">
+					<el-input v-model="searchText" size="small" width="300" placeholder="search" @change="onSearchTextChange" />
+				</div>
+				<el-table height="95%" :show-header="false" :data="searchResult" @cell-click="onNodeClick">
+					<span slot="header" />
+					<el-table-column prop="label" width="350"></el-table-column>
+				</el-table>
+			</el-popover>
 		</span>
+
 		<span id="center">{{ title }}</span>
+		
 		<span id="right">
-			<el-button
-				size="small"
-				icon="el-icon-minus"
-				circle
-				@click="minimizeWindow"
-			/>
-			<el-button
-				size="small"
-				icon="el-icon-full-screen"
-				circle
-				@click="maximizeWindow"
-			/>
-			<el-button
-				size="small"
-				icon="el-icon-close"
-				circle
-				@click="closeWindow"
-			/>
+			<el-button size="small" icon="el-icon-minus" circle @click="minimizeWindow" />
+			<el-button size="small" icon="el-icon-full-screen" circle @click="maximizeWindow" />
+			<el-button size="small" icon="el-icon-close" circle @click="closeWindow" />
 		</span>
 	</el-header>
 </template>
@@ -167,6 +101,10 @@ export default {
       default: () => {},
       type: Array,
     },
+    searchResult: {
+      default: () => {},
+      type: Array,
+    }
   },
   data() {
     return {
@@ -199,7 +137,7 @@ export default {
       this.$bus.emit('add-button');
     },
     onSearchTextChange() {
-      this.$bus.emit('search-input');
+      this.$bus.emit('search-input',this.searchText);
     },
     onBack() {
       this.$bus.emit('back-button');
@@ -267,8 +205,11 @@ export default {
 }
 
 .el-input {
-  width: 200px;
-  border-radius: 100px;
+	width: 100%;
+}
+
+.search-tree {
+  height: 100px;
 }
 
 .custom-tree-node {
@@ -279,6 +220,12 @@ export default {
   font-size: 14px;
   padding-right: 8px;
   margin: 5px;
+}
+
+.search-tree-node {
+  width: 100%;
+  word-wrap: break-word;
+  margin: 10px;
 }
 </style>
 
@@ -296,7 +243,8 @@ export default {
 
 .el-tree {
   max-height: 95%;
+  max-width: 100%;
   overflow: auto;
+  word-wrap: wrap;
 }
-
 </style>
