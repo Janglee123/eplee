@@ -1,7 +1,8 @@
 <div align="center">
 <img src="https://github.com/Janglee123/eplee/blob/master/build/icons/256x256.png" width=200px height=200px ></p>
 <h2>Eplee</h2>
-Sweat, Simple and Beautiful ePub reader
+Sweat, Simple and Beautiful ePub reader<br>
+<img src="https://travis-ci.org/Janglee123/eplee.svg?branch=master">
 </div>
 
 Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI. **Project is in the early stage of development**. If you'd like to help support the project, please consider giving developer time on the project (join our discord [server](https://discord.gg/nrt3QKN)).
