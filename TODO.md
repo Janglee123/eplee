@@ -10,9 +10,10 @@
 - [x] write code to extract cover
 - [x] use url encoder
 - [x] bookmarks
-  - [ ] get toc name from href
 - [x] add open with(**testing required**)
 - [x] add search in book
+- [ ] setup azure pipeline and travic ci
+
 
 # Mid
 
@@ -39,9 +40,11 @@
 - [ ] short by last open
 - [ ] add touch gestuers
 - [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
-- [ ] setup azure pipeline and travic ci
+- [ ] highlight searched text 
+- [ ] add ananation 
+- [ ] get bookmark title 
 
 # Issue
 
-- [ ] epub without cover is not opening
-- [ ] title of books goes out of card
+- [x] epub without cover is not opening
+- [x] title of books goes out of card
