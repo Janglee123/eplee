@@ -20,7 +20,7 @@
 					<el-button size="mini" icon="el-icon-plus" circle @click="onAddBookmark" />
 				</div>
 				<el-button v-if="menu" slot="reference" size="small" icon="el-icon-collection-tag" circle />
-				<el-tree :data="bookmarks" node-key="id">
+				<el-tree :data="bookmarks" node-key="id" @node-click="onNodeClick">
 					<span slot-scope="{ node }" class="custom-tree-node">
 						<span>{{ node.label }}</span>
 						<span>
@@ -31,13 +31,12 @@
 			</el-popover>
       
 			<!-- search in book for words -->
-			<el-popover v-if="search" placement="bottom" width="350" trigger="hover">
+			<el-popover v-if="search" placement="bottom" width="350" trigger="click">
 				<el-button slot="reference" size="small" icon="el-icon-search" circle />
 				<div class="el-popover__title">
 					<el-input v-model="searchText" size="small" width="300" placeholder="search" @change="onSearchTextChange" />
 				</div>
 				<el-table height="95%" :show-header="false" :data="searchResult" @cell-click="onNodeClick">
-					<span slot="header" />
 					<el-table-column prop="label" width="350"></el-table-column>
 				</el-table>
 			</el-popover>
@@ -137,7 +136,9 @@ export default {
       this.$bus.emit('add-button');
     },
     onSearchTextChange() {
-      this.$bus.emit('search-input',this.searchText);
+      if(this.searchText.length>0){
+        this.$bus.emit('search-input',this.searchText);
+      }
     },
     onBack() {
       this.$bus.emit('back-button');
@@ -208,10 +209,6 @@ export default {
 	width: 100%;
 }
 
-.search-tree {
-  height: 100px;
-}
-
 .custom-tree-node {
   flex: 1;
   display: flex;
@@ -221,14 +218,7 @@ export default {
   padding-right: 8px;
   margin: 5px;
 }
-
-.search-tree-node {
-  width: 100%;
-  word-wrap: break-word;
-  margin: 10px;
-}
 </style>
-
 
 <style>
 [class*=' el-icon-'],
@@ -246,5 +236,10 @@ export default {
   max-width: 100%;
   overflow: auto;
   word-wrap: wrap;
+}
+
+.el-table__row {
+  user-select: none;
+  cursor: pointer;
 }
 </style>

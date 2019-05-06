@@ -4,7 +4,7 @@
 		<el-main>
 			<ul id="list">
 				<li v-for="book in bookList" :key="book.id">
-					<card :id="book.id" :title="book.title" :img-src="book.coverPath" />
+					<card :id="book.id" :title="trunc(book.title,30)" :img-src="book.coverPath" />
 				</li>
 			</ul>
 		</el-main>
@@ -18,6 +18,7 @@ import MagicGrid from 'magic-grid';
 import Card from './Home/Card';
 import Titlebar from './Titlebar';
 import { storeCover, getInfo } from '../../shared/dbUtilis.js';
+
 export default {
   name: 'Home',
   components: {
@@ -29,7 +30,7 @@ export default {
       bookList: [],
     };
   },
-
+  
   mounted() {
     this.bookList = this.$db.getAll();
 
@@ -37,18 +38,20 @@ export default {
       this.addFiles();
     });
 
-    const magicGrid = new MagicGrid({
+    this.grid = new MagicGrid({
       container: '#list',
       static: false,
       items: this.bookList.length,
-      gutter: 30, 
-      animate: true, 
+      gutter: 30,
+      animate: true,
     });
-  magicGrid.listen();
+    this.grid.listen();
   },
-  
 
   methods: {
+    trunc(str, n) {
+      return str.length > n ? `${str.substr(0, n - 3)}...` : str;
+    },
     addFiles() {
       const files = this.$electron.remote.dialog.showOpenDialog({
         filters: [{ name: 'ePub', extensions: ['epub'] }],
@@ -69,9 +72,11 @@ export default {
         }
 
         const coverPath = path.join(this.$dataPath, 'cover', key);
-        info.coverPath = fileUrl(coverPath);
 
-        storeCover(book, coverPath, () => {
+        storeCover(book, coverPath, (isSucces) => {
+          if (isSucces) {
+            info.coverPath = fileUrl(coverPath);
+          }
           try {
             this.$db.insert(key, info);
           } catch (err) {

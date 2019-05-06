@@ -1,5 +1,5 @@
 <template>
-	<router-view/>
+	<router-view />
 </template>
 
 <script>
@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import fileUrl from 'file-url';
 import { storeCover, getInfo } from '../shared/dbUtilis.js';
+
 
 export default {
   name: 'App',
@@ -48,14 +49,7 @@ export default {
         });
       });
     }
-      
-    this.$bind(
-      this.$electron.remote.getCurrentWindow(),
-      'CommandOrControl+Shift+I',
-      () => {
-        this.$electron.remote.getCurrentWindow().toggleDevTools();
-      }
-    );
+
   },
 };
 </script>

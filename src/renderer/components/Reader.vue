@@ -136,7 +136,6 @@ export default {
           });
         });
     },
-
     nextPage() {
       this.rendition.next();
     },
@@ -180,9 +179,8 @@ export default {
        */
 
       const { location } = this.rendition;
-      const { href } = location.start;
-      const { cfi } = location.start;
-      const title = this.currentSubTitle || href;
+      const { href, cfi } = location.start;
+      const title = href;
 
       const bookmark = {
         label: title,
