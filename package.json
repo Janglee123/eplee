@@ -128,7 +128,7 @@
     "url": "git+https://github.com/mubaidr/vue-electron-template.git"
   },
   "scripts": {
-    "build": "yarn run pack && electron-builder",
+    "build": "yarn run pack && electron-builder --publish onTagOrDraft",
     "dev": "node ./_scripts/dev-runner.js",
     "lint": "eslint --ext .js,.vue --fix src && prettier --write ./src/**/*.js",
     "pack": "yarn run pack:main && yarn run pack:renderer",
