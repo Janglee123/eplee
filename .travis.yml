@@ -50,13 +50,17 @@ before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
 
 branches:
+  only:
+    - master
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
 
 deploy:
   provider: releases
   api_key: $GH_TOKEN
-  file: "build/**.AppImage"
+  file: 
+    - "build/*.AppImage"
+    - "build/*.dmg"
+    - "build/*.exe"
   skip_cleanup: true
-  on:
-    tags: true
+  draft: true
