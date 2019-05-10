@@ -1,5 +1,6 @@
 steps:
-  - env:
+  
+  env:
      GH_TOKEN: $(gh.token)
 
   - task: NodeTool@0
