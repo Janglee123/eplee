@@ -42,8 +42,4 @@ jobs:
           node_version: "10.x"
 
     steps:
-<<<<<<< HEAD
       - template: mac.yml
-=======
-- template: mac.yml
->>>>>>> ac319b58a97de1cc5a2a445ffe2c846f646c39a9
