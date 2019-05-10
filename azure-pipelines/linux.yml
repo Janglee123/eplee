@@ -29,4 +29,4 @@ steps:
     inputs:
       pathtoPublish: "$(Build.ArtifactStagingDirectory)"
       artifactName: linux
-displayName: "Publish artifacts"
+    displayName: "Publish artifacts"
