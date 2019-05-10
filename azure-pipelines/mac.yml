@@ -1,7 +1,7 @@
 steps:
   
   env:
-     GH_TOKEN: $(gh.token)
+     GH_TOKEN: $(GH_TOKEN)
 
   - task: NodeTool@0
     inputs:
