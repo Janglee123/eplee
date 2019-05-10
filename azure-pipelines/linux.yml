@@ -1,4 +1,7 @@
 steps:
+  env:
+     GH_TOKEN: $(gh.token)
+
   - task: NodeTool@0
     inputs:
       versionSpec: $(node_version)
