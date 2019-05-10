@@ -128,14 +128,16 @@
     "url": "git+https://github.com/mubaidr/vue-electron-template.git"
   },
   "scripts": {
-    "build": "yarn run pack && electron-builder --publish onTagOrDraft",
+    "build": "yarn run pack && electron-builder",
+    "build:linux": "yarn run pack && electron-builder --linux",
+    "build:mac": "yarn run pack && electron-builder --mac",
+    "build:win": "yarn run pack && electron-builder --win",
     "dev": "node ./_scripts/dev-runner.js",
     "lint": "eslint --ext .js,.vue --fix src && prettier --write ./src/**/*.js",
     "pack": "yarn run pack:main && yarn run pack:renderer",
     "pack:main": "webpack --mode=production --env.NODE_ENV=production --hide-modules --config ./_scripts/webpack.main.config.js",
     "pack:renderer": "webpack --mode=production --env.NODE_ENV=production --hide-modules --config ./_scripts/webpack.renderer.config.js",
-    "postinstall": "electron-builder install-app-deps",
-    "release": "build"
+    "postinstall": "electron-builder install-app-deps"
   },
   "version": "0.2.0"
 }
