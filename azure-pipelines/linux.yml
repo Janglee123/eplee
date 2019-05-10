@@ -16,7 +16,7 @@ steps:
     displayName: "Validate build"
   - task: CopyFiles@2
     inputs:
-      sourceFolder: "$(Build.SourcesDirectory)/dist"
+      sourceFolder: "$(Build.SourcesDirectory)/build"
       contents: |
         *.deb
         *.snap
