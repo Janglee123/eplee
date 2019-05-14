@@ -1,4 +1,18 @@
 jobs:
+  
+  - job: linux
+    displayName: Linux
+    pool:
+      vmImage: "ubuntu-16.04"
+
+    strategy:
+      matrix:
+        node_10_x:
+          node_version: "10.x"
+
+    steps:
+      - template: linux.yml
+    
   - job: win
     displayName: Windows
     pool:
@@ -12,21 +26,6 @@ jobs:
     steps:
       - template: win.yml
 
-  - job: linux
-    displayName: Linux
-    pool:
-      vmImage: "ubuntu-16.04"
-
-    strategy:
-      matrix:
-        node_8_x:
-          node_version: ">=8.12.x"
-        node_10_x:
-          node_version: "10.x"
-
-    steps:
-      - template: linux.yml
-
   - job: mac
     displayName: MacOS
     pool:
@@ -34,8 +33,6 @@ jobs:
 
     strategy:
       matrix:
-        node_8_x:
-          node_version: ">=8.12.x"
         node_10_x:
           node_version: "10.x"
 

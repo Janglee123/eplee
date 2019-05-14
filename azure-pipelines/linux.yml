@@ -8,7 +8,7 @@ steps:
       echo Installing packages
       yarn
       echo Start building linux application
-      yarn release
+      yarn build:linux
       echo Linux build is complete
     displayName: "Build Linux app"
     env:
