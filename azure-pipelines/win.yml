@@ -1,7 +1,4 @@
 steps:
-  
-  env:
-     GH_TOKEN: $(GH_TOKEN)
 
   - task: NodeTool@0
     inputs:
@@ -14,6 +11,8 @@ steps:
       yarn build:window
       echo Windows build is complete
     displayName: "Build Windows app"
+    env:
+      GH_TOKEN: $(GH_TOKEN)
   - script: |
       cd dist
       ls

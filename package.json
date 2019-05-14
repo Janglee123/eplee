@@ -125,7 +125,7 @@
   "name": "eplee",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mubaidr/vue-electron-template.git"
+    "url": "git+https://github.com/janglee123/eplee.git"
   },
   "scripts": {
     "build": "yarn run pack && electron-builder",
@@ -137,7 +137,8 @@
     "pack": "yarn run pack:main && yarn run pack:renderer",
     "pack:main": "webpack --mode=production --env.NODE_ENV=production --hide-modules --config ./_scripts/webpack.main.config.js",
     "pack:renderer": "webpack --mode=production --env.NODE_ENV=production --hide-modules --config ./_scripts/webpack.renderer.config.js",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "release": "build"
   },
   "version": "0.2.0"
 }

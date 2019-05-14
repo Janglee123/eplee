@@ -1,8 +1,5 @@
 steps:
   
-  env:
-     GH_TOKEN: $(GH_TOKEN)
-
   - task: NodeTool@0
     inputs:
       versionSpec: $(node_version)
@@ -11,9 +8,11 @@ steps:
       echo Installing packages
       yarn
       echo Start building linux application
-      yarn build:linux
+      yarn release
       echo Linux build is complete
     displayName: "Build Linux app"
+    env:
+      GH_TOKEN: $(GH_TOKEN)
   - script: |
       cd dist
       ls
