@@ -54,9 +54,13 @@
     "win": {
       "icon": "build/icons/512x512.png",
       "target": [
-        "nsis",
-        "zip",
-        "portable"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
       ]
     }
   },
