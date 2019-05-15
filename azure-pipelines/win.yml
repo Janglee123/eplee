@@ -15,6 +15,12 @@ steps:
   - script: |
       cd build
       ls
+      echo
+      echo "Build.SourcesDirectory dir" 
+      echo
+      cd $(Build.SourcesDirectory)/build
+      ls
+
     displayName: "Validate build"
   - task: CopyFiles@2
     inputs:
