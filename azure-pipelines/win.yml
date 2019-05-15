@@ -6,9 +6,8 @@ steps:
 
   - script: |
       echo Installing packages
-      yarn
+      yarn && yarn build
       echo Start building windows application
-      yarn build
       echo Windows build is complete
     displayName: "Build Windows app"
     env:
