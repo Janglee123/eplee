@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://github.com/Janglee123/eplee/blob/master/build/icons/256x256.png" width=200px height=200px ></p>
 <h2>Eplee</h2>
-Sweat, Simple and Beautiful ePub reader<br>
+Sweet, Simple and Beautiful ePub reader<br>
 <img src="https://travis-ci.org/Janglee123/eplee.svg?branch=master">
 </div>
 
