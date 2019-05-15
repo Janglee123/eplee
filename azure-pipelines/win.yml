@@ -6,15 +6,14 @@ steps:
 
   - script: |
       echo Installing packages
-      yarn
       echo Start building windows application
-      yarn build
+      yarn && yarn build:win
       echo Windows build is complete
     displayName: "Build Windows app"
     env:
       GH_TOKEN: $(GH_TOKEN)
   - script: |
-      cd dist
+      cd build
       ls
     displayName: "Validate build"
   - task: CopyFiles@2

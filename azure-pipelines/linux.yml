@@ -14,7 +14,7 @@ steps:
     env:
       GH_TOKEN: $(GH_TOKEN)
   - script: |
-      cd dist
+      cd build
       ls
     displayName: "Validate build"
   - task: CopyFiles@2

@@ -18,7 +18,6 @@
 
 ## Queue
 - [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
-- [ ] setup azure pipeline and travic ci
 
 # v0.2.0
 
@@ -36,6 +35,7 @@
 - [x] bookmarks
 - [x] add open with(**testing required**)
 - [x] add search in book
+- [x] setup azure pipeline and travic ci
 
 
 ## Mid
