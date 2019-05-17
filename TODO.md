@@ -2,17 +2,17 @@
 
 ## High
 - [ ] set up vue-router with animation
-- [ ] reduce build size
+- [ ] add language translation feature
+- [ ] add dictionary
 - [ ] add ananation 
 
 ## Mid
 - [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
-- [ ] short by last open
+- [ ] short by last open(db changes)
+- [ ] Remember page position/index (db changes)
 - [ ] highlight searched text 
-- [ ] get bookmark title 
 - [ ] add last card in home gridv for book add button 
-- [ ] add translation feature
-- [ ] add dictionary
+- [ ] reduce build size
 
 ## Low
 - [ ] add touchpad gestuers
@@ -20,6 +20,7 @@
 
 ## Queue
 - [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
+- [ ] get bookmark title 
 
 # v0.2.0
 
