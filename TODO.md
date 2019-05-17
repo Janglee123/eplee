@@ -21,7 +21,6 @@
 ## Queue
 - [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
 - [ ] get bookmark title 
-- [ ] add TextToSpeechPick
 
 # v0.2.0
 
