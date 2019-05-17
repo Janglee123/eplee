@@ -11,6 +11,8 @@
 - [ ] highlight searched text 
 - [ ] get bookmark title 
 - [ ] add last card in home gridv for book add button 
+- [ ] add translation feature
+- [ ] add dictionary
 
 ## Low
 - [ ] add touchpad gestuers
@@ -23,8 +25,8 @@
 
 ## High
 
-- [x] db
-- [x] add keyboard shortcuts (used electron localshortcuts beacuse of iframe)
+- [x] DB
+- [x] add keyboard shortcuts (used electron localshortcuts because of iframe)
   - [x] open file
   - [x] changing Font size (ctrl+up/down)
   - [x] navigation left/right
@@ -40,8 +42,8 @@
 
 ## Mid
 
-- [x] improve db
-- [x] open https links in browser
+- [x] improve DB
+- [x] open https links in the browser
 
 ## Low
 
@@ -49,7 +51,7 @@
 - [x] fix default cover size
 - [x] create ctrl+shift+i shortcut to open dev tools in production mode
 
-## ui
+## up
 
 - [x] display bookmarks
 - [x] responsive margin in home
