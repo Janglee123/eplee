@@ -8,13 +8,13 @@
 				<el-button v-if="library" size="small" icon="el-icon-s-grid" circle @click="onLibrary" />
 			</el-button-group>
       
-			<el-popover v-if="menu" placement="bottom" width="350" trigger="hover">
+			<el-popover v-if="menu" popper-class="popper" placement="bottom" width="350" trigger="hover">
 				<div class="el-popover__title">Table of Content</div>
 				<el-button slot="reference" size="small" icon="el-icon-reading" circle />
 				<el-tree :data="toc" @node-click="onNodeClick" />
 			</el-popover>
       
-			<el-popover v-if="bookmark" placement="bottom" width="350" trigger="hover">
+			<el-popover v-if="bookmark" popper-class="popper" placement="bottom" width="350" trigger="hover">
 				<div class="el-popover__title">
 					Bookmarks
 					<el-button size="mini" icon="el-icon-plus" circle @click="onAddBookmark" />
@@ -31,7 +31,7 @@
 			</el-popover>
       
 			<!-- search in book for words -->
-			<el-popover v-if="search" placement="bottom" width="350" trigger="click">
+			<el-popover v-if="search" popper-class="popper" placement="bottom" width="350" trigger="hover">
 				<el-button slot="reference" size="small" icon="el-icon-search" circle />
 				<div class="el-popover__title">
 					<el-input v-model="searchText" size="small" width="300" placeholder="search" @change="onSearchTextChange" />
@@ -227,8 +227,8 @@ export default {
   width: 12px;
 }
 
-.el-popover {
-  height: 90%;
+.popper{
+  height: 85%;
 }
 
 .el-tree {
