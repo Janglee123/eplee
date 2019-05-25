@@ -31,6 +31,7 @@ module.exports = {
     'no-useless-escape': 0,
     'allowForLoopAfterthoughts': 0,
     'vue/html-indent': [2, 'tab'],
+    'prefer-const':0,
     'vue/max-attributes-per-line': 0,
     'vue/html-self-closing': 0,
     // allow debugger during development

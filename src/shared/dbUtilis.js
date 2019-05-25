@@ -11,26 +11,26 @@ import fileUrl from 'file-url';
  */
 
 function storeCover(book, path, cb) {
-  book.loaded.cover.then(cover => {
-    if (!cover) {
-      cb(false);
-      return;
-    }
-    try {
-      book.archive.getBlob(cover).then(blb => {
-        toBuffer(blb, (err, buffer) => {
-          if (err) throw err;
-          save(buffer, path).then(() => {
-            if (cb) {
-              cb(true);
-            }
-          });
-        });
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  });
+	book.loaded.cover.then(cover => {
+		if (!cover) {
+			cb(false);
+			return;
+		}
+		try {
+			book.archive.getBlob(cover).then(blb => {
+				toBuffer(blb, (err, buffer) => {
+					if (err) throw err;
+					save(buffer, path).then(() => {
+						if (cb) {
+							cb(true);
+						}
+					});
+				});
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	});
 }
 
 /**
@@ -40,11 +40,11 @@ function storeCover(book, path, cb) {
  */
 
 function genrateKey(filePath) {
-  if (!filePath || typeof filePath !== 'string') {
-    return '';
-  }
-  // eslint-disabled-next-line no-useless-escape
-  return filePath.replace(/[\/\.]/g, '');
+	if (!filePath || typeof filePath !== 'string') {
+		return '';
+	}
+	// eslint-disabled-next-line no-useless-escape
+	return filePath.replace(/[\/\.]/g, '');
 }
 
 /**
@@ -54,32 +54,32 @@ function genrateKey(filePath) {
  */
 
 function getInfo(filePath, callback) {
-  // parameter validation
-  if (!filePath || typeof filePath !== 'string') {
-    return;
-  }
+	// parameter validation
+	if (!filePath || typeof filePath !== 'string') {
+		return;
+	}
 
-  // create a key from path
-  const key = genrateKey(filePath);
+	// create a key from path
+	const key = genrateKey(filePath);
 
-  // file load on file protocol
-  const uri = fileUrl(filePath);
-  const book = new Book(uri);
+	// file load on file protocol
+	const uri = fileUrl(filePath);
+	const book = new Book(uri);
 
-  book.ready.then(() => {
-    const meta = book.package.metadata;
-    const info = {
-      id: key,
-      title: meta.title,
-      author: meta.creator,
-      publisher: meta.publisher,
-      path: uri,
-      bookmarks: [],
-    };
-    if (callback) {
-      callback(info, book);
-    }
-  });
+	book.ready.then(() => {
+		const meta = book.package.metadata;
+		const info = {
+			id: key,
+			title: meta.title,
+			author: meta.creator,
+			publisher: meta.publisher,
+			path: uri,
+			bookmarks: [],
+		};
+		if (callback) {
+			callback(info, book);
+		}
+	});
 }
 
 export { storeCover, genrateKey, getInfo };

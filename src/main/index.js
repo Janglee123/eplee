@@ -16,10 +16,8 @@ if (isDev) {
 	require('electron-debug')();
 }
 
-
-
-if( !fs.existsSync(path.join(app.getPath('appData'), 'eplee')) ){
-	fs.mkdirSync(path.join(app.getPath('appData'), 'eplee'),{recursive:true});
+if (!fs.existsSync(path.join(app.getPath('appData'), 'eplee'))) {
+	fs.mkdirSync(path.join(app.getPath('appData'), 'eplee'), { recursive: true });
 }
 
 async function installDevTools() {

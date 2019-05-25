@@ -23,7 +23,7 @@ Vue.use(VueBus);
 // Vue.use(require('vue-electron'));
 
 Vue.prototype.$db = new Database(
-  path.join(remote.app.getPath('appData'), 'eplee', 'books.json')
+	path.join(remote.app.getPath('appData'), 'eplee', 'books.json')
 );
 Vue.prototype.$remote = remote;
 console.log(path.join(remote.app.getPath('appData'), 'eplee'));
@@ -31,15 +31,15 @@ Vue.prototype.$dataPath = path.join(remote.app.getPath('appData'), 'eplee');
 Vue.prototype.$bind = electronLocalshortcut.register;
 /* eslint-disable no-new */
 new Vue({
-  components: {
-    App,
-  },
-  router,
-  store,
-  template: '<App/>',
+	components: {
+		App,
+	},
+	router,
+	store,
+	template: '<App/>',
 }).$mount('#app');
 
 /* Enable webpack hot reloading */
 if (module.hot) {
-  module.hot.accept();
+	module.hot.accept();
 }
