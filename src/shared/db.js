@@ -182,6 +182,24 @@ class Database {
   }
 
   /**
+   * update object by its id.
+   * @param {String} id The id key of object. by default db creates id for each object
+   * @param {Object} newValue The object to placed at id. must contain id key 
+   * @returns {Boolean} true if succesfully updated or false if faild 
+   */
+  set(id,newValue){
+    // in case new object passed without id
+    newValue.id = id;
+
+    if(this.storage[id]){
+      this.storage[id] = newValue;
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * Writes the local storage object to disk synchronously.
    */
   sync() {
@@ -200,7 +218,7 @@ class Database {
 
   /**
    * Writes the local storage object to disk in asynchronous manner
-   * with managing states to avoid corruption of file
+   * with managing states to avoid corruption of file. It is safe.
    */
 
   async() {
