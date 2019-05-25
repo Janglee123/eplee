@@ -5,22 +5,22 @@
 - [ ] add language translation feature
 - [ ] add dictionary
 - [ ] add ananation 
+- [ ] highlight searched text 
 
 ## Mid
-- [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
 - [x] short by last open(db changes)
 - [x] Remember page position/index (db changes)
-- [ ] highlight searched text 
-- [ ] add last card in home gridv for book add button 
-- [ ] reduce build size
 
 ## Low
 - [ ] add touchpad gestuers
 - [ ] add search in home
 
 ## Queue
-- [ ] ~~Horizontal scroll bar~~ [issue](https://github.com/futurepress/epub.js/issues/744)
+- [ ] reduce build size
+- [ ] Horizontal scroll bar [issue](https://github.com/futurepress/epub.js/issues/744)
 - [ ] get bookmark title 
+- [ ] add last card in home gridv for book add button 
+- [ ] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
 
 # v0.2.0
 
