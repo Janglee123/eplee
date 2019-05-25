@@ -65,6 +65,7 @@
     }
   },
   "dependencies": {
+    "@vitalets/google-translate-api": "^2.8.0",
     "blob-to-buffer": "^1.2.8",
     "electron-localshortcut": "^3.1.0",
     "element-ui": "^2.8.2",

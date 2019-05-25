@@ -1,9 +1,7 @@
 # v0.3.0
 
 ## High
-- [ ] set up vue-router with animation
-- [ ] add language translation feature
-- [ ] add dictionary
+- [x] add language translation feature
 - [ ] add ananation 
 - [ ] highlight searched text 
 
@@ -12,6 +10,7 @@
 - [x] Remember page position/index (db changes)
 
 ## Low
+- [ ] set up vue-router with animation
 - [ ] add touchpad gestuers
 - [ ] add search in home
 

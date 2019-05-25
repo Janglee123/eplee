@@ -1,27 +1,45 @@
 <template>
-	<el-container direction="vertical">
-		<titlebar
-			ref="titlebar"
-			back
-			library
-			menu
-			bookmark
-			search
-			:title="title"
-			:bookmarks="info.bookmarks"
-			:toc="toc"
-			:search-result="searchResult"
-		/>
-		<el-main class="container">
-			<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
-			<div id="reader" v-loading="!isReady" />
-			<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
-		</el-main>
-	</el-container>
+	<div>
+		<el-container direction="vertical">
+			<titlebar
+				ref="titlebar"
+				back
+				library
+				menu
+				bookmark
+				search
+				:title="title"
+				:bookmarks="info.bookmarks"
+				:toc="toc"
+				:search-result="searchResult"
+			/>
+			<el-main class="container">
+				<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
+				<div id="reader" v-loading="!isReady" />
+				<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
+			</el-main>
+			<el-popover ref="pop" trigger="hover" popper-class="translate-popper">
+				<div class="el-popover__title">
+					<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
+						<template slot="prepend">
+							Translate to
+						</template>
+					</el-input>
+				</div>
+				{{ translatedText }}
+			</el-popover>
+			<el-button
+				ref="langPop"
+				v-popover:pop
+				style="opacity:0; position: absolute;"
+			></el-button>
+		</el-container>
+	</div>
 </template>
 
 <script>
 import { Book, Rendition } from 'epubjs';
+import translate from '@vitalets/google-translate-api';
 import Titlebar from './Titlebar';
 
 export default {
@@ -41,6 +59,8 @@ export default {
       info: {},
       path: '',
       fontSize: 14,
+      translateTo: 'gu',
+      translatedText: '',
     };
   },
 
@@ -56,9 +76,24 @@ export default {
       height: '100%',
     });
 
+    this.rendition.on('selected', (cfiRange, contents) => {
+      // rect of selection
+      let rect = contents.range(cfiRange).getBoundingClientRect();
+      this.isTranslated = true;
+
+      this.book.getRange(cfiRange).then(range => {
+        let text = range.toString();
+        this.translateSelection(rect, text);
+      });
+    });
+
     this.rendition.on('relocated', location => {
       this.info.lastCfi = location.start.cfi;
       this.$db.set(this.info.id, this.info);
+    });
+
+    this.rendition.on('rendered', (section, view) => {
+      this.latestViewElement = view.element;
     });
 
     this.$bus.on('library-button', () => {
@@ -142,6 +177,27 @@ export default {
             result.label = result.excerpt;
             return result;
           });
+        });
+    },
+    translateSelection(rect, text) {
+      let viewRect = this.latestViewElement.getBoundingClientRect();
+
+      let button = this.$refs.langPop.$el;
+      button.style.left = `${viewRect.x + rect.x}px`;
+      button.style.top = `${viewRect.y + rect.y}px`;
+      button.style.width = `${rect.width}px`;
+      button.style.height = `${rect.height}px`;
+
+      this.$refs.pop.width = Math.max(rect.width, 50);
+
+      translate(text, { to: this.translateTo })
+        .then(res => {
+          console.log(res.text);
+          this.isTranslated = true;
+          this.translatedText = res.text;
+        })
+        .then(() => {
+          button.click();
         });
     },
     nextPage() {
@@ -291,6 +347,8 @@ footer {
 }
 </style>
 
-
 <style>
+/* .translate-popper{
+  min-height: 150px;
+} */
 </style>
