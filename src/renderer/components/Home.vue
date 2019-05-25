@@ -2,14 +2,9 @@
 	<el-container direction="vertical">
 		<titlebar add backdrop shadow />
 		<el-main>
-			<ul id="list" key="bookList.length">
-				<li v-for="book in bookList" :key="book.id">
-					<card :id="book.id" :title="trunc(book.title,30)" :img-src="book.coverPath" />
-				</li>
-				<li>
-					<card :title="'Add Books'" />
-				</li>
-			</ul>
+			<grid ref="grid" key="bookList.length">
+				<card v-for="book in bookList" :id="book.id" :key="book.id" :title="trunc(book.title,30)" :img-src="book.coverPath" />
+			</grid>
 		</el-main>
 	</el-container>
 </template>
@@ -17,42 +12,43 @@
 <script>
 import path from 'path';
 import fileUrl from 'file-url';
-import MagicGrid from 'magic-grid';
+import Grid from './Home/Grid'
 import Card from './Home/Card';
 import Titlebar from './Titlebar';
 import { storeCover, getInfo } from '../../shared/dbUtilis.js';
+
+console.log(Grid);
 
 export default {
   name: 'Home',
   components: {
     Card,
     Titlebar,
+    Grid,
   },
   data() {
     return {
       bookList: [],
     };
   },
-  
-  mounted() {
+  watch:{ 
+    bookList(newList, oldList){
+       if(oldList.lenght===0) return;
+       // this.$refs.grid.positionItems();
+       this.$bus.emit('bookList-updated');
+    }
+  },
+  beforeMount(){
     this.bookList = this.$db.getAll().sort((a,b)=>{
       return b.lastOpen - a.lastOpen;
     });
-
+  },
+  mounted() {
+    // this.$refs.grid.positionItems();
+    
     this.$bus.on('add-button', () => {
       this.addFiles();
     });
-
-    console.log(this.bookList.length);
-
-    this.grid = new MagicGrid({
-      container: '#list',
-      static: false,
-      items: this.bookList.length + 1,
-      gutter: 30,
-      animate: true,
-    });
-    this.grid.listen();
   },
 
   methods: {
@@ -112,20 +108,6 @@ export default {
   background-color: #ffffff;
   border-radius: @border-radius;
   height: -webkit-fill-available;
-}
-
-ul {
-  list-style: none;
-  padding: 0px;
-}
-
-li {
-  min-width: 170px;
-  max-width: 170px;
-}
-
-li a {
-  text-decoration: none;
 }
 
 #left {
