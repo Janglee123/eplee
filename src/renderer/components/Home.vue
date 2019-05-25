@@ -2,9 +2,12 @@
 	<el-container direction="vertical">
 		<titlebar add backdrop shadow />
 		<el-main>
-			<ul id="list">
+			<ul id="list" key="bookList.length">
 				<li v-for="book in bookList" :key="book.id">
 					<card :id="book.id" :title="trunc(book.title,30)" :img-src="book.coverPath" />
+				</li>
+				<li>
+					<card :title="'Add Books'" />
 				</li>
 			</ul>
 		</el-main>
@@ -32,16 +35,20 @@ export default {
   },
   
   mounted() {
-    this.bookList = this.$db.getAll();
+    this.bookList = this.$db.getAll().sort((a,b)=>{
+      return b.lastOpen - a.lastOpen;
+    });
 
     this.$bus.on('add-button', () => {
       this.addFiles();
     });
 
+    console.log(this.bookList.length);
+
     this.grid = new MagicGrid({
       container: '#list',
       static: false,
-      items: this.bookList.length,
+      items: this.bookList.length + 1,
       gutter: 30,
       animate: true,
     });
@@ -67,6 +74,8 @@ export default {
     addToDB(file) {
       getInfo(file, (info, book) => {
         const key = info.id;
+        info.lastOpen = new Date().getTime();
+
         if (this.$db.has(key)) {
           return;
         }

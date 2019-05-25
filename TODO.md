@@ -8,8 +8,8 @@
 
 ## Mid
 - [ ] use colors in crad background. [vibrant.js](https://jariz.github.io/vibrant.js/)
-- [ ] short by last open(db changes)
-- [ ] Remember page position/index (db changes)
+- [x] short by last open(db changes)
+- [x] Remember page position/index (db changes)
 - [ ] highlight searched text 
 - [ ] add last card in home gridv for book add button 
 - [ ] reduce build size

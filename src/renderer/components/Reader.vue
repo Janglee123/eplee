@@ -17,9 +17,6 @@
 			<div id="reader" v-loading="!isReady" />
 			<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 		</el-main>
-		<!-- <el-footer>
-      <el-slider></el-slider>
-    </el-footer>-->
 	</el-container>
 </template>
 
@@ -50,11 +47,18 @@ export default {
   mounted() {
     const { id } = this.$route.params;
     this.info = this.$db.get(id);
+    this.info.lastOpen = new Date().getTime();
+
     this.book = new Book(this.info.path);
 
     this.rendition = new Rendition(this.book, {
       width: '100%',
       height: '100%',
+    });
+
+    this.rendition.on('relocated', location => {
+      this.info.lastCfi = location.start.cfi;
+      this.$db.set(this.info.id, this.info);
     });
 
     this.$bus.on('library-button', () => {
@@ -65,7 +69,7 @@ export default {
       this.isMenuVisible = !this.isMenuVisible;
     });
 
-    this.$bus.on('toc-item-clicked', (herf) => {
+    this.$bus.on('toc-item-clicked', herf => {
       this.rendition.display(herf);
       this.isMenuVisible = false;
     });
@@ -74,11 +78,11 @@ export default {
       this.addBookmark();
     });
 
-    this.$bus.on('remove-bookmark-button', (bookmark) => {
+    this.$bus.on('remove-bookmark-button', bookmark => {
       this.removeBookmark(bookmark);
     });
 
-    this.$bus.on('search-input', (text) => {
+    this.$bus.on('search-input', text => {
       this.search(text);
     });
 
@@ -108,9 +112,12 @@ export default {
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
         this.rendition.themes.fontSize(`${this.fontSize}px`);
-        this.rendition.display(1);
 
-        // this.$refs.sidebar.setToc(this.toc);
+        if (this.info.lastCfi) {
+          this.rendition.display(this.info.lastCfi);
+        } else {
+          this.rendition.display();
+        }
       })
       .then(() => {
         this.isReady = true;
@@ -118,6 +125,7 @@ export default {
         console.log(this.rendition);
       });
   },
+
   methods: {
     search(q) {
       return Promise.all(
@@ -129,8 +137,8 @@ export default {
         )
       )
         .then(results => results.flat())
-        .then((results) => {
-          this.searchResult = results.map((result) => {
+        .then(results => {
+          this.searchResult = results.map(result => {
             result.label = result.excerpt;
             return result;
           });
@@ -180,6 +188,7 @@ export default {
 
       const { location } = this.rendition;
       const { href, cfi } = location.start;
+      // At this momment I used herf as a title. It is not easy to get title by current location. see issue.
       const title = href;
 
       const bookmark = {
@@ -189,13 +198,13 @@ export default {
       };
 
       this.info.bookmarks.push(bookmark);
-      this.$db.insert(this.info.id, this.info);
+      this.$db.set(this.info.id, this.info);
     },
 
     parshToc(toc) {
       const tocTree = [];
 
-      const validateHref = (href) => {
+      const validateHref = href => {
         if (href.startsWith('..')) {
           href = href.substring(2);
         }
