@@ -3,7 +3,7 @@
 ## High
 - [x] add language translation feature
 - [ ] add ananation 
-- [ ] highlight searched text 
+- [x] highlight searched text 
 
 ## Mid
 - [x] short by last open(db changes)

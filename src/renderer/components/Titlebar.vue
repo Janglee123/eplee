@@ -2,19 +2,25 @@
 	<el-header height="40px" :class="{backdrop:backdrop}">
 		<span id="left">
 			<el-button v-if="add" size="small" icon="el-icon-plus" circle @click="onAdd" />
-      
+
 			<el-button-group>
 				<el-button v-if="back" size="small" icon="el-icon-back" circle @click="onBack" />
 				<el-button v-if="library" size="small" icon="el-icon-s-grid" circle @click="onLibrary" />
 			</el-button-group>
-      
+
 			<el-popover v-if="menu" popper-class="popper" placement="bottom" width="350" trigger="hover">
 				<div class="el-popover__title">Table of Content</div>
 				<el-button slot="reference" size="small" icon="el-icon-reading" circle />
 				<el-tree :data="toc" @node-click="onNodeClick" />
 			</el-popover>
-      
-			<el-popover v-if="bookmark" popper-class="popper" placement="bottom" width="350" trigger="hover">
+
+			<el-popover
+				v-if="bookmark"
+				popper-class="popper"
+				placement="bottom"
+				width="350"
+				trigger="hover"
+			>
 				<div class="el-popover__title">
 					Bookmarks
 					<el-button size="mini" icon="el-icon-plus" circle @click="onAddBookmark" />
@@ -29,12 +35,26 @@
 					</span>
 				</el-tree>
 			</el-popover>
-      
+
 			<!-- search in book for words -->
-			<el-popover v-if="search" popper-class="popper" placement="bottom" width="350" trigger="hover">
+			<el-popover
+				v-if="search"
+				popper-class="popper"
+				placement="bottom"
+				width="350"
+				trigger="hover"
+				@show="startSearch"
+				@hide="stopSearch"
+			>
 				<el-button slot="reference" size="small" icon="el-icon-search" circle />
 				<div class="el-popover__title">
-					<el-input v-model="searchText" size="small" width="300" placeholder="search" @change="onSearchTextChange" />
+					<el-input
+						v-model="searchText"
+						size="small"
+						width="300"
+						placeholder="search"
+						@change="onSearchTextChange"
+					/>
 				</div>
 				<el-table height="95%" :show-header="false" :data="searchResult" @cell-click="onNodeClick">
 					<el-table-column prop="label" width="350"></el-table-column>
@@ -43,7 +63,7 @@
 		</span>
 
 		<span id="center">{{ title }}</span>
-		
+
 		<span id="right">
 			<el-button size="small" icon="el-icon-minus" circle @click="minimizeWindow" />
 			<el-button size="small" icon="el-icon-full-screen" circle @click="maximizeWindow" />
@@ -103,7 +123,7 @@ export default {
     searchResult: {
       default: () => {},
       type: Array,
-    }
+    },
   },
   data() {
     return {
@@ -116,6 +136,11 @@ export default {
       'CommandOrControl+O',
       this.onAdd
     );
+  },
+  watch:{
+    searchResult(){
+      this.startSearch();
+    }
   },
   methods: {
     closeWindow() {
@@ -136,9 +161,19 @@ export default {
       this.$bus.emit('add-button');
     },
     onSearchTextChange() {
-      if(this.searchText.length>0){
-        this.$bus.emit('search-input',this.searchText);
+      if (this.searchText.length === 0) {
+        return;
       }
+      this.$bus.emit('search-input', this.searchText);
+    },
+    stopSearch() {
+      this.$remote.getCurrentWebContents().stopFindInPage('clearSelection')
+    },
+    startSearch() {
+      if (this.searchText.length === 0) {
+        return;
+      }
+      this.$remote.getCurrentWebContents().findInPage(this.searchText);
     },
     onBack() {
       this.$bus.emit('back-button');
@@ -206,7 +241,7 @@ export default {
 }
 
 .el-input {
-	width: 100%;
+  width: 100%;
 }
 
 .custom-tree-node {
@@ -227,7 +262,7 @@ export default {
   width: 12px;
 }
 
-.popper{
+.popper {
   height: 85%;
 }
 
