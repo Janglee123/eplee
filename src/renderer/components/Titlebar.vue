@@ -130,17 +130,17 @@ export default {
       searchText: '',
     };
   },
+  watch:{
+    searchResult(){
+      this.startSearch();
+    }
+  },
   mounted() {
     this.$bind(
       this.$electron.remote.getCurrentWindow(),
       'CommandOrControl+O',
       this.onAdd
     );
-  },
-  watch:{
-    searchResult(){
-      this.startSearch();
-    }
   },
   methods: {
     closeWindow() {
