@@ -1,6 +1,4 @@
 import fs from 'fs';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { remote } from 'electron';
 
 class Database {
 	/**
@@ -75,8 +73,6 @@ class Database {
 
 		// catches uncaught exceptions
 		process.on('uncaughtException', this.sync);
-
-		remote.app.on('before-quit', this.sync);
 
 		// store a states of writing cycle to avoid data loss
 		this.isWriting = false;

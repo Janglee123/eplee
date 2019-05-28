@@ -18,21 +18,38 @@
 				<div id="reader" v-loading="!isReady" />
 				<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 			</el-main>
-			<el-popover ref="pop" trigger="hover" popper-class="translate-popper">
-				<div class="el-popover__title">
-					<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
-						<template slot="prepend">
-							Translate to
-						</template>
-					</el-input>
-				</div>
-				{{ translatedText }}
+
+			<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
+				<el-button-group>
+					<el-button size="medium" icon="el-icon-brush" @click="highlightSelection"></el-button>
+					<el-button size="medium" icon="el-icon-copy-document" @click="copySelection"></el-button>
+					<el-button
+						v-popover:translatePop
+						size="medium"
+						icon="el-icon-collection"
+						@click="translateSelection"
+					></el-button>
+				</el-button-group>
+
+				<el-popover ref="translatePop" width=200 trigger="hover">
+					<div class="el-popover__title">
+						<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
+							<template slot="prepend">
+								Translate to
+							</template>
+						</el-input>
+					</div>
+					{{ translatedText }}
+				</el-popover>
+
+				<span
+					slot="reference"
+					ref="popRef"
+					style="position:absolute"
+					@focus="showPopover"
+					@onmouseout="hidePopover"
+				></span>
 			</el-popover>
-			<el-button
-				ref="langPop"
-				v-popover:pop
-				style="opacity:0; position: absolute;"
-			></el-button>
 		</el-container>
 	</div>
 </template>
@@ -51,7 +68,6 @@ export default {
 
   data() {
     return {
-      isMenuVisible: false,
       isReady: false,
       title: '',
       toc: [],
@@ -59,8 +75,10 @@ export default {
       info: {},
       path: '',
       fontSize: 14,
+      selection: {},
       translateTo: 'gu',
       translatedText: '',
+      isPopover: false,
     };
   },
 
@@ -78,12 +96,22 @@ export default {
 
     this.rendition.on('selected', (cfiRange, contents) => {
       // rect of selection
+      let viewRect = this.latestViewElement.getBoundingClientRect();
       let rect = contents.range(cfiRange).getBoundingClientRect();
-      this.isTranslated = true;
+      let reference = this.$refs.popRef;
+      reference.style.left = `${viewRect.x + rect.x}px`;
+      reference.style.top = `${viewRect.y + rect.y}px`;
+      reference.style.width = `${rect.width}px`;
+      reference.style.height = `${rect.height}px`;
+      reference.style.visibility = 'visible';
+
+      this.selection.cfiRange = cfiRange;
 
       this.book.getRange(cfiRange).then(range => {
         let text = range.toString();
-        this.translateSelection(rect, text);
+        this.selection.text = text;
+        this.showPopover();
+        this.translateSelection();
       });
     });
 
@@ -179,26 +207,38 @@ export default {
           });
         });
     },
-    translateSelection(rect, text) {
-      let viewRect = this.latestViewElement.getBoundingClientRect();
+    showPopover() {
+      this.isPopover = true;
+    },
 
-      let button = this.$refs.langPop.$el;
-      button.style.left = `${viewRect.x + rect.x}px`;
-      button.style.top = `${viewRect.y + rect.y}px`;
-      button.style.width = `${rect.width}px`;
-      button.style.height = `${rect.height}px`;
+    hidePopover() {
+      let reference = this.$refs.popRef;
+      reference.style.visibility = 'hidden';
+      this.isPopover = false;
+    },
 
-      this.$refs.pop.width = Math.max(rect.width, 50);
+    copySelection() {
+      const el = document.createElement('textarea');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      el.value = this.selection.text;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    },
 
-      translate(text, { to: this.translateTo })
-        .then(res => {
-          console.log(res.text);
-          this.isTranslated = true;
-          this.translatedText = res.text;
-        })
-        .then(() => {
-          button.click();
-        });
+    highlightSelection() {
+      this.rendition.annotations.highlight(this.selection.cfiRange);
+      this.info.highlight.push(this.cfiRange);
+    },
+    translateSelection() {
+      let { text } = this.selection;
+      translate(text, { to: this.translateTo }).then(res => {
+        console.log(res.text);
+        this.isTranslated = true;
+        this.translatedText = res.text;
+      });
     },
     nextPage() {
       this.rendition.next();
@@ -348,7 +388,7 @@ footer {
 </style>
 
 <style>
-/* .translate-popper{
-  min-height: 150px;
-} */
+.select-popper {
+  padding: 0px;
+}
 </style>

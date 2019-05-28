@@ -75,6 +75,7 @@ function getInfo(filePath, callback) {
 			publisher: meta.publisher,
 			path: uri,
 			bookmarks: [],
+			highlights: [],
 		};
 		if (callback) {
 			callback(info, book);

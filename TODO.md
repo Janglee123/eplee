@@ -2,12 +2,13 @@
 
 ## High
 - [x] add language translation feature
-- [ ] add ananation 
+- [x] add ananation 
 - [x] highlight searched text 
 
 ## Mid
 - [x] short by last open(db changes)
 - [x] Remember page position/index (db changes)
+- [x] copy selecttion added
 
 ## Low
 - [ ] set up vue-router with animation
@@ -18,8 +19,10 @@
 - [ ] reduce build size
 - [ ] Horizontal scroll bar [issue](https://github.com/futurepress/epub.js/issues/744)
 - [ ] get bookmark title 
+- [ ] fix and improve highlight
 - [ ] add last card in home gridv for book add button 
 - [ ] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
+
 
 # v0.2.0
 
