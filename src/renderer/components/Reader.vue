@@ -124,13 +124,6 @@ export default {
       this.latestViewElement = view.element;
     });
 
-    this.$bus.on('library-button', () => {
-      this.$router.push('/');
-    });
-
-    this.$bus.on('menu-button', () => {
-      this.isMenuVisible = !this.isMenuVisible;
-    });
 
     this.$bus.on('toc-item-clicked', herf => {
       this.rendition.display(herf);
