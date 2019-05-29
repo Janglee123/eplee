@@ -52,8 +52,9 @@ function createWindow() {
 		show: false,
 		frame: false,
 		transparent: true,
+		icon: path.join(__dirname,'..','..','build','icons','128x128.png')
 	});
-
+		
 	if (isDev) {
 		mainWindow.loadURL('http://localhost:9080');
 	} else {
