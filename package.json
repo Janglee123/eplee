@@ -1,6 +1,7 @@
 {
   "author": "janglee123 <merupatel123@gmail.com>",
   "build": {
+    "publish": null,
     "appId": "org.janglee123.eplee",
     "artifactName": "${name}-${arch}-${version}.${ext}",
     "asar": true,
