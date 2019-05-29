@@ -31,7 +31,7 @@
 					></el-button>
 				</el-button-group>
 
-				<el-popover ref="translatePop" width=200 trigger="hover">
+				<el-popover ref="translatePop" width="200" trigger="hover">
 					<div class="el-popover__title">
 						<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
 							<template slot="prepend">
@@ -79,6 +79,7 @@ export default {
       translateTo: 'gu',
       translatedText: '',
       isPopover: false,
+      percent: 0,
     };
   },
 
@@ -86,9 +87,8 @@ export default {
     const { id } = this.$route.params;
     this.info = this.$db.get(id);
     this.info.lastOpen = new Date().getTime();
-
+    
     this.book = new Book(this.info.path);
-
     this.rendition = new Rendition(this.book, {
       width: '100%',
       height: '100%',
@@ -96,17 +96,8 @@ export default {
 
     this.rendition.on('selected', (cfiRange, contents) => {
       // rect of selection
-      let viewRect = this.latestViewElement.getBoundingClientRect();
-      let rect = contents.range(cfiRange).getBoundingClientRect();
-      let reference = this.$refs.popRef;
-      reference.style.left = `${viewRect.x + rect.x}px`;
-      reference.style.top = `${viewRect.y + rect.y}px`;
-      reference.style.width = `${rect.width}px`;
-      reference.style.height = `${rect.height}px`;
-      reference.style.visibility = 'visible';
-
+      this.createPopover(contents,cfiRange);
       this.selection.cfiRange = cfiRange;
-
       this.book.getRange(cfiRange).then(range => {
         let text = range.toString();
         this.selection.text = text;
@@ -120,45 +111,6 @@ export default {
       this.$db.set(this.info.id, this.info);
     });
 
-    this.rendition.on('rendered', (section, view) => {
-      this.latestViewElement = view.element;
-    });
-
-
-    this.$bus.on('toc-item-clicked', herf => {
-      this.rendition.display(herf);
-      this.isMenuVisible = false;
-    });
-
-    this.$bus.on('add-bookmark-button', () => {
-      this.addBookmark();
-    });
-
-    this.$bus.on('remove-bookmark-button', bookmark => {
-      this.removeBookmark(bookmark);
-    });
-
-    this.$bus.on('search-input', text => {
-      this.search(text);
-    });
-
-    this.$bind(this.$electron.remote.getCurrentWindow(), 'Left', this.prevPage);
-    this.$bind(
-      this.$electron.remote.getCurrentWindow(),
-      'Right',
-      this.nextPage
-    );
-    this.$bind(
-      this.$electron.remote.getCurrentWindow(),
-      'CommandOrControl+Up',
-      this.increseFontSize
-    );
-    this.$bind(
-      this.$electron.remote.getCurrentWindow(),
-      'CommandOrControl+Down',
-      this.decreaseFontSize
-    );
-
     this.book.ready
       .then(() => {
         this.meta = this.book.package.metadata;
@@ -167,19 +119,17 @@ export default {
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
-        this.rendition.themes.fontSize(`${this.fontSize}px`);
-
-        if (this.info.lastCfi) {
-          this.rendition.display(this.info.lastCfi);
-        } else {
-          this.rendition.display();
-        }
+        this.rendition.themes.fontSize(100);
+        this.rendition.display(this.info.lastCfi || 1);
       })
       .then(() => {
         this.isReady = true;
         console.log(this.book);
         console.log(this.rendition);
       });
+
+    this.setShortcuts();
+    this.bindTitlebarBottuns();
   },
 
   methods: {
@@ -200,6 +150,7 @@ export default {
           });
         });
     },
+
     showPopover() {
       this.isPopover = true;
     },
@@ -208,6 +159,16 @@ export default {
       let reference = this.$refs.popRef;
       reference.style.visibility = 'hidden';
       this.isPopover = false;
+    },
+
+    createPopover(contents, cfiRange) {
+      let viewRect = this.rendition.manager.container.getBoundingClientRect();
+      let rect = contents.range(cfiRange).getBoundingClientRect();
+      let reference = this.$refs.popRef;
+      reference.style.left = `${viewRect.x + rect.x}px`;
+      reference.style.top = `${viewRect.y + rect.y}px`;
+      reference.style.width = `${rect.width}px`;
+      reference.style.height = `${rect.height}px`;
     },
 
     copySelection() {
@@ -225,6 +186,7 @@ export default {
       this.rendition.annotations.highlight(this.selection.cfiRange);
       this.info.highlight.push(this.cfiRange);
     },
+
     translateSelection() {
       let { text } = this.selection;
       translate(text, { to: this.translateTo }).then(res => {
@@ -233,12 +195,15 @@ export default {
         this.translatedText = res.text;
       });
     },
+
     nextPage() {
       this.rendition.next();
     },
+
     prevPage() {
       this.rendition.prev();
     },
+
     increseFontSize() {
       this.fontSize += 2;
       this.rendition.themes.fontSize(`${this.fontSize}px`);
@@ -248,6 +213,7 @@ export default {
         duration: 500,
       });
     },
+
     decreaseFontSize() {
       this.fontSize -= 2;
       this.rendition.themes.fontSize(`${this.fontSize}px`);
@@ -265,6 +231,7 @@ export default {
       this.info.bookmarks.splice(index, 1);
       this.$db.insert(this.info.id, this.info);
     },
+
     addBookmark() {
       /**
        * prefred structure of bookmark object
@@ -320,6 +287,48 @@ export default {
 
       createTree(toc, tocTree);
       return tocTree;
+    },
+
+    setShortcuts() {
+      this.$bind(
+        this.$electron.remote.getCurrentWindow(),
+        'Left',
+        this.prevPage
+      );
+      this.$bind(
+        this.$electron.remote.getCurrentWindow(),
+        'Right',
+        this.nextPage
+      );
+      this.$bind(
+        this.$electron.remote.getCurrentWindow(),
+        'CommandOrControl+Up',
+        this.increseFontSize
+      );
+      this.$bind(
+        this.$electron.remote.getCurrentWindow(),
+        'CommandOrControl+Down',
+        this.decreaseFontSize
+      );
+    },
+
+    bindTitlebarBottuns() {
+      this.$bus.on('toc-item-clicked', herf => {
+        this.rendition.display(herf);
+        this.isMenuVisible = false;
+      });
+
+      this.$bus.on('add-bookmark-button', () => {
+        this.addBookmark();
+      });
+
+      this.$bus.on('remove-bookmark-button', bookmark => {
+        this.removeBookmark(bookmark);
+      });
+
+      this.$bus.on('search-input', text => {
+        this.search(text);
+      });
     },
   },
 };
