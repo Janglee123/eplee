@@ -4,6 +4,7 @@
 - [x] add language translation feature
 - [x] add ananation 
 - [x] highlight searched text 
+- [x] Horizontal scroll bar 
 
 ## Mid
 - [x] short by last open(db changes)
@@ -17,7 +18,6 @@
 
 ## Queue
 - [ ] reduce build size
-- [ ] Horizontal scroll bar [issue](https://github.com/futurepress/epub.js/issues/744)
 - [ ] get bookmark title 
 - [ ] fix and improve highlight
 - [ ] add last card in home gridv for book add button 
