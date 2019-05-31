@@ -191,7 +191,7 @@ class Database {
 			this.storage[id] = newValue;
 			return true;
 		}
-
+		this.async();
 		return false;
 	}
 
