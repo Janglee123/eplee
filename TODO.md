@@ -15,6 +15,7 @@
 ## Low
 - [x] add navigation with scroll
 - [x] store output of `book.locations.genrate()` and reuse it insted of doining it alltime.
+- [x] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
 
 ## Queue
 - [ ] add search in home
@@ -22,7 +23,6 @@
 - [ ] reduce build size
 - [ ] fix and improve highlight
 - [ ] add last card in home grid for book add button 
-- [ ] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
 - [ ] create theme
 
 # v0.2.0

@@ -3,7 +3,14 @@
 		<titlebar add backdrop shadow />
 		<el-main>
 			<grid ref="grid" key="bookList.length">
-				<card v-for="book in bookList" :id="book.id" :key="book.id" :title="trunc(book.title,30)" :img-src="book.coverPath" />
+				<card
+					v-for="book in bookList"
+					:id="book.id"
+					:key="book.id"
+					:title="trunc(book.title,30)"
+					:img-src="book.coverPath"
+					:bg-color="book.bgColorFromCover"
+				/>
 			</grid>
 		</el-main>
 	</el-container>
@@ -12,7 +19,8 @@
 <script>
 import path from 'path';
 import fileUrl from 'file-url';
-import Grid from './Home/Grid'
+import * as Vibrant from 'node-vibrant';
+import Grid from './Home/Grid';
 import Card from './Home/Card';
 import Titlebar from './Titlebar';
 import { storeCover, getInfo } from '../../shared/dbUtilis.js';
@@ -31,21 +39,18 @@ export default {
       bookList: [],
     };
   },
-  watch:{ 
-    bookList(newList, oldList){
-       if(oldList.lenght===0) return;
-       // this.$refs.grid.positionItems();
-       this.$bus.emit('bookList-updated');
-    }
+  watch: {
+    bookList(newList, oldList) {
+      if (oldList.lenght === 0) return;
+      this.$bus.emit('bookList-updated');
+    },
   },
-  beforeMount(){
-    this.bookList = this.$db.getAll().sort((a,b)=>{
+  beforeMount() {
+    this.bookList = this.$db.getAll().sort((a, b) => {
       return b.lastOpen - a.lastOpen;
     });
   },
   mounted() {
-    // this.$refs.grid.positionItems();
-    
     this.$bus.on('add-button', () => {
       this.addFiles();
     });
@@ -61,7 +66,7 @@ export default {
         properties: ['openFile', 'multiSelections'],
       });
       if (files) {
-        files.forEach((file) => {
+        files.forEach(file => {
           this.addToDB(file);
         });
       }
@@ -78,16 +83,17 @@ export default {
 
         const coverPath = path.join(this.$dataPath, 'cover', key);
 
-        storeCover(book, coverPath, (isSucces) => {
+        storeCover(book, coverPath, isSucces => {
           if (isSucces) {
             info.coverPath = fileUrl(coverPath);
+            Vibrant.from(coverPath).getPalette((err, palette) => {
+              if (err) return;
+              info.bgColorFromCover = palette.DarkVibrant.hex;
+            }).then(()=>{
+              this.$db.insert(key, info);
+              this.bookList.push(info);
+            });
           }
-          try {
-            this.$db.insert(key, info);
-          } catch (err) {
-            console.log(err);
-          }
-          this.bookList.push(info);
         });
       });
     },

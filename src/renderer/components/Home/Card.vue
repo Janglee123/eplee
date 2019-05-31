@@ -1,6 +1,7 @@
 <template>
 	<router-link :to="{ name: 'Reader', params: { id } }">
 		<el-card
+			ref="card"
 			shadow="hover"
 			class="box-card"
 			:body-style="{ padding: '0px' }"
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Card',
   props: {
@@ -31,8 +33,16 @@ export default {
     id:{
       default:'',
       type:String,
+    },
+    bgColor:{
+      default:'#444',
+      type:String,
     }
   },
+
+  mounted(){
+    this.$refs.card.$el.style.background = this.bgColor;
+  }
 };
 </script>
 
@@ -57,5 +67,6 @@ export default {
   display: inline-grid;
   align-content: center;
   text-align: center;
+  color: #fff;
 }
 </style>
