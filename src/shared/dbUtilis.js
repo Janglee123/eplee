@@ -48,6 +48,52 @@ function genrateKey(filePath) {
 }
 
 /**
+ * parsh the toc provided by epubjs to required form by element-ui tree component
+ * @param {Object} toc The object of book
+ * @returns {Array} returns array of toc tree that easily adopted by el-tree
+ */
+function parshToc(toc) {
+	/**
+	 * some epubs not uese standerd href or epubjs fails to process them
+	 * @param {String} href  The href to validate
+	 * @returns {String} href
+	 */
+	const validateHref = href => {
+		if (href.startsWith('..')) {
+			href = href.substring(2);
+		}
+		if (href.startsWith('/')) {
+			href = href.substring(1);
+		}
+		return href;
+	};
+
+	const tocTree = [];
+
+	/**
+	 * recursively go through toc and parsh it
+	 * @param {toc} toc
+	 * @param {parrent} parrent
+	 */
+	const createTree = (toc, parrent) => {
+		for (let i = 0; i < toc.length; i += 1) {
+			parrent[i] = {
+				label: toc[i].label.trim(),
+				children: [],
+				href: validateHref(toc[i].href),
+			};
+
+			if (toc[i].subitems) {
+				createTree(toc[i].subitems, parrent[i].children);
+			}
+		}
+	};
+
+	createTree(toc, tocTree);
+	return tocTree;
+}
+
+/**
  * genrate object with relavent information of book
  * @param {Book} book The book to extract info
  * @param {Function} callback The callback function
@@ -66,21 +112,28 @@ function getInfo(filePath, callback) {
 	const uri = fileUrl(filePath);
 	const book = new Book(uri);
 
-	book.ready.then(() => {
-		const meta = book.package.metadata;
-		const info = {
-			id: key,
-			title: meta.title,
-			author: meta.creator,
-			publisher: meta.publisher,
-			path: uri,
-			bookmarks: [],
-			highlights: [],
-		};
-		if (callback) {
-			callback(info, book);
-		}
-	});
+	book.ready
+		.then(() => {
+			return book.locations.generate();
+		})
+		.then(locations => {
+			const meta = book.package.metadata;
+
+			const info = {
+				id: key,
+				title: meta.title,
+				author: meta.creator,
+				publisher: meta.publisher,
+				path: uri,
+				bookmarks: [],
+				highlights: [],
+				toc: parshToc(book.navigation.toc),
+				locations,
+			};
+			if (callback) {
+				callback(info, book);
+			}
+		});
 }
 
 export { storeCover, genrateKey, getInfo };

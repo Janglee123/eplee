@@ -18,7 +18,7 @@
 				<div id="reader" v-loading="!isReady" />
 				<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 			</el-main>
-			<el-footer :height="45">
+			<el-footer height="45">
 				<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
 			</el-footer>
 			<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
@@ -89,6 +89,7 @@ export default {
   mounted() {
     const { id } = this.$route.params;
     this.info = this.$db.get(id);
+    this.toc = this.info.toc;
     this.info.lastOpen = new Date().getTime();
 
     this.book = new Book(this.info.path);
@@ -110,7 +111,6 @@ export default {
     });
 
     this.rendition.on('rendered', (e, iframe) => {
-      console.log({e});
       iframe.document.documentElement.addEventListener('wheel',this.wheelHandel);
     });
 
@@ -124,11 +124,8 @@ export default {
     this.book.ready
       .then(() => {
         this.meta = this.book.package.metadata;
-        this.toc = this.parshToc(this.book.navigation.toc);
         this.title = this.meta.title;
-      })
-      .then(() => {
-        return this.book.locations.generate();
+        this.book.locations.load(this.info.locations)
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
@@ -272,7 +269,8 @@ export default {
 
       console.log({href,cfi});
 
-      // At this momment I used herf as a title. It is not easy to get title by current location. see issue.
+      this.getLableFromCfi(cfi, href);
+      // At this momment I used href as a title. It is not easy to get title by current location. see issue.
       const title = href;
 
       const bookmark = {
@@ -285,38 +283,7 @@ export default {
       this.$db.set(this.info.id, this.info);
     },
 
-    parshToc(toc) {
-      const tocTree = [];
-
-      const validateHref = href => {
-        if (href.startsWith('..')) {
-          href = href.substring(2);
-        }
-        if (href.startsWith('/')) {
-          href = href.substring(1);
-        }
-        return href;
-      };
-
-      // create Toc tree recursively
-      const createTree = (toc, parrent) => {
-        for (let i = 0; i < toc.length; i += 1) {
-          parrent[i] = {
-            label: toc[i].label.trim(),
-            children: [],
-            href: validateHref(toc[i].href),
-          };
-
-          if (toc[i].subitems) {
-            createTree(toc[i].subitems, parrent[i].children);
-          }
-        }
-      };
-
-      createTree(toc, tocTree);
-      return tocTree;
-    },
-
+    
     setShortcuts() {
       this.$bind(
         this.$electron.remote.getCurrentWindow(),
@@ -340,12 +307,18 @@ export default {
       );
     },
 
-    onScroll() {},
+    getLableFromCfi(){
+      // let locationCfi = Cfi.getChapterComponent(cfiString);
+      let href = "html/9780486248233_12_ch5.html#ch5-3";
+      console.log({href});
+      let section = this.book.spine.get(href);
+      console.log(section);
+    },
 
     bindTitlebarBottuns() {
-      this.$bus.on('toc-item-clicked', herf => {
-        this.rendition.display(herf);
-        this.isMenuVisible = false;
+      this.$bus.on('toc-item-clicked', href => {
+        console.log(href);
+        this.rendition.display(href);
       });
 
       this.$bus.on('add-bookmark-button', () => {
