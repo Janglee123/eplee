@@ -18,7 +18,7 @@
 				<div id="reader" v-loading="!isReady" />
 				<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 			</el-main>
-			<el-footer>
+			<el-footer :height="45">
 				<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
 			</el-footer>
 			<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
@@ -269,6 +269,8 @@ export default {
 
       const { location } = this.rendition;
       const { href, cfi } = location.start;
+
+      console.log({href,cfi});
 
       // At this momment I used herf as a title. It is not easy to get title by current location. see issue.
       const title = href;
