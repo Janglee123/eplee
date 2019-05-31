@@ -12,17 +12,18 @@
 - [x] copy selecttion added
 
 ## Low
-- [ ] set up vue-router with animation
-- [ ] add touchpad gestuers
-- [ ] add search in home
+- [x] add navigation with scroll
 
 ## Queue
+- [ ] add search in home
+- [ ] set up vue-router with animation
 - [ ] reduce build size
 - [ ] get bookmark title 
 - [ ] fix and improve highlight
-- [ ] add last card in home gridv for book add button 
+- [ ] add last card in home grid for book add button 
 - [ ] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
-
+- [ ] create theme
+- [ ] store output of `book.locations.genrate()` and reuse it insted of doining it alltime.
 
 # v0.2.0
 

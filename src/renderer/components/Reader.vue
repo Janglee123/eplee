@@ -19,7 +19,7 @@
 				<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 			</el-main>
 			<el-footer>
-				<el-slider v-model="sliderValue" v-bind:step="0.01" @change="onSliderValueChange"></el-slider>
+				<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
 			</el-footer>
 			<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
 				<el-button-group>
@@ -90,7 +90,7 @@ export default {
     const { id } = this.$route.params;
     this.info = this.$db.get(id);
     this.info.lastOpen = new Date().getTime();
-    
+
     this.book = new Book(this.info.path);
     this.rendition = new Rendition(this.book, {
       width: '100%',
@@ -99,7 +99,7 @@ export default {
 
     this.rendition.on('selected', (cfiRange, contents) => {
       // rect of selection
-      this.createPopover(contents,cfiRange);
+      this.createPopover(contents, cfiRange);
       this.selection.cfiRange = cfiRange;
       this.book.getRange(cfiRange).then(range => {
         let text = range.toString();
@@ -109,11 +109,16 @@ export default {
       });
     });
 
+    this.rendition.on('rendered', (e, iframe) => {
+      console.log({e});
+      iframe.document.documentElement.addEventListener('wheel',this.wheelHandel);
+    });
+
     this.rendition.on('relocated', location => {
       this.info.lastCfi = location.start.cfi;
       this.$db.set(this.info.id, this.info);
       this.progress = this.book.locations.percentageFromCfi(location.start.cfi);
-      this.sliderValue = Math.floor(this.progress*10000)/100;
+      this.sliderValue = Math.floor(this.progress * 10000) / 100;
     });
 
     this.book.ready
@@ -121,8 +126,9 @@ export default {
         this.meta = this.book.package.metadata;
         this.toc = this.parshToc(this.book.navigation.toc);
         this.title = this.meta.title;
-      }).then(()=>{
-        return  this.book.locations.generate();
+      })
+      .then(() => {
+        return this.book.locations.generate();
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
@@ -221,6 +227,18 @@ export default {
       });
     },
 
+    wheelHandel(e) {
+      clearTimeout(this._isScrolling);
+
+      this._isScrolling = setTimeout(() => {
+        if (e.deltaY > 0) {
+          this.nextPage();
+        } else {
+          this.prevPage();
+        }
+      }, 50);
+    },
+
     decreaseFontSize() {
       this.fontSize -= 2;
       this.rendition.themes.fontSize(`${this.fontSize}px`);
@@ -251,6 +269,7 @@ export default {
 
       const { location } = this.rendition;
       const { href, cfi } = location.start;
+
       // At this momment I used herf as a title. It is not easy to get title by current location. see issue.
       const title = href;
 
@@ -319,6 +338,8 @@ export default {
       );
     },
 
+    onScroll() {},
+
     bindTitlebarBottuns() {
       this.$bus.on('toc-item-clicked', herf => {
         this.rendition.display(herf);
@@ -337,11 +358,11 @@ export default {
         this.search(text);
       });
     },
-    onSliderValueChange(newValue){
-      let cfi = this.book.locations.cfiFromPercentage(newValue/100);
+    onSliderValueChange(newValue) {
+      let cfi = this.book.locations.cfiFromPercentage(newValue / 100);
       this.rendition.display(cfi);
     },
-  }
+  },
 };
 </script>
 
