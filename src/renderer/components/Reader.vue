@@ -83,6 +83,7 @@ export default {
       isPopover: false,
       sliderValue: 0,
       progress: 0,
+      currentChapter: '',
     };
   },
 
@@ -93,6 +94,7 @@ export default {
     this.info.lastOpen = new Date().getTime();
 
     this.book = new Book(this.info.path);
+
     this.rendition = new Rendition(this.book, {
       width: '100%',
       height: '100%',
@@ -111,9 +113,11 @@ export default {
     });
 
     this.rendition.on('rendered', (e, iframe) => {
+      let { label } = this.book.navigation.get(e.href);
+      this.currentChapter = label.trim();
       iframe.document.documentElement.addEventListener('wheel',this.wheelHandel);
     });
-
+  
     this.rendition.on('relocated', location => {
       this.info.lastCfi = location.start.cfi;
       this.$db.set(this.info.id, this.info);
@@ -267,11 +271,8 @@ export default {
       const { location } = this.rendition;
       const { href, cfi } = location.start;
 
-      console.log({href,cfi});
-
-      this.getLableFromCfi(cfi, href);
-      // At this momment I used href as a title. It is not easy to get title by current location. see issue.
-      const title = href;
+      // TODO : find more minigful name for bookmark
+      const title = `${this.currentChapter} : At ${Math.floor(this.progress*1000)/10}%`;
 
       const bookmark = {
         label: title,
@@ -307,17 +308,8 @@ export default {
       );
     },
 
-    getLableFromCfi(){
-      // let locationCfi = Cfi.getChapterComponent(cfiString);
-      let href = "html/9780486248233_12_ch5.html#ch5-3";
-      console.log({href});
-      let section = this.book.spine.get(href);
-      console.log(section);
-    },
-
     bindTitlebarBottuns() {
       this.$bus.on('toc-item-clicked', href => {
-        console.log(href);
         this.rendition.display(href);
       });
 
