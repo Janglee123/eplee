@@ -44,7 +44,7 @@ function genrateKey(filePath) {
 		return '';
 	}
 	// eslint-disabled-next-line no-useless-escape
-	return filePath.replace(/[\/\.]/g, '');
+	return filePath.replace(/[ \/\.]/g, '');
 }
 
 /**
@@ -127,6 +127,7 @@ function getInfo(filePath, callback) {
 				path: uri,
 				bookmarks: [],
 				highlights: [],
+				bgColorFromCover: '',
 				toc: parshToc(book.navigation.toc),
 				locations,
 			};
