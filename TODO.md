@@ -10,12 +10,14 @@
 - [x] short by last open(db changes)
 - [x] Remember page position/index (db changes)
 - [x] copy selecttion added
-- [x] get bookmark title 
+- [x] get bookmark title
+- [x] back button added
 
 ## Low
 - [x] add navigation with scroll
 - [x] store output of `book.locations.genrate()` and reuse it insted of doining it alltime.
 - [x] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
+- [x] fixed open with not working 
 
 ## Queue
 - [ ] add search in home

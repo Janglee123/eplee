@@ -1,19 +1,18 @@
 <template>
-	<router-view />
+	<div>
+		<router-view v-loading="!isReady"/>
+	</div>
 </template>
 
 <script>
-import path from 'path';
 import fs from 'fs';
-import fileUrl from 'file-url';
-import { storeCover, getInfo } from '../shared/dbUtilis.js';
-
+import { addToDB } from '../shared/dbUtilis.js';
 
 export default {
   name: 'App',
   data() {
     return {
-      arg: [],
+      isReady: false,
     };
   },
 
@@ -22,34 +21,17 @@ export default {
     const arg = process.argv[process.argv.length - 1];
 
     if (arg.endsWith('.epub') && fs.existsSync(arg)) {
-      // if epubfile is passed in args open file and redirect to reader
-      console.log('file found', arg);
-
+      // if epub file is passed in args open file and redirect to reader
       const file = arg;
 
-      // if file is opend first time store it in db 
-      getInfo(file, (info, book) => {
-        const key = info.id;
-        
-        this.$router.push({ name: 'Reader', params: { id:key } });
-        
-        if (this.$db.has(key)) {
-            return;
-        }
-
-        const coverPath = path.join(this.$dataPath, 'cover', key);
-        info.coverPath = fileUrl(coverPath);
-
-        storeCover(book, coverPath, () => {
-          try {
-            this.$db.insert(key, info);
-          } catch (err) {
-            console.log(err);
-          }
-        });
+      addToDB(file, this.$db, (info)=>{
+        this.isReady = true;
+        this.$router.push({ name: 'Reader', params: { id: info.id } })
       });
     }
-
+    else{
+        this.isReady = true;
+    }
   },
 };
 </script>

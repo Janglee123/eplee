@@ -1,7 +1,11 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { remote } from 'electron';
 import { save } from 'save-file';
 import toBuffer from 'blob-to-buffer';
 import { Book } from 'epubjs';
 import fileUrl from 'file-url';
+import path from 'path';
+import * as Vibrant from 'node-vibrant';
 
 /**
  * extract cover from book and store on a given path
@@ -137,4 +141,53 @@ function getInfo(filePath, callback) {
 		});
 }
 
-export { storeCover, genrateKey, getInfo };
+/**
+ * 1. Registers epub files into db with their information
+ * 2. Extract cover and also store color palette from cover
+ * @param {String} file Path to epub file
+ * @param {Database} db Database in which data stored
+ * @param {Function} [cb] callback function
+ */
+
+function addToDB(file, db, cb) {
+	getInfo(file, (info, book) => {
+		const key = info.id;
+		info.lastOpen = new Date().getTime();
+
+		// return if book is allready registered
+		if (db.has(key)) {
+			if (cb) { 
+				cb(info, db);
+			}
+			return;
+		}
+
+		const coverPath = path.join(
+			remote.app.getPath('appData'),
+			'eplee',
+			'cover',
+			key
+		);
+
+		storeCover(book, coverPath, isSucces => {
+			if (isSucces) {
+				info.coverPath = fileUrl(coverPath);
+				Vibrant.from(coverPath)
+					.getPalette((err, palette) => {
+						if (err) return;
+						info.bgColorFromCover = palette.DarkVibrant.hex;
+					})
+					.then(() => {
+						db.insert(key, info);
+					})
+					.then(() => {
+						if (cb) {
+							cb(info, db);
+						}
+					});
+			}
+		});
+	});
+}
+
+export { addToDB, storeCover, genrateKey, getInfo };

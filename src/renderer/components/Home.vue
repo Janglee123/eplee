@@ -8,12 +8,9 @@
 </template>
 
 <script>
-import path from 'path';
-import fileUrl from 'file-url';
-import * as Vibrant from 'node-vibrant';
 import Grid from './Home/Grid';
 import Titlebar from './Titlebar';
-import { storeCover, getInfo } from '../../shared/dbUtilis.js';
+import { addToDB } from '../../shared/dbUtilis.js';
 
 export default {
   name: 'Home',
@@ -45,35 +42,11 @@ export default {
       });
       if (files) {
         files.forEach(file => {
-          this.addToDB(file);
+          addToDB(file, this.$db, (info)=>{
+            this.bookList.unshift(info);
+          });
         });
       }
-    },
-
-    addToDB(file) {
-      getInfo(file, (info, book) => {
-        const key = info.id;
-        info.lastOpen = new Date().getTime();
-
-        if (this.$db.has(key)) {
-          return;
-        }
-
-        const coverPath = path.join(this.$dataPath, 'cover', key);
-
-        storeCover(book, coverPath, isSucces => {
-          if (isSucces) {
-            info.coverPath = fileUrl(coverPath);
-            Vibrant.from(coverPath).getPalette((err, palette) => {
-              if (err) return;
-              info.bgColorFromCover = palette.DarkVibrant.hex;
-            }).then(()=>{
-              this.$db.insert(key, info);
-              this.bookList.unshift(info);
-            });
-          }
-        });
-      });
     },
   },
 };
