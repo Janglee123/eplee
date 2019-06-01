@@ -6,9 +6,20 @@ Sweet, Simple and Beautiful ePub reader<br>
   <img src="https://dev.azure.com/merupatel123/test2/_apis/build/status/test2-CI?branchName=master" alt="Build Status">
 </a>
 
-  <a href="https://discord.gg/nrt3QKN">
+<a href="https://www.codacy.com/app/Janglee123/eplee?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Janglee123/eplee&amp;utm_campaign=Badge_Grade">
+  <img src="https://api.codacy.com/project/badge/Grade/425ba0a050424bb08aeb15f9b7bcd263"/>
+</a>
+
+<a>
+<img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
+</a>
+
+<a href="https://discord.gg/nrt3QKN">
   <img src="https://img.shields.io/discord/568671056865394688.svg?label=&amp;logo=discord&amp;logoColor=ffffff&amp;color=7389D8&amp;labelColor=6A7EC2" alt="Discord invite">
-</a></div>
+</a>
+
+</div>
+
 
 Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI. **Project is in the early stage of development**. If you'd like to help support the project, please consider giving developer time on the project (join our discord [server](https://discord.gg/nrt3QKN)).
 
