@@ -2,16 +2,7 @@
 	<el-container direction="vertical">
 		<titlebar add backdrop shadow />
 		<el-main>
-			<grid ref="grid" key="bookList.length">
-				<card
-					v-for="book in bookList"
-					:id="book.id"
-					:key="book.id"
-					:title="trunc(book.title,30)"
-					:img-src="book.coverPath"
-					:bg-color="book.bgColorFromCover"
-				/>
-			</grid>
+			<grid ref="grid" key="bookList.length" :book-list="bookList" />
 		</el-main>
 	</el-container>
 </template>
@@ -21,16 +12,12 @@ import path from 'path';
 import fileUrl from 'file-url';
 import * as Vibrant from 'node-vibrant';
 import Grid from './Home/Grid';
-import Card from './Home/Card';
 import Titlebar from './Titlebar';
 import { storeCover, getInfo } from '../../shared/dbUtilis.js';
-
-console.log(Grid);
 
 export default {
   name: 'Home',
   components: {
-    Card,
     Titlebar,
     Grid,
   },
@@ -38,12 +25,6 @@ export default {
     return {
       bookList: [],
     };
-  },
-  watch: {
-    bookList(newList, oldList) {
-      if (oldList.lenght === 0) return;
-      this.$bus.emit('bookList-updated');
-    },
   },
   beforeMount() {
     this.bookList = this.$db.getAll().sort((a, b) => {
@@ -57,9 +38,6 @@ export default {
   },
 
   methods: {
-    trunc(str, n) {
-      return str.length > n ? `${str.substr(0, n - 3)}...` : str;
-    },
     addFiles() {
       const files = this.$electron.remote.dialog.showOpenDialog({
         filters: [{ name: 'ePub', extensions: ['epub'] }],
@@ -91,7 +69,7 @@ export default {
               info.bgColorFromCover = palette.DarkVibrant.hex;
             }).then(()=>{
               this.$db.insert(key, info);
-              this.bookList.push(info);
+              this.bookList.unshift(info);
             });
           }
         });

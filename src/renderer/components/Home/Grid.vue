@@ -1,6 +1,15 @@
 <template>
-	<div :class="[wrapper]">
-		<slot />
+	<div>
+		<div v-for="book in bookList" :key="book.id">
+			<router-link :to="{ name: 'Reader', params: { id:book.id } }">
+				<el-card ref="card" shadow="hover" class="box-card" :body-style="{ padding: '0px' }">
+					<el-image :src="book.coverPath" :fit="'fill'" />
+					<div class="title" v-bind:style="{ background: book.bgColorFromCover }">
+						{{ trunc(book.title,30) }}
+					</div>
+				</el-card>
+			</router-link>
+		</div>
 	</div>
 </template>
 
@@ -37,6 +46,10 @@ export default {
       type: Boolean, // Place items in lower column
       default: false,
     },
+    bookList: {
+      type: Array,
+      default: () => {},
+    },
   },
 
   data() {
@@ -46,65 +59,45 @@ export default {
     };
   },
 
-  mounted() {
-    this.waitUntilReady();
-    this.$bus.on('card-mounted',()=>{
+  updated(){
+      this.items = this.$el.children;
+      this.init();
       this.positionItems();
-      console.log(this.items.length);
+  },
+
+  mounted() {
+    this.items = this.$el.children;
+    this.init();
+    this.positionItems();
+
+    window.addEventListener('resize', () => {
+      setTimeout(this.positionItems(), 200);
     });
   },
 
   methods: {
-    waitUntilReady() {
-      if (this.isReady()) {
-        this.positionItems();
-
-        window.addEventListener('resize', () => {
-          setTimeout(this.positionItems(), 200);
-        });
-      } else{
-       this.getReady();
-      }
-    },
-
-    isReady() {
-      return this.$el && this.items.length > 0;
-    },
-
-    getReady() {
-      const interval = setInterval(() => {
-        this.items = this.$el.children;
-        if (this.isReady()) {
-          clearInterval(interval);
-          this.init();
-        }
-      }, 100);
+    trunc(str, n) {
+      return str.length > n ? `${str.substr(0, n - 3)}...` : str;
     },
 
     init() {
-      if (!this.isReady() || this.started) return;
-
+      if(this.items.length===0) return;
       this.$el.style.position = 'relative';
 
-      Array.prototype.forEach.call(this.items, item => {
+      Array.prototype.forEach.call(this.items, (item) => {
         item.style.position = 'absolute';
-        item.style.maxWidth = `${this.maxColWidth  }px`;
-        if (this.animate) item.style.transition = 'top, left 0.2s ease';
+        item.style.maxWidth = `${this.maxColWidth}px`;
+        if (this.animate) item.style.transition = 'top 0.2s ease, left 0.2s ease, right 0.2s ease, buttom 0.2s ease';
       });
-
-      this.started = true;
-      this.waitUntilReady();
     },
 
     colWidth() {
-      if(this.items.length === 0) return -1;
-
-      let width =  this.items[0].getBoundingClientRect().width + this.gap;
+      let width = this.items[0].getBoundingClientRect().width + this.gap;
       return width;
     },
 
     setup() {
-      const {width} = this.$el.getBoundingClientRect();
+      const { width } = this.$el.getBoundingClientRect();
       let numCols = Math.floor(width / this.colWidth()) || 1;
       const cols = [];
 
@@ -112,7 +105,7 @@ export default {
         numCols = this.maxCols;
       }
 
-      for (let i = 0; i < numCols; i+=1) {
+      for (let i = 0; i < numCols; i += 1) {
         cols[i] = {
           height: 0,
           top: 0,
@@ -136,33 +129,31 @@ export default {
 
     positionItems() {
 
-      if(this.items.length === 0 ) return;
+      if(this.items.length===0) return;
 
       let { cols, wSpace } = this.setup();
 
       wSpace = Math.floor(wSpace / 2);
 
-
       Array.prototype.forEach.call(this.items, (item, i) => {
-        
         const min = this.nextCol(cols, i);
-        
+
         const left = min.index * this.colWidth() + wSpace;
 
-        item.style.left = `${left  }px`;
-        item.style.top = `${min.height + min.top  }px`;
+        item.style.left = `${left}px`;
+        item.style.top = `${min.height + min.top}px`;
 
         min.height += min.top + item.getBoundingClientRect().height;
         min.top = this.gap;
       });
 
-      this.$el.style.height = `${this.getMax(cols).height  }px`;
+      this.$el.style.height = `${this.getMax(cols).height}px`;
     },
 
     getMax(cols) {
       let max = cols[0];
 
-      cols.forEach(col =>{
+      cols.forEach(col => {
         if (col.height > max.height) max = col;
       });
 
@@ -172,7 +163,7 @@ export default {
     getMin(cols) {
       let min = cols[0];
 
-      cols.forEach(col =>{
+      cols.forEach(col => {
         if (col.height < min.height) min = col;
       });
 
@@ -181,3 +172,27 @@ export default {
   },
 };
 </script>
+
+<style scopped>
+.box-card {
+  width: 170px;
+  height: 250px;
+  /* background: #fff; */
+  user-select: none;
+}
+
+.el-image {
+  height: 200px;
+  width: 100%;
+}
+
+.title {
+  width: 100%;
+  height: 50px;
+  font-size: 14px;
+  display: inline-grid;
+  align-content: center;
+  text-align: center;
+  color: #ffffff;
+}
+</style>
