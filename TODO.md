@@ -1,12 +1,14 @@
 # v0.3.0
 
 ## High
+
 - [x] add language translation feature
-- [x] add ananation 
-- [x] highlight searched text 
-- [x] Horizontal scroll bar 
+- [x] add ananation
+- [x] highlight searched text
+- [x] Horizontal scroll bar
 
 ## Mid
+
 - [x] short by last open(db changes)
 - [x] Remember page position/index (db changes)
 - [x] copy selecttion added
@@ -14,17 +16,19 @@
 - [x] back button added
 
 ## Low
+
 - [x] add navigation with scroll
 - [x] store output of `book.locations.genrate()` and reuse it insted of doining it alltime.
 - [x] use colors in card background. [vibrant.js](https://jariz.github.io/vibrant.js/)
-- [x] fixed open with not working 
+- [x] fixed open with not working
 
 ## Queue
+
 - [ ] add search in home
 - [ ] set up vue-router with animation
 - [ ] reduce build size
 - [ ] fix and improve highlight
-- [ ] add last card in home grid for book add button 
+- [ ] add last card in home grid for book add button
 - [ ] create theme
 
 # v0.2.0
@@ -33,10 +37,12 @@
 
 - [x] DB
 - [x] add keyboard shortcuts (used electron localshortcuts because of iframe)
+
   - [x] open file
   - [x] changing Font size (ctrl+up/down)
   - [x] navigation left/right
-- [x] fix scrolling in sidebar (https://github.com/ElemeFE/element/issues/10198)
+
+- [x] fix scrolling in sidebar (<https://github.com/ElemeFE/element/issues/10198>)
 - [x] fix ToC navigation
 - [x] write code to extract cover
 - [x] use url encoder
@@ -44,7 +50,6 @@
 - [x] add open with(**testing required**)
 - [x] add search in book
 - [x] setup azure pipeline and travic ci
-
 
 ## Mid
 
