@@ -17,7 +17,9 @@ Sweet, Simple and Beautiful ePub reader<br>
 <a href="https://discord.gg/nrt3QKN">
   <img src="https://img.shields.io/discord/568671056865394688.svg?label=&amp;logo=discord&amp;logoColor=ffffff&amp;color=7389D8&amp;labelColor=6A7EC2" alt="Discord invite">
 </a>
-
+<a href="https://github.com/Janglee123/eplee/releases">
+<img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/janglee123/eplee/total.svg?label=Downloads&logo=GitHub">
+</a>
 </div>
 
 
