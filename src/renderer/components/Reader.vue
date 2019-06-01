@@ -84,6 +84,7 @@ export default {
       sliderValue: 0,
       progress: 0,
       currentChapter: '',
+      history: [],
     };
   },
 
@@ -121,6 +122,7 @@ export default {
     this.rendition.on('relocated', location => {
       this.info.lastCfi = location.start.cfi;
       this.$db.set(this.info.id, this.info);
+      this.history.push(location.start.cfi);
       this.progress = this.book.locations.percentageFromCfi(location.start.cfi);
       this.sliderValue = Math.floor(this.progress * 10000) / 100;
     });
@@ -324,6 +326,21 @@ export default {
       this.$bus.on('search-input', text => {
         this.search(text);
       });
+
+      this.$bus.on('back-button', ()=>{
+        // remove current location 
+        this.history.pop();
+
+        let lastLocation = this.history.pop();
+
+        if(lastLocation){
+          this.rendition.display(lastLocation); 
+        }
+        else{
+          // go to homepage
+          this.$router.push('/');
+        }
+      })
     },
     onSliderValueChange(newValue) {
       let cfi = this.book.locations.cfiFromPercentage(newValue / 100);
