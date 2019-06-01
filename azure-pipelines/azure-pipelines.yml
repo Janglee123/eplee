@@ -38,3 +38,12 @@ jobs:
 
     steps:
       - template: mac.yml
+
+  - job: github_releases
+    dependsOn:
+      - win
+      - linux
+      - mac
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    steps:
+      - template: github_releases.yml
