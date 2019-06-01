@@ -7,7 +7,7 @@ Sweet, Simple and Beautiful ePub reader<br>
 </a>
 
 <a href="https://www.codacy.com/app/Janglee123/eplee?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Janglee123/eplee&amp;utm_campaign=Badge_Grade">
-  <img src="https://api.codacy.com/project/badge/Grade/425ba0a050424bb08aeb15f9b7bcd263"/>
+  <img alt="Codacy grade" src="https://img.shields.io/codacy/grade/425ba0a050424bb08aeb15f9b7bcd263.svg?logo=Codacy">
 </a>
 
 <a>
