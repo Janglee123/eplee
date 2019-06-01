@@ -14,6 +14,8 @@ Eplee is an ePub reader focused on clean distraction-free reading experience wit
 
 ## Screenshots
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a88476975b2447e49080bf1447d09212)](https://app.codacy.com/app/Janglee123/eplee?utm_source=github.com&utm_medium=referral&utm_content=Janglee123/eplee&utm_campaign=Badge_Grade_Dashboard)
+
 ![](https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_2.png) ![](https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_1.png)
 
 ## Installing
