@@ -42,7 +42,7 @@
 				popper-class="popper"
 				placement="bottom"
 				width="350"
-				trigger="hover"
+				trigger="click"
 				@show="startSearch"
 				@hide="stopSearch"
 			>
@@ -56,7 +56,7 @@
 						@change="onSearchTextChange"
 					/>
 				</div>
-				<el-table height="95%" :show-header="false" :data="searchResult" @cell-click="onNodeClick">
+				<el-table :show-header="false" :data="searchResult" @cell-click="onNodeClick">
 					<el-table-column prop="label" width="350"></el-table-column>
 				</el-table>
 			</el-popover>
@@ -272,6 +272,11 @@ export default {
   max-width: 100%;
   overflow: auto;
   word-wrap: wrap;
+}
+
+.el-table {
+  min-height: 94%;
+  max-height: 94%;
 }
 
 .el-table__row {
