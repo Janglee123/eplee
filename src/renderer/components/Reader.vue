@@ -289,22 +289,22 @@ export default {
     
     setShortcuts() {
       this.$bind(
-        this.$electron.remote.getCurrentWindow(),
+        this.$remote.getCurrentWindow(),
         'Left',
         this.prevPage
       );
       this.$bind(
-        this.$electron.remote.getCurrentWindow(),
+        this.$remote.getCurrentWindow(),
         'Right',
         this.nextPage
       );
       this.$bind(
-        this.$electron.remote.getCurrentWindow(),
+        this.$remote.getCurrentWindow(),
         'CommandOrControl+Up',
         this.increseFontSize
       );
       this.$bind(
-        this.$electron.remote.getCurrentWindow(),
+        this.$remote.getCurrentWindow(),
         'CommandOrControl+Down',
         this.decreaseFontSize
       );

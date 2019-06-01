@@ -4,7 +4,7 @@
 			<router-link :to="{ name: 'Reader', params: { id:book.id } }">
 				<el-card ref="card" shadow="hover" class="box-card" :body-style="{ padding: '0px' }">
 					<el-image :src="book.coverPath" :fit="'fill'" />
-					<div class="title" v-bind:style="{ background: book.bgColorFromCover }">
+					<div class="title" :style="{ background: book.bgColorFromCover }">
 						{{ trunc(book.title,30) }}
 					</div>
 				</el-card>
