@@ -23,11 +23,15 @@ Sweet, Simple and Beautiful ePub reader<br>
 </div>
 
 
-Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI. **Project is in the early stage of development**. If you'd like to help support the project, please consider giving developer time on the project (join our discord [server](https://discord.gg/nrt3QKN)).
+Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI. **Project is in the early stage of development**.
 
 ## Screenshots
 
 ![](https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_2.png) ![](https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_1.png)
+
+## Why?
+
+There are lots of open source epub reader available right now. So, the question "Why there is a need for another epub reader?" is meaningful. The answer is the reading experience. Eplee focused on clean UI that let you read a book without annoying GUI.
 
 ## Installing
 
