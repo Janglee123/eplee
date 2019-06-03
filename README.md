@@ -1,5 +1,7 @@
-<div align="center"><img src="https://github.com/Janglee123/eplee/blob/master/build/icons/256x256.png" width="200px" height="200px"><p>
-</p><h2>Eplee</h2>
+<div align="center">
+<img src= "https://raw.githubusercontent.com/Janglee123/eplee/master/build/icons/256x256.png" width="200px" height="200px">
+<p></p>
+<h2>Eplee</h2>
 Sweet, Simple and Beautiful ePub reader<br>
 
 <a href="https://dev.azure.com/merupatel123/test2/_build/latest?definitionId=2&amp;branchName=master">
@@ -27,7 +29,7 @@ Eplee is an ePub reader focused on clean distraction-free reading experience wit
 
 ## Screenshots
 
-![](https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_2.png) ![](https://github.com/Janglee123/eplee/blob/master/screenshots/screenshot_1.png)
+![](https://raw.githubusercontent.com/Janglee123/eplee/master/screenshots/screenshot_2.png) ![](https://raw.githubusercontent.com/Janglee123/eplee/master/screenshots/screenshot_1.png)
 
 ## Why?
 
