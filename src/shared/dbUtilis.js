@@ -15,26 +15,26 @@ import * as Vibrant from 'node-vibrant';
  */
 
 function storeCover(book, path, cb) {
-	book.loaded.cover.then(cover => {
-		if (!cover) {
-			cb(false);
-			return;
-		}
-		try {
-			book.archive.getBlob(cover).then(blb => {
-				toBuffer(blb, (err, buffer) => {
-					if (err) throw err;
-					save(buffer, path).then(() => {
-						if (cb) {
-							cb(true);
-						}
-					});
-				});
-			});
-		} catch (err) {
-			console.error(err);
-		}
-	});
+  book.loaded.cover.then(cover => {
+    if (!cover) {
+      cb(false);
+      return;
+    }
+    try {
+      book.archive.getBlob(cover).then(blb => {
+        toBuffer(blb, (err, buffer) => {
+          if (err) throw err;
+          save(buffer, path).then(() => {
+            if (cb) {
+              cb(true);
+            }
+          });
+        });
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  });
 }
 
 /**
@@ -44,11 +44,11 @@ function storeCover(book, path, cb) {
  */
 
 function genrateKey(filePath) {
-	if (!filePath || typeof filePath !== 'string') {
-		return '';
-	}
-	// eslint-disabled-next-line no-useless-escape
-	return filePath.replace(/[ \/\.]/g, '');
+  if (!filePath || typeof filePath !== 'string') {
+    return '';
+  }
+  // eslint-disabled-next-line no-useless-escape
+  return filePath.replace(/[ \/\.]/g, '');
 }
 
 /**
@@ -57,44 +57,44 @@ function genrateKey(filePath) {
  * @returns {Array} returns array of toc tree that easily adopted by el-tree
  */
 function parshToc(toc) {
-	/**
-	 * some epubs not uese standerd href or epubjs fails to process them
-	 * @param {String} href  The href to validate
-	 * @returns {String} href
-	 */
-	const validateHref = href => {
-		if (href.startsWith('..')) {
-			href = href.substring(2);
-		}
-		if (href.startsWith('/')) {
-			href = href.substring(1);
-		}
-		return href;
-	};
+  /**
+   * some epubs not uese standerd href or epubjs fails to process them
+   * @param {String} href  The href to validate
+   * @returns {String} href
+   */
+  const validateHref = href => {
+    if (href.startsWith('..')) {
+      href = href.substring(2);
+    }
+    if (href.startsWith('/')) {
+      href = href.substring(1);
+    }
+    return href;
+  };
 
-	const tocTree = [];
+  const tocTree = [];
 
-	/**
-	 * recursively go through toc and parsh it
-	 * @param {toc} toc
-	 * @param {parrent} parrent
-	 */
-	const createTree = (toc, parrent) => {
-		for (let i = 0; i < toc.length; i += 1) {
-			parrent[i] = {
-				label: toc[i].label.trim(),
-				children: [],
-				href: validateHref(toc[i].href),
-			};
+  /**
+   * recursively go through toc and parsh it
+   * @param {toc} toc
+   * @param {parrent} parrent
+   */
+  const createTree = (toc, parrent) => {
+    for (let i = 0; i < toc.length; i += 1) {
+      parrent[i] = {
+        label: toc[i].label.trim(),
+        children: [],
+        href: validateHref(toc[i].href),
+      };
 
-			if (toc[i].subitems) {
-				createTree(toc[i].subitems, parrent[i].children);
-			}
-		}
-	};
+      if (toc[i].subitems) {
+        createTree(toc[i].subitems, parrent[i].children);
+      }
+    }
+  };
 
-	createTree(toc, tocTree);
-	return tocTree;
+  createTree(toc, tocTree);
+  return tocTree;
 }
 
 /**
@@ -104,41 +104,41 @@ function parshToc(toc) {
  */
 
 function getInfo(filePath, callback) {
-	// parameter validation
-	if (!filePath || typeof filePath !== 'string') {
-		return;
-	}
+  // parameter validation
+  if (!filePath || typeof filePath !== 'string') {
+    return;
+  }
 
-	// create a key from path
-	const key = genrateKey(filePath);
+  // create a key from path
+  const key = genrateKey(filePath);
 
-	// file load on file protocol
-	const uri = fileUrl(filePath);
-	const book = new Book(uri);
+  // file load on file protocol
+  const uri = fileUrl(filePath);
+  const book = new Book(uri);
 
-	book.ready
-		.then(() => {
-			return book.locations.generate();
-		})
-		.then(locations => {
-			const meta = book.package.metadata;
+  book.ready
+    .then(() => {
+      return book.locations.generate();
+    })
+    .then(locations => {
+      const meta = book.package.metadata;
 
-			const info = {
-				id: key,
-				title: meta.title,
-				author: meta.creator,
-				publisher: meta.publisher,
-				path: uri,
-				bookmarks: [],
-				highlights: [],
-				bgColorFromCover: '',
-				toc: parshToc(book.navigation.toc),
-				locations,
-			};
-			if (callback) {
-				callback(info, book);
-			}
-		});
+      const info = {
+        id: key,
+        title: meta.title,
+        author: meta.creator,
+        publisher: meta.publisher,
+        path: uri,
+        bookmarks: [],
+        highlights: [],
+        bgColorFromCover: '',
+        toc: parshToc(book.navigation.toc),
+        locations,
+      };
+      if (callback) {
+        callback(info, book);
+      }
+    });
 }
 
 /**
@@ -150,44 +150,51 @@ function getInfo(filePath, callback) {
  */
 
 function addToDB(file, db, cb) {
-	getInfo(file, (info, book) => {
-		const key = info.id;
-		info.lastOpen = new Date().getTime();
+  getInfo(file, (info, book) => {
+    const key = info.id;
+    info.lastOpen = new Date().getTime();
 
-		// return if book is allready registered
-		if (db.has(key)) {
-			if (cb) { 
-				cb(info, db);
-			}
-			return;
-		}
+    // return if book is allready registered
+    if (db.has(key)) {
+      if (cb) {
+        cb(info, db);
+      }
+      return;
+    }
 
-		const coverPath = path.join(
-			remote.app.getPath('appData'),
-			'eplee',
-			'cover',
-			key
-		);
+    const coverPath = path.join(
+      remote.app.getPath('appData'),
+      'eplee',
+      'cover',
+      key
+    );
 
-		storeCover(book, coverPath, isSucces => {
-			if (isSucces) {
-				info.coverPath = fileUrl(coverPath);
-				Vibrant.from(coverPath)
-					.getPalette((err, palette) => {
-						if (err) return;
-						info.bgColorFromCover = palette.DarkVibrant.hex;
-					})
-					.then(() => {
-						db.insert(key, info);
-					})
-					.then(() => {
-						if (cb) {
-							cb(info, db);
-						}
-					});
-			}
-		});
-	});
+    storeCover(book, coverPath, isSucces => {
+      if (isSucces) {
+        info.coverPath = fileUrl(coverPath);
+        Vibrant.from(coverPath)
+          .getPalette((err, palette) => {
+            if (err) return;
+            info.bgColorFromCover = palette.DarkVibrant.hex;
+          })
+          .then(() => {
+            db.insert(key, info);
+          })
+          .then(() => {
+            if (cb) {
+              cb(info, db);
+            }
+          });
+      } else {
+      	info.bgColorFromCover = '#6d6d6d';
+        db.insert(key, info);
+
+        if (cb) {
+          cb(info, db);
+        }
+      }
+    });
+  });
 }
 
 export { addToDB, storeCover, genrateKey, getInfo };
