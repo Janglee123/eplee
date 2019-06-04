@@ -5,21 +5,21 @@ import Reader from '@/renderer/components/Reader';
 Vue.use(Router);
 
 export default new Router({
-	routes: [
-		{
-			path: '/',
-			name: 'Home',
-			component: Home,
-		},
-		{
-			path: '/reader/:id',
-			name: 'Reader',
-			component: Reader, // () => import('@/renderer/components/Reader'),
-			props: true,
-		},
-		{
-			path: '*',
-			redirect: '/',
-		},
-	],
+  routes: [
+    {
+      path: '/',
+      name: 'Home',
+      component: Home,
+    },
+    {
+      path: '/reader/:id',
+      name: 'Reader',
+      component: Reader, // () => import('@/renderer/components/Reader'),
+      props: true,
+    },
+    {
+      path: '*',
+      redirect: '/',
+    },
+  ],
 });

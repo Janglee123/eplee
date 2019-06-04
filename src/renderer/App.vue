@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<router-view v-loading="!isReady"/>
+		<router-view v-loading="!isReady" />
 	</div>
 </template>
 

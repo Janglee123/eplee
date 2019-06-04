@@ -186,7 +186,7 @@ function addToDB(file, db, cb) {
             }
           });
       } else {
-      	info.bgColorFromCover = '#6d6d6d';
+        info.bgColorFromCover = '#6d6d6d';
         db.insert(key, info);
 
         if (cb) {
