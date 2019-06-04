@@ -1,6 +1,8 @@
 <template>
 	<el-container direction="vertical">
-		<titlebar add backdrop shadow />
+		<titlebar backdrop shadow>
+			<el-button size="small" icon="el-icon-plus" circle @click="addFiles" />
+		</titlebar>
 		<el-main>
 			<grid ref="grid" key="bookList.length" :book-list="bookList" />
 		</el-main>

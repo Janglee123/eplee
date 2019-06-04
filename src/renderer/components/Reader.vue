@@ -3,16 +3,54 @@
 		<el-container direction="vertical">
 			<titlebar
 				ref="titlebar"
-				back
-				library
-				menu
-				bookmark
 				search
 				:title="title"
-				:bookmarks="info.bookmarks"
-				:toc="toc"
 				:search-result="searchResult"
-			/>
+			>
+				<el-button-group>
+					<el-button size="small" icon="el-icon-back" circle @click="onBackBtn" />
+					<el-button size="small" icon="el-icon-s-grid" circle @click="onLibraryBtn" />
+				</el-button-group>
+
+				<el-popover popper-class="popper" placement="bottom" width="350" trigger="hover">
+					<div class="el-popover__title">
+						Table of Content
+					</div>
+					<el-button slot="reference" size="small" icon="el-icon-reading" circle />
+					<el-tree :data="toc" @node-click="onNodeClick" />
+				</el-popover>
+
+				<el-popover popper-class="popper" width="350" trigger="hover">
+					<div class="el-popover__title">
+						Bookmarks
+						<el-button size="mini" icon="el-icon-plus" circle @click="addBookmark" />
+					</div>
+					<el-button slot="reference" size="small" icon="el-icon-collection-tag" circle />
+					<el-tree :data="info.bookmarks" node-key="id" @node-click="onNodeClick">
+						<span slot-scope="{ node }" class="custom-tree-node">
+							<span>{{ node.label }}</span>
+							<span>
+								<el-button type="text" icon="el-icon-close" @click="() => removeBookmark(node)" />
+							</span>
+						</span>
+					</el-tree>
+				</el-popover>
+			
+				<el-popover popper-class="popper" width="350" trigger="click"
+					@show="startSearch"
+					@hide="stopSearch"
+				>
+					<el-button slot="reference" size="small" icon="el-icon-search" circle />
+					<div class="el-popover__title">
+						<el-input	v-model="searchText"	size="small"	width="300"	placeholder="search" />
+					</div>
+					<el-table :show-header="false" :data="searchResult" @cell-click="onNodeClick">
+						<el-table-column prop="label" width="350"></el-table-column>
+					</el-table>
+				</el-popover>
+			</titlebar>
+
+
 			<el-main class="container">
 				<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
 				<div id="reader" v-loading="!isReady" />
@@ -85,7 +123,25 @@ export default {
       progress: 0,
       currentChapter: '',
       history: [],
+      searchText: '',
     };
+  },
+
+  watch:{
+    searchText(){
+      
+      if (this.searchText === '') {
+        return;
+      }
+
+      clearTimeout(this._searcTimer);
+      this._searcTimer = setTimeout(()=>{
+        this.search(this.searchText)
+        .then(()=>{
+          this.startSearch();
+        })
+      }, 1000);
+    }
   },
 
   mounted() {
@@ -326,8 +382,13 @@ export default {
       this.$bus.on('search-input', text => {
         this.search(text);
       });
+    },
 
-      this.$bus.on('back-button', ()=>{
+    onNodeClick(item){
+        this.rendition.display(item.cfi || item.href);
+    },
+
+    onBackBtn(){
         // remove current location 
         this.history.pop();
 
@@ -340,11 +401,23 @@ export default {
           // go to homepage
           this.$router.push('/');
         }
-      })
+    },
+    onLibraryBtn(){
+      this.$router.push('/');
     },
     onSliderValueChange(newValue) {
       let cfi = this.book.locations.cfiFromPercentage(newValue / 100);
       this.rendition.display(cfi);
+    },
+
+    stopSearch() {
+      this.$remote.getCurrentWebContents().stopFindInPage('clearSelection');
+    },
+    startSearch() {
+      if (this.searchText.length === 0) {
+        return;
+      }
+      this.$remote.getCurrentWebContents().findInPage(this.searchText);
     },
   },
 };
@@ -394,19 +467,43 @@ export default {
   flex-basis: auto;
 }
 
-footer {
-  width: 100%;
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+  margin: 5px;
 }
 
-.el-slider {
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 90%;
-}
 </style>
 
 <style>
 .select-popper {
   padding: 0px;
 }
+
+.popper {
+  height: 85%;
+}
+
+.el-tree {
+  max-height: 95%;
+  max-width: 100%;
+  overflow: auto;
+  word-wrap: wrap;
+}
+
+.el-table {
+  min-height: 94%;
+  max-height: 94%;
+  overflow: auto;
+}
+
+.el-table__row {
+  user-select: none;
+  cursor: pointer;
+}
+
 </style>
