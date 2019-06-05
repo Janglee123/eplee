@@ -4,7 +4,7 @@
 			<el-button size="small" icon="el-icon-plus" circle @click="addFiles" />
 		</titlebar>
 		<el-main>
-			<grid ref="grid" key="bookList.length" :book-list="bookList" />
+			<grid class="grid" :book-list="bookList" />
 		</el-main>
 	</el-container>
 </template>
@@ -57,20 +57,8 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/style';
 
-#left {
-  left: 10px;
-  float: left;
-  -webkit-app-region: no-drag !important;
+.grid{
+  margin: 40px;
 }
 
-#center {
-  left: 50%;
-  right: 50%;
-}
-
-#right {
-  right: 10px;
-  float: right;
-  -webkit-app-region: no-drag !important;
-}
 </style>
