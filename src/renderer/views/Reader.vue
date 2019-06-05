@@ -1,11 +1,6 @@
 <template>
 	<el-container direction="vertical">
-		<titlebar
-			ref="titlebar"
-			search
-			:title="title"
-			:search-result="searchResult"
-		>
+		<titlebar :title="title">
 			<el-button-group>
 				<el-button size="small" icon="el-icon-back" circle @click="onBackBtn" />
 				<el-button size="small" icon="el-icon-s-grid" circle @click="onLibraryBtn" />
@@ -49,15 +44,14 @@
 			</el-popover>
 		</titlebar>
 
-
 		<el-main class="container">
-			<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
 			<div id="reader" v-loading="!isReady" />
-			<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
 		</el-main>
+		
 		<el-footer height="45">
 			<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
 		</el-footer>
+		
 		<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
 			<el-button-group>
 				<el-button size="medium" icon="el-icon-brush" @click="highlightSelection"></el-button>

@@ -8,6 +8,7 @@
 - [ ] create theme
 - [ ] fix defoult cover
 - [ ] fix app icon
+- [ ] add click lisnter in rendition for navigation (buttons removed)
 
 # v0.3.0
 
