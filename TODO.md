@@ -5,8 +5,9 @@
 - [ ] set up vue-router with animation
 - [ ] fix and improve highlight
 - [ ] reduce build size
-- [ ] add last card in home grid for book add button
 - [ ] create theme
+- [ ] fix defoult cover
+- [ ] fix app icon
 
 # v0.3.0
 
