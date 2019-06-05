@@ -30,7 +30,7 @@
 				</el-tree>
 			</el-popover>
 			
-			<el-popover popper-class="popper" width="350" trigger="click"
+			<el-popover popper-class="popper" width="350" trigger="hover"
 				@show="startSearch"
 				@hide="stopSearch"
 			>
@@ -194,7 +194,6 @@ export default {
       });
 
     this.setShortcuts();
-    this.bindTitlebarBottuns();
   },
 
   methods: {
@@ -334,7 +333,6 @@ export default {
       this.info.bookmarks.push(bookmark);
       this.$db.set(this.info.id, this.info);
     },
-
     
     setShortcuts() {
       this.$bind(
@@ -357,24 +355,6 @@ export default {
         'CommandOrControl+Down',
         this.decreaseFontSize
       );
-    },
-
-    bindTitlebarBottuns() {
-      this.$bus.on('toc-item-clicked', href => {
-        this.rendition.display(href);
-      });
-
-      this.$bus.on('add-bookmark-button', () => {
-        this.addBookmark();
-      });
-
-      this.$bus.on('remove-bookmark-button', bookmark => {
-        this.removeBookmark(bookmark);
-      });
-
-      this.$bus.on('search-input', text => {
-        this.search(text);
-      });
     },
 
     onNodeClick(item){
@@ -433,8 +413,7 @@ export default {
 }
 
 .el-button {
-  flex-grow: 0;
-  flex-basis: auto;
+  border: 1px;
 }
 
 .custom-tree-node {
