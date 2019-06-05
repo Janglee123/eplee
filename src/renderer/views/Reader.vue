@@ -6,7 +6,7 @@
 				<el-button size="small" icon="el-icon-s-grid" circle @click="onLibraryBtn" />
 			</el-button-group>
 
-			<el-popover popper-class="popper" placement="bottom" width="350" trigger="hover">
+			<el-popover :popper-class="`popper ${theme}`" placement="bottom" width="350" trigger="hover">
 				<div class="el-popover__title">
 					Table of Content
 				</div>
@@ -14,7 +14,7 @@
 				<el-tree :data="toc" @node-click="onNodeClick" />
 			</el-popover>
 
-			<el-popover popper-class="popper" width="350" trigger="hover">
+			<el-popover :popper-class="`popper ${theme}`" width="350" trigger="hover">
 				<div class="el-popover__title">
 					Bookmarks
 					<el-button size="mini" icon="el-icon-plus" circle @click="addBookmark" />
@@ -29,29 +29,80 @@
 					</span>
 				</el-tree>
 			</el-popover>
-			
-			<el-popover popper-class="popper" width="350" trigger="hover"
+
+			<el-popover
+				:popper-class="`popper ${theme}`"
+				width="350"
+				trigger="hover"
 				@show="startSearch"
 				@hide="stopSearch"
 			>
 				<el-button slot="reference" size="small" icon="el-icon-search" circle />
 				<div class="el-popover__title">
-					<el-input	v-model="searchText"	size="small"	width="300"	placeholder="search" />
+					<el-input v-model="searchText" size="small" width="300" placeholder="search" />
 				</div>
 				<el-table :show-header="false" :data="searchResult" @cell-click="onNodeClick">
 					<el-table-column prop="label" width="350"></el-table-column>
 				</el-table>
+			</el-popover>
+
+			<el-popover placement="bottom" :popper-class="theme" trigger="hover">
+				<el-button slot="reference" size="small" icon="el-icon-s-operation" circle />
+				<div style="margin-bottom:10px;">
+					Flow   
+					<el-radio-group v-model="flow" size="small">
+						<el-radio-button label="paginated" border>
+							Paged
+						</el-radio-button>
+						<el-radio-button label="scrolled-doc" border>
+							Scrolled
+						</el-radio-button>
+					</el-radio-group>
+				</div>
+				<div style="margin-bottom:10px">
+					Theme   
+					<el-radio-group v-model="theme" size="small">
+						<el-radio-button label="default" border>
+							Light
+						</el-radio-button>
+						<el-radio-button label="tan" border>
+							Tan
+						</el-radio-button>
+						<el-radio-button label="dark" border>
+							Dark
+						</el-radio-button>
+					</el-radio-group>
+				</div>
+				
+				<div style="margin-bottom:10px">
+					Line Spacing
+					<el-input-number v-model="lineSpacing" :precision="2" :step="0.1" :min="1.3" :max="2.0" size="mini"></el-input-number>
+				</div>
+
+				<div style="margin-bottom:10px">
+					Font Size
+					<el-input-number v-model="fontSize" :step="10" :min="10" :max="300" size="mini"></el-input-number>
+				</div>
+
+				<div style="margin-bottom:10px">
+					Font
+					<el-select v-model="font" size="mini">
+						<el-option label="Default" value=""></el-option>
+						<el-option label="Arial" value="Arial"></el-option>
+						<el-option label="Times New Roman" value="Times New Roman"></el-option>
+					</el-select>
+				</div>
 			</el-popover>
 		</titlebar>
 
 		<el-main class="container">
 			<div id="reader" v-loading="!isReady" />
 		</el-main>
-		
+
 		<el-footer height="45">
 			<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
 		</el-footer>
-		
+
 		<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
 			<el-button-group>
 				<el-button size="medium" icon="el-icon-brush" @click="highlightSelection"></el-button>
@@ -90,6 +141,7 @@
 import { Book, Rendition } from 'epubjs';
 import translate from '@vitalets/google-translate-api';
 import Titlebar from '../components/Titlebar';
+import { dark, tan } from '../../shared/themes'
 
 export default {
   name: 'Reader',
@@ -106,7 +158,7 @@ export default {
       searchResult: [],
       info: {},
       path: '',
-      fontSize: 14,
+      fontSize: 100,
       selection: {},
       translateTo: 'gu',
       translatedText: '',
@@ -116,26 +168,48 @@ export default {
       currentChapter: '',
       history: [],
       searchText: '',
+      margin: 0,
+      lineSpacing: 1.5,
+      theme: 'default',
+      flow: 'paginated',
+      font: '',
     };
   },
 
-  watch:{
-    searchText(){
-      
+  watch: {
+    searchText() {
       if (this.searchText === '') {
         return;
       }
 
       clearTimeout(this._searcTimer);
-      this._searcTimer = setTimeout(()=>{
-        this.search(this.searchText)
-        .then(()=>{
+      this._searcTimer = setTimeout(() => {
+        this.search(this.searchText).then(() => {
           this.startSearch();
-        })
+        });
       }, 1000);
+    },
+    
+    theme(theme) {
+      this.rendition.themes.select(theme);
+      this.refreshRendition();
+      this.$bus.emit('theme-change', theme);
+    },
+
+    lineSpacing(){
+      this.applyStyle();
+    },
+    flow(value){
+      this.rendition.flow(value);
+    },
+    fontSize(){
+      this.applyStyle();
+    },
+    font(){
+      this.applyStyle();
+      this.refreshRendition();
     }
   },
-
   mounted() {
     const { id } = this.$route.params;
     this.info = this.$db.get(id);
@@ -162,12 +236,16 @@ export default {
     });
 
     this.rendition.on('rendered', (e, iframe) => {
-      iframe.document.documentElement.addEventListener('wheel',this.wheelHandel);
-
-      let { label } = this.book.navigation.get(e.href);
-      this.currentChapter = label.trim();
+      iframe.document.documentElement.addEventListener(
+        'wheel',
+        this.wheelHandel
+      );
+      
+      this.applyStyle();
+      // let { label } = this.book.navigation.get(e.href);
+      // this.currentChapter = label.trim();
     });
-  
+
     this.rendition.on('relocated', location => {
       this.info.lastCfi = location.start.cfi;
       this.$db.set(this.info.id, this.info);
@@ -180,12 +258,15 @@ export default {
       .then(() => {
         this.meta = this.book.package.metadata;
         this.title = this.meta.title;
-        this.book.locations.load(this.info.locations)
+        this.book.locations.load(this.info.locations);
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
         this.rendition.themes.fontSize(100);
         this.rendition.display(this.info.lastCfi || 1);
+        this.rendition.themes.registerRules('dark',dark);
+        this.rendition.themes.registerRules('tan', tan);
+        this.theme = this.$store.getters.theme;
       })
       .then(() => {
         this.isReady = true;
@@ -214,7 +295,12 @@ export default {
           });
         });
     },
-
+    refreshRendition(){
+      // re-render to apply theme properly
+      // trick to rerender is resize render
+      this.rendition.resize(0, 0);
+      this.rendition.resize('100%', '100%');
+    },
     showPopover() {
       this.isPopover = true;
     },
@@ -268,17 +354,12 @@ export default {
       this.rendition.prev();
     },
 
-    increseFontSize() {
-      this.fontSize += 2;
-      this.rendition.themes.fontSize(`${this.fontSize}px`);
-      this.$message({
-        message: `Font Size : ${this.fontSize}px`,
-        center: true,
-        duration: 500,
-      });
-    },
-
     wheelHandel(e) {
+
+      if(this.flow !== 'paginated'){
+        return;
+      }
+
       clearTimeout(this._isScrolling);
 
       this._isScrolling = setTimeout(() => {
@@ -288,16 +369,6 @@ export default {
           this.prevPage();
         }
       }, 50);
-    },
-
-    decreaseFontSize() {
-      this.fontSize -= 2;
-      this.rendition.themes.fontSize(`${this.fontSize}px`);
-      this.$message({
-        message: `Font Size : ${this.fontSize}px`,
-        center: true,
-        duration: 500,
-      });
     },
 
     removeBookmark(bookmark) {
@@ -322,7 +393,9 @@ export default {
       const { href, cfi } = location.start;
 
       // TODO : find more minigful name for bookmark
-      const title = `${this.currentChapter} : At ${Math.floor(this.progress*1000)/10}%`;
+      const title = `${this.currentChapter} : At ${Math.floor(
+        this.progress * 1000
+      ) / 10}%`;
 
       const bookmark = {
         label: title,
@@ -333,18 +406,10 @@ export default {
       this.info.bookmarks.push(bookmark);
       this.$db.set(this.info.id, this.info);
     },
-    
+
     setShortcuts() {
-      this.$bind(
-        this.$remote.getCurrentWindow(),
-        'Left',
-        this.prevPage
-      );
-      this.$bind(
-        this.$remote.getCurrentWindow(),
-        'Right',
-        this.nextPage
-      );
+      this.$bind(this.$remote.getCurrentWindow(), 'Left', this.prevPage);
+      this.$bind(this.$remote.getCurrentWindow(), 'Right', this.nextPage);
       this.$bind(
         this.$remote.getCurrentWindow(),
         'CommandOrControl+Up',
@@ -357,25 +422,24 @@ export default {
       );
     },
 
-    onNodeClick(item){
-        this.rendition.display(item.cfi || item.href);
+    onNodeClick(item) {
+      this.rendition.display(item.cfi || item.href);
     },
 
-    onBackBtn(){
-        // remove current location 
-        this.history.pop();
+    onBackBtn() {
+      // remove current location
+      this.history.pop();
 
-        let lastLocation = this.history.pop();
+      let lastLocation = this.history.pop();
 
-        if(lastLocation){
-          this.rendition.display(lastLocation); 
-        }
-        else{
-          // go to homepage
-          this.$router.push('/');
-        }
+      if (lastLocation) {
+        this.rendition.display(lastLocation);
+      } else {
+        // go to homepage
+        this.$router.push('/');
+      }
     },
-    onLibraryBtn(){
+    onLibraryBtn() {
       this.$router.push('/');
     },
     onSliderValueChange(newValue) {
@@ -392,6 +456,26 @@ export default {
       }
       this.$remote.getCurrentWebContents().findInPage(this.searchText);
     },
+
+    applyStyle(){
+      const rules = {
+        'p':{
+           "font-family": this.font !== "" ? `${this.font} !important` : "!invalid-hack",
+           "font-size": this.fontSize !== "" ? `${this.fontSize} !important` : "!invalid-hack",
+        },
+        'body': {
+            "font-family": this.font !== "" ? `${this.font} !important` : "!invalid-hack",
+            // "text-align": `${theme.ta} !important`,
+        },
+        '*':{
+          "line-height": `${this.lineSpacing} !important`,
+          "font-size": this.fontSize !== "" ? `${this.fontSize}% !important` : "!invalid-hack",
+        }
+      };
+      this.rendition.getContents().forEach( (content) => {
+			  content.addStylesheetRules(rules);
+      });
+    },
   },
 };
 </script>
@@ -400,20 +484,9 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/style';
 
-.el-main {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  padding: 0px;
-}
-
 #reader {
   user-select: none;
   height: 100%;
-}
-
-.el-button {
-  border: 1px;
 }
 
 .custom-tree-node {
@@ -425,7 +498,6 @@ export default {
   padding-right: 8px;
   margin: 5px;
 }
-
 </style>
 
 <style>
@@ -454,5 +526,4 @@ export default {
   user-select: none;
   cursor: pointer;
 }
-
 </style>

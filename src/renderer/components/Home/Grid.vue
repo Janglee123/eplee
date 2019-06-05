@@ -198,5 +198,7 @@ export default {
   align-content: center;
   text-align: center;
   color: #ffffff;
+  position: relative;
+  top: -3px;
 }
 </style>
