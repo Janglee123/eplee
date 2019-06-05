@@ -162,9 +162,10 @@ export default {
     });
 
     this.rendition.on('rendered', (e, iframe) => {
+      iframe.document.documentElement.addEventListener('wheel',this.wheelHandel);
+
       let { label } = this.book.navigation.get(e.href);
       this.currentChapter = label.trim();
-      iframe.document.documentElement.addEventListener('wheel',this.wheelHandel);
     });
   
     this.rendition.on('relocated', location => {
@@ -420,11 +421,6 @@ export default {
 @import '../assets/style';
 
 .el-main {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: center;
-
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -433,10 +429,7 @@ export default {
 
 #reader {
   user-select: none;
-  width: 80%;
   height: 100%;
-  flex-grow: 2;
-  flex-basis: auto;
 }
 
 .el-button {
