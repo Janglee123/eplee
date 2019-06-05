@@ -424,7 +424,7 @@ export default {
 </script>
 
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 @import '../assets/style';
 
 .el-container {
@@ -437,7 +437,7 @@ export default {
   width: 100%;
   border: 1px solid #d7dae2;
   background-color: #ffffff;
-  border-radius: @border-radius;
+  border-radius: $border-radius;
 }
 
 .el-main {

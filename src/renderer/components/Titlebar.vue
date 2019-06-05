@@ -45,13 +45,13 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 @import '../assets/style';
 
 .el-header {
   text-align: center;
   vertical-align: middle;
-  padding: @padding;
+  padding: $padding;
   -webkit-app-region: drag !important;
   -webkit-user-select: none;
   -webkit-font-smoothing: antialiased;
@@ -60,7 +60,7 @@ export default {
   backdrop-filter: blur(40px);
 }
 .el-button {
-  margin-left: @margin;
+  margin-left: $margin;
   background: #fff0;
 }
 

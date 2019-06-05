@@ -54,10 +54,10 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 @import '../assets/style';
 
-.el-container {
+.el-container{
   position: absolute;
   top: 0px;
   bottom: 0px;
@@ -65,7 +65,7 @@ export default {
   left: 0px;
   border: 1px solid #d7dae2;
   background-color: #ffffff;
-  border-radius: @border-radius;
+  border-radius: $border-radius;
   height: -webkit-fill-available;
 }
 
