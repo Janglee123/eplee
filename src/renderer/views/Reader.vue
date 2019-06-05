@@ -97,7 +97,7 @@
 <script>
 import { Book, Rendition } from 'epubjs';
 import translate from '@vitalets/google-translate-api';
-import Titlebar from './Titlebar';
+import Titlebar from '../components/Titlebar';
 
 export default {
   name: 'Reader',

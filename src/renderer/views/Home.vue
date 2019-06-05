@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import Grid from './Home/Grid';
-import Titlebar from './Titlebar';
+import Grid from '../components/Home/Grid';
+import Titlebar from '../components/Titlebar';
 import { addToDB } from '../../shared/dbUtilis.js';
 
 export default {
