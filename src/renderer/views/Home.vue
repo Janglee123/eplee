@@ -57,18 +57,6 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/style';
 
-.el-container{
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
-  border: 1px solid #d7dae2;
-  background-color: #ffffff;
-  border-radius: $border-radius;
-  height: -webkit-fill-available;
-}
-
 #left {
   left: 10px;
   float: left;

@@ -54,14 +54,12 @@ export default {
   padding: $padding;
   -webkit-app-region: drag !important;
   -webkit-user-select: none;
-  -webkit-font-smoothing: antialiased;
 }
 .backdrop {
   backdrop-filter: blur(40px);
 }
 .el-button {
   margin-left: $margin;
-  background: #fff0;
 }
 
 #left {
@@ -79,25 +77,13 @@ export default {
   right: 50%;
   vertical-align: sub;
   font-size: 16px;
-  color: #333;
+  line-height: 2;
+  font-weight: 600;
 }
 
 #right {
   float: right;
   -webkit-app-region: no-drag !important;
   vertical-align: sub;
-}
-
-.el-input {
-  width: 100%;
-}
-
-</style>
-
-<style>
-[class*=' el-icon-'],
-[class^='el-icon-'] {
-  height: 11px;
-  width: 12px;
 }
 </style>

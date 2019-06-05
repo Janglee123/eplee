@@ -1,97 +1,95 @@
 <template>
-	<div>
-		<el-container direction="vertical">
-			<titlebar
-				ref="titlebar"
-				search
-				:title="title"
-				:search-result="searchResult"
-			>
-				<el-button-group>
-					<el-button size="small" icon="el-icon-back" circle @click="onBackBtn" />
-					<el-button size="small" icon="el-icon-s-grid" circle @click="onLibraryBtn" />
-				</el-button-group>
+	<el-container direction="vertical">
+		<titlebar
+			ref="titlebar"
+			search
+			:title="title"
+			:search-result="searchResult"
+		>
+			<el-button-group>
+				<el-button size="small" icon="el-icon-back" circle @click="onBackBtn" />
+				<el-button size="small" icon="el-icon-s-grid" circle @click="onLibraryBtn" />
+			</el-button-group>
 
-				<el-popover popper-class="popper" placement="bottom" width="350" trigger="hover">
-					<div class="el-popover__title">
-						Table of Content
-					</div>
-					<el-button slot="reference" size="small" icon="el-icon-reading" circle />
-					<el-tree :data="toc" @node-click="onNodeClick" />
-				</el-popover>
-
-				<el-popover popper-class="popper" width="350" trigger="hover">
-					<div class="el-popover__title">
-						Bookmarks
-						<el-button size="mini" icon="el-icon-plus" circle @click="addBookmark" />
-					</div>
-					<el-button slot="reference" size="small" icon="el-icon-collection-tag" circle />
-					<el-tree :data="info.bookmarks" node-key="id" @node-click="onNodeClick">
-						<span slot-scope="{ node }" class="custom-tree-node">
-							<span>{{ node.label }}</span>
-							<span>
-								<el-button type="text" icon="el-icon-close" @click="() => removeBookmark(node)" />
-							</span>
-						</span>
-					</el-tree>
-				</el-popover>
-			
-				<el-popover popper-class="popper" width="350" trigger="click"
-					@show="startSearch"
-					@hide="stopSearch"
-				>
-					<el-button slot="reference" size="small" icon="el-icon-search" circle />
-					<div class="el-popover__title">
-						<el-input	v-model="searchText"	size="small"	width="300"	placeholder="search" />
-					</div>
-					<el-table :show-header="false" :data="searchResult" @cell-click="onNodeClick">
-						<el-table-column prop="label" width="350"></el-table-column>
-					</el-table>
-				</el-popover>
-			</titlebar>
-
-
-			<el-main class="container">
-				<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
-				<div id="reader" v-loading="!isReady" />
-				<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
-			</el-main>
-			<el-footer height="45">
-				<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
-			</el-footer>
-			<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
-				<el-button-group>
-					<el-button size="medium" icon="el-icon-brush" @click="highlightSelection"></el-button>
-					<el-button size="medium" icon="el-icon-copy-document" @click="copySelection"></el-button>
-					<el-button
-						v-popover:translatePop
-						size="medium"
-						icon="el-icon-collection"
-						@click="translateSelection"
-					></el-button>
-				</el-button-group>
-
-				<el-popover ref="translatePop" width="200" trigger="hover">
-					<div class="el-popover__title">
-						<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
-							<template slot="prepend">
-								Translate to
-							</template>
-						</el-input>
-					</div>
-					{{ translatedText }}
-				</el-popover>
-
-				<span
-					slot="reference"
-					ref="popRef"
-					style="position:absolute"
-					@focus="showPopover"
-					@onmouseout="hidePopover"
-				></span>
+			<el-popover popper-class="popper" placement="bottom" width="350" trigger="hover">
+				<div class="el-popover__title">
+					Table of Content
+				</div>
+				<el-button slot="reference" size="small" icon="el-icon-reading" circle />
+				<el-tree :data="toc" @node-click="onNodeClick" />
 			</el-popover>
-		</el-container>
-	</div>
+
+			<el-popover popper-class="popper" width="350" trigger="hover">
+				<div class="el-popover__title">
+					Bookmarks
+					<el-button size="mini" icon="el-icon-plus" circle @click="addBookmark" />
+				</div>
+				<el-button slot="reference" size="small" icon="el-icon-collection-tag" circle />
+				<el-tree :data="info.bookmarks" node-key="id" @node-click="onNodeClick">
+					<span slot-scope="{ node }" class="custom-tree-node">
+						<span>{{ node.label }}</span>
+						<span>
+							<el-button type="text" icon="el-icon-close" @click="() => removeBookmark(node)" />
+						</span>
+					</span>
+				</el-tree>
+			</el-popover>
+			
+			<el-popover popper-class="popper" width="350" trigger="click"
+				@show="startSearch"
+				@hide="stopSearch"
+			>
+				<el-button slot="reference" size="small" icon="el-icon-search" circle />
+				<div class="el-popover__title">
+					<el-input	v-model="searchText"	size="small"	width="300"	placeholder="search" />
+				</div>
+				<el-table :show-header="false" :data="searchResult" @cell-click="onNodeClick">
+					<el-table-column prop="label" width="350"></el-table-column>
+				</el-table>
+			</el-popover>
+		</titlebar>
+
+
+		<el-main class="container">
+			<el-button id="prev" circle size="small" icon="el-icon-arrow-left" @click="prevPage" />
+			<div id="reader" v-loading="!isReady" />
+			<el-button id="next" circle size="small" icon="el-icon-arrow-right" @click="nextPage" />
+		</el-main>
+		<el-footer height="45">
+			<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
+		</el-footer>
+		<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
+			<el-button-group>
+				<el-button size="medium" icon="el-icon-brush" @click="highlightSelection"></el-button>
+				<el-button size="medium" icon="el-icon-copy-document" @click="copySelection"></el-button>
+				<el-button
+					v-popover:translatePop
+					size="medium"
+					icon="el-icon-collection"
+					@click="translateSelection"
+				></el-button>
+			</el-button-group>
+
+			<el-popover ref="translatePop" width="200" trigger="hover">
+				<div class="el-popover__title">
+					<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
+						<template slot="prepend">
+							Translate to
+						</template>
+					</el-input>
+				</div>
+				{{ translatedText }}
+			</el-popover>
+
+			<span
+				slot="reference"
+				ref="popRef"
+				style="position:absolute"
+				@focus="showPopover"
+				@onmouseout="hidePopover"
+			></span>
+		</el-popover>
+	</el-container>
 </template>
 
 <script>
@@ -427,22 +425,7 @@ export default {
 <style lang="scss" scoped>
 @import '../assets/style';
 
-.el-container {
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
-  height: 100%;
-  width: 100%;
-  border: 1px solid #d7dae2;
-  background-color: #ffffff;
-  border-radius: $border-radius;
-}
-
 .el-main {
-  position: relative;
-
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -451,6 +434,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  padding: 0px;
 }
 
 #reader {
@@ -462,7 +446,6 @@ export default {
 }
 
 .el-button {
-  z-index: 2;
   flex-grow: 0;
   flex-basis: auto;
 }
