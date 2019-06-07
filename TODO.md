@@ -9,6 +9,8 @@
 - [ ] fix defoult cover
 - [ ] fix app icon
 - [ ] add click lisnter in rendition for navigation (buttons removed)
+- [ ] add threshold value for wheel event  
+- [ ] fix bubble 
 
 # v0.3.0
 
