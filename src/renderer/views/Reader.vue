@@ -6,93 +6,28 @@
 				<el-button size="small" icon="el-icon-s-grid" circle @click="onLibraryBtn" />
 			</el-button-group>
 
-			<el-popover :popper-class="`popper ${theme}`" placement="bottom" width="350" trigger="hover">
-				<div class="el-popover__title">
-					Table of Content
-				</div>
-				<el-button slot="reference" size="small" icon="el-icon-reading" circle />
-				<el-tree :data="toc" @node-click="onNodeClick" />
-			</el-popover>
-
-			<el-popover :popper-class="`popper ${theme}`" width="350" trigger="hover">
-				<div class="el-popover__title">
-					Bookmarks
-					<el-button size="mini" icon="el-icon-plus" circle @click="addBookmark" />
-				</div>
-				<el-button slot="reference" size="small" icon="el-icon-collection-tag" circle />
-				<el-tree :data="info.bookmarks" node-key="id" @node-click="onNodeClick">
-					<span slot-scope="{ node }" class="custom-tree-node">
-						<span>{{ node.label }}</span>
-						<span>
-							<el-button type="text" icon="el-icon-close" @click="() => removeBookmark(node)" />
-						</span>
-					</span>
-				</el-tree>
-			</el-popover>
-
-			<el-popover
-				:popper-class="`popper ${theme}`"
-				width="350"
-				trigger="hover"
-				@show="startSearch"
-				@hide="stopSearch"
-			>
-				<el-button slot="reference" size="small" icon="el-icon-search" circle />
-				<div class="el-popover__title">
-					<el-input v-model="searchText" size="small" width="300" placeholder="search" />
-				</div>
-				<el-table :show-header="false" :data="searchResult" @cell-click="onNodeClick">
-					<el-table-column prop="label" width="350"></el-table-column>
-				</el-table>
-			</el-popover>
-
-			<el-popover placement="bottom" :popper-class="theme" trigger="hover">
-				<el-button slot="reference" size="small" icon="el-icon-s-operation" circle />
-				<div style="margin-bottom:10px;">
-					Flow   
-					<el-radio-group v-model="flow" size="small">
-						<el-radio-button label="paginated" border>
-							Paged
-						</el-radio-button>
-						<el-radio-button label="scrolled-doc" border>
-							Scrolled
-						</el-radio-button>
-					</el-radio-group>
-				</div>
-				<div style="margin-bottom:10px">
-					Theme   
-					<el-radio-group v-model="theme" size="small">
-						<el-radio-button label="default" border>
-							Light
-						</el-radio-button>
-						<el-radio-button label="tan" border>
-							Tan
-						</el-radio-button>
-						<el-radio-button label="dark" border>
-							Dark
-						</el-radio-button>
-					</el-radio-group>
-				</div>
-				
-				<div style="margin-bottom:10px">
-					Line Spacing
-					<el-input-number v-model="lineSpacing" :precision="2" :step="0.1" :min="1.3" :max="2.0" size="mini"></el-input-number>
-				</div>
-
-				<div style="margin-bottom:10px">
-					Font Size
-					<el-input-number v-model="fontSize" :step="10" :min="10" :max="300" size="mini"></el-input-number>
-				</div>
-
-				<div style="margin-bottom:10px">
-					Font
-					<el-select v-model="font" size="mini">
-						<el-option label="Default" value=""></el-option>
-						<el-option label="Arial" value="Arial"></el-option>
-						<el-option label="Times New Roman" value="Times New Roman"></el-option>
-					</el-select>
-				</div>
-			</el-popover>
+			<toc-menu :toc="toc" :theme="theme" @node-click="onNodeClick"></toc-menu>
+			
+			<bookmark-menu 
+				:bookmarks="info.bookmarks" 
+				:theme="theme" 
+				@node-click="onNodeClick"
+				@add-bookmark="addBookmark"
+				@remove-bookmark="removeBookmark"
+			/>
+			
+			<search-menu
+				:search-result="searchResult"
+				:theme="theme"
+				@node-click="onNodeClick"
+				@search="search"
+			/>
+			
+			<theme-menu
+				@theme-change="applytheme"
+				@flow-change="rendition.flow"
+				@style-change="updateStyle"
+			/>
 		</titlebar>
 
 		<el-main class="container">
@@ -141,12 +76,20 @@
 import { Book, Rendition } from 'epubjs';
 import translate from '@vitalets/google-translate-api';
 import Titlebar from '../components/Titlebar';
+import TocMenu from '../components/Reader/TocMenu'
+import BookmarkMenu from '../components/Reader/BookmarkMenu'
+import SearchMenu from '../components/Reader/SearchMenu'
+import ThemeMenu from '../components/Reader/ThemeMenu'
 import { dark, tan } from '../../shared/themes'
 
 export default {
   name: 'Reader',
   components: {
     Titlebar,
+    TocMenu,
+    BookmarkMenu,
+    SearchMenu,
+    ThemeMenu,
   },
   props: {},
 
@@ -157,8 +100,6 @@ export default {
       toc: [],
       searchResult: [],
       info: {},
-      path: '',
-      fontSize: 100,
       selection: {},
       translateTo: 'gu',
       translatedText: '',
@@ -169,46 +110,13 @@ export default {
       history: [],
       searchText: '',
       margin: 0,
-      lineSpacing: 1.5,
       theme: 'default',
-      flow: 'paginated',
-      font: '',
+      styleRules: {},
     };
   },
 
   watch: {
-    searchText() {
-      if (this.searchText === '') {
-        return;
-      }
 
-      clearTimeout(this._searcTimer);
-      this._searcTimer = setTimeout(() => {
-        this.search(this.searchText).then(() => {
-          this.startSearch();
-        });
-      }, 1000);
-    },
-    
-    theme(theme) {
-      this.rendition.themes.select(theme);
-      this.refreshRendition();
-      this.$bus.emit('theme-change', theme);
-    },
-
-    lineSpacing(){
-      this.applyStyle();
-    },
-    flow(value){
-      this.rendition.flow(value);
-    },
-    fontSize(){
-      this.applyStyle();
-    },
-    font(){
-      this.applyStyle();
-      this.refreshRendition();
-    }
   },
   mounted() {
     const { id } = this.$route.params;
@@ -241,7 +149,6 @@ export default {
         this.wheelHandel
       );
       
-      this.applyStyle();
       // let { label } = this.book.navigation.get(e.href);
       // this.currentChapter = label.trim();
     });
@@ -253,6 +160,8 @@ export default {
       this.progress = this.book.locations.percentageFromCfi(location.start.cfi);
       this.sliderValue = Math.floor(this.progress * 10000) / 100;
     });
+
+    this.rendition.hooks.content.register(this.applyStyle);
 
     this.book.ready
       .then(() => {
@@ -267,6 +176,7 @@ export default {
         this.rendition.themes.registerRules('dark',dark);
         this.rendition.themes.registerRules('tan', tan);
         this.theme = this.$store.getters.theme;
+        this.applytheme(this.theme);
       })
       .then(() => {
         this.isReady = true;
@@ -278,12 +188,13 @@ export default {
   },
 
   methods: {
-    search(q) {
+
+    search(text) {
       return Promise.all(
         this.book.spine.spineItems.map(item =>
           item
             .load(this.book.load.bind(this.book))
-            .then(item.find.bind(item, q))
+            .then(item.find.bind(item, text))
             .finally(item.unload.bind(item))
         )
       )
@@ -293,14 +204,20 @@ export default {
             result.label = result.excerpt;
             return result;
           });
-        });
+        }).then(()=>{
+          this.$remote.getCurrentWebContents().findInPage(text);
+        })
     },
+
     refreshRendition(){
       // re-render to apply theme properly
       // trick to rerender is resize render
-      this.rendition.resize(0, 0);
-      this.rendition.resize('100%', '100%');
+      if(this.rendition.manager){
+        this.rendition.resize(0, 0);
+        this.rendition.resize('100%', '100%');
+      }
     },
+
     showPopover() {
       this.isPopover = true;
     },
@@ -439,43 +356,35 @@ export default {
         this.$router.push('/');
       }
     },
+
     onLibraryBtn() {
       this.$router.push('/');
     },
+
     onSliderValueChange(newValue) {
       let cfi = this.book.locations.cfiFromPercentage(newValue / 100);
       this.rendition.display(cfi);
     },
 
-    stopSearch() {
-      this.$remote.getCurrentWebContents().stopFindInPage('clearSelection');
-    },
-    startSearch() {
-      if (this.searchText.length === 0) {
-        return;
-      }
-      this.$remote.getCurrentWebContents().findInPage(this.searchText);
+    updateStyle(rules){
+      this.styleRules = rules;
+      this.applyStyle();
+      this.refreshRendition();
     },
 
     applyStyle(){
-      const rules = {
-        'p':{
-           "font-family": this.font !== "" ? `${this.font} !important` : "!invalid-hack",
-           "font-size": this.fontSize !== "" ? `${this.fontSize} !important` : "!invalid-hack",
-        },
-        'body': {
-            "font-family": this.font !== "" ? `${this.font} !important` : "!invalid-hack",
-            // "text-align": `${theme.ta} !important`,
-        },
-        '*':{
-          "line-height": `${this.lineSpacing} !important`,
-          "font-size": this.fontSize !== "" ? `${this.fontSize}% !important` : "!invalid-hack",
-        }
-      };
       this.rendition.getContents().forEach( (content) => {
-			  content.addStylesheetRules(rules);
+			  content.addStylesheetRules(this.styleRules);
       });
     },
+
+    applytheme(theme) {
+      this.theme = theme;
+      this.rendition.themes.select(theme);
+      this.refreshRendition();
+      this.$bus.emit('theme-change', theme);
+    },
+
   },
 };
 </script>
