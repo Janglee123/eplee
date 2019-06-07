@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="app" ref="app" class="default">
 		<router-view v-loading="!isReady" />
 	</div>
 </template>
@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       isReady: false,
+      theme: 'light'
     };
   },
 
@@ -32,6 +33,13 @@ export default {
     else{
         this.isReady = true;
     }
+    
+    this.$bus.on('theme-change',(theme)=>{
+      this.$refs.app.className = "";
+      this.$refs.app.classList.add(theme);
+
+      this.$store.commit('setTheme', theme);
+    });
   },
 };
 </script>
@@ -40,8 +48,6 @@ export default {
 @import './assets/style';
 
 #app{
-  background: #fff;
-  color: #555;
   width: 100%;
   height: 100%;
   border-radius: $border-radius;
@@ -50,7 +56,7 @@ export default {
 </style>
 
 
-<style>
+<style lang="scss">
 ::-webkit-scrollbar {
   display: none;
 }
@@ -61,6 +67,7 @@ body {
   width: 100%;
   height: 100%;  
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
 .el-container {
@@ -69,6 +76,37 @@ body {
   bottom: 0px;
   right: 0px;
   left: 0px;
-} 
+}
+
+.el-main {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+}
+
+.el-button {
+  border: none;
+}
+
+.el-table , .el-table *, .el-radio-button__inner,
+.el-tree, .el-button {
+background: inherit !important;
+color: inherit !important;
+}
+
+.default{
+  background: #fff;
+  color: #555;
+}
+
+.dark{
+  background: #333;
+  color: #eee;
+}
+
+.tan{
+  background: #fdf6e3;
+  color: #002b36;
+}
 
 </style>
