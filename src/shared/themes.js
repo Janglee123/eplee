@@ -1,6 +1,6 @@
 const dark = {
   body: {
-    background: `#333 !important`,
+    background: `#444 !important`,
     color: `#fff !important`,
   },
   '*': {
@@ -14,9 +14,6 @@ const dark = {
   'a:link:hover': {
     background: 'rgba(0, 0, 0, 0.1) !important',
   },
-  img: {
-    'max-width': '100% !important',
-  },
 };
 
 const light = {
@@ -24,9 +21,6 @@ const light = {
   '*': {},
   'a:link': {},
   'a:link:hover': {},
-  img: {
-    'max-width': '100% !important',
-  },
 };
 
 const tan = {
@@ -44,9 +38,6 @@ const tan = {
   },
   'a:link:hover': {
     background: 'rgba(0, 0, 0, 0.1) !important',
-  },
-  img: {
-    'max-width': '100% !important',
   },
 };
 
