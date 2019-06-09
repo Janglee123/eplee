@@ -38,49 +38,20 @@
 			<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
 		</el-footer>
 
-		<el-popover v-model="isPopover" popper-class="select-popper" trigger="hover">
-			<el-button-group>
-				<el-button size="medium" icon="el-icon-brush" @click="highlightSelection"></el-button>
-				<el-button size="medium" icon="el-icon-copy-document" @click="copySelection"></el-button>
-				<el-button
-					v-popover:translatePop
-					size="medium"
-					icon="el-icon-collection"
-					@click="translateSelection"
-				></el-button>
-			</el-button-group>
-
-			<el-popover ref="translatePop" width="200" trigger="hover">
-				<div class="el-popover__title">
-					<el-input v-model="translateTo" placeholder="Language Code" width="30" size="mini">
-						<template slot="prepend">
-							Translate to
-						</template>
-					</el-input>
-				</div>
-				{{ translatedText }}
-			</el-popover>
-
-			<span
-				slot="reference"
-				ref="popRef"
-				style="position:absolute"
-				@focus="showPopover"
-				@onmouseout="hidePopover"
-			></span>
-		</el-popover>
+		<buble-menu ref="bubleMenu" @highlight-btn-click="highlightSelection" />
 	</el-container>
 </template>
 
 <script>
 import { Book, Rendition } from 'epubjs';
-import translate from '@vitalets/google-translate-api';
 import Titlebar from '../components/Titlebar';
 import TocMenu from '../components/Reader/TocMenu'
 import BookmarkMenu from '../components/Reader/BookmarkMenu'
 import SearchMenu from '../components/Reader/SearchMenu'
 import ThemeMenu from '../components/Reader/ThemeMenu'
+import BubleMenu from '../components/Reader/BubleMenu'
 import { dark, tan } from '../../shared/themes'
+import { selectListener, clickListener, swipListener, wheelListener, keyListener } from '../components/Reader/listener/listener'
 
 export default {
   name: 'Reader',
@@ -90,6 +61,7 @@ export default {
     BookmarkMenu,
     SearchMenu,
     ThemeMenu,
+    BubleMenu,
   },
   props: {},
 
@@ -100,10 +72,6 @@ export default {
       toc: [],
       searchResult: [],
       info: {},
-      selection: {},
-      translateTo: 'gu',
-      translatedText: '',
-      isPopover: false,
       sliderValue: 0,
       progress: 0,
       currentChapter: '',
@@ -112,6 +80,8 @@ export default {
       margin: 0,
       theme: 'default',
       styleRules: {},
+      rendition: {},
+      book: {},
     };
   },
 
@@ -123,7 +93,7 @@ export default {
     this.info = this.$db.get(id);
     this.toc = this.info.toc;
     this.info.lastOpen = new Date().getTime();
-
+    this.buble = this.$refs.bubleMenu
     this.book = new Book(this.info.path);
 
     this.rendition = new Rendition(this.book, {
@@ -131,24 +101,12 @@ export default {
       height: '100%',
     });
 
-    this.rendition.on('selected', (cfiRange, contents) => {
-      // rect of selection
-      this.createPopover(contents, cfiRange);
-      this.selection.cfiRange = cfiRange;
-      this.book.getRange(cfiRange).then(range => {
-        let text = range.toString();
-        this.selection.text = text;
-        this.showPopover();
-        this.translateSelection();
-      });
-    });
-
     this.rendition.on('rendered', (e, iframe) => {
-      iframe.document.documentElement.addEventListener(
-        'wheel',
-        this.wheelHandel
-      );
-      
+      clickListener(iframe.document, this.rendition, this.flipPage);
+      selectListener(iframe.document, this.rendition, this.toggleBuble);
+      swipListener(iframe.document,  this.flipPage);
+      wheelListener(iframe.document, this.flipPage);
+      keyListener(iframe.document, this.flipPage);
       // let { label } = this.book.navigation.get(e.href);
       // this.currentChapter = label.trim();
     });
@@ -183,8 +141,6 @@ export default {
         console.log(this.book);
         console.log(this.rendition);
       });
-
-    this.setShortcuts();
   },
 
   methods: {
@@ -209,6 +165,22 @@ export default {
         })
     },
 
+    flipPage(direction){
+      console.log(direction)
+      if(direction === 'next') this.nextPage();
+      else if(direction === 'prev') this.prevPage();
+    },
+
+    toggleBuble(event, react, text, cfiRange){
+      if(event==='cleared'){
+        // hide buble
+        this.buble.hide();
+        return;
+      }
+      this.buble.setProps(react, text, cfiRange);
+      this.isBubleVisible = true;
+    },
+
     refreshRendition(){
       // re-render to apply theme properly
       // trick to rerender is resize render
@@ -218,49 +190,9 @@ export default {
       }
     },
 
-    showPopover() {
-      this.isPopover = true;
-    },
-
-    hidePopover() {
-      let reference = this.$refs.popRef;
-      reference.style.visibility = 'hidden';
-      this.isPopover = false;
-    },
-
-    createPopover(contents, cfiRange) {
-      let viewRect = this.rendition.manager.container.getBoundingClientRect();
-      let rect = contents.range(cfiRange).getBoundingClientRect();
-      let reference = this.$refs.popRef;
-      reference.style.left = `${viewRect.x + rect.x}px`;
-      reference.style.top = `${viewRect.y + rect.y}px`;
-      reference.style.width = `${rect.width}px`;
-      reference.style.height = `${rect.height}px`;
-    },
-
-    copySelection() {
-      const el = document.createElement('textarea');
-      el.style.position = 'absolute';
-      el.style.left = '-9999px';
-      el.value = this.selection.text;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-    },
-
-    highlightSelection() {
-      this.rendition.annotations.highlight(this.selection.cfiRange);
-      this.info.highlight.push(this.cfiRange);
-    },
-
-    translateSelection() {
-      let { text } = this.selection;
-      translate(text, { to: this.translateTo }).then(res => {
-        console.log(res.text);
-        this.isTranslated = true;
-        this.translatedText = res.text;
-      });
+    highlightSelection(cfiRange) {
+      this.rendition.annotations.highlight(cfiRange);
+      this.info.highlight.push(cfiRange);
     },
 
     nextPage() {
@@ -269,23 +201,6 @@ export default {
 
     prevPage() {
       this.rendition.prev();
-    },
-
-    wheelHandel(e) {
-
-      if(this.flow !== 'paginated'){
-        return;
-      }
-
-      clearTimeout(this._isScrolling);
-
-      this._isScrolling = setTimeout(() => {
-        if (e.deltaY > 0) {
-          this.nextPage();
-        } else {
-          this.prevPage();
-        }
-      }, 50);
     },
 
     removeBookmark(bookmark) {
@@ -322,21 +237,6 @@ export default {
 
       this.info.bookmarks.push(bookmark);
       this.$db.set(this.info.id, this.info);
-    },
-
-    setShortcuts() {
-      this.$bind(this.$remote.getCurrentWindow(), 'Left', this.prevPage);
-      this.$bind(this.$remote.getCurrentWindow(), 'Right', this.nextPage);
-      this.$bind(
-        this.$remote.getCurrentWindow(),
-        'CommandOrControl+Up',
-        this.increseFontSize
-      );
-      this.$bind(
-        this.$remote.getCurrentWindow(),
-        'CommandOrControl+Down',
-        this.decreaseFontSize
-      );
     },
 
     onNodeClick(item) {
@@ -410,9 +310,6 @@ export default {
 </style>
 
 <style>
-.select-popper {
-  padding: 0px;
-}
 
 .popper {
   height: 85%;
