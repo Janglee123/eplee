@@ -25,7 +25,7 @@
 			
 			<theme-menu
 				@theme-change="applytheme"
-				@flow-change="rendition.flow"
+				@flow-change="applyflow"
 				@style-change="updateStyle"
 			/>
 		</titlebar>
@@ -133,6 +133,7 @@ export default {
         this.rendition.display(this.info.lastCfi || 1);
         this.rendition.themes.registerRules('dark',dark);
         this.rendition.themes.registerRules('tan', tan);
+        this.rendition.ready = true;
         this.theme = this.$store.getters.theme;
         this.applytheme(this.theme);
       })
@@ -166,7 +167,6 @@ export default {
     },
 
     flipPage(direction){
-      console.log(direction)
       if(direction === 'next') this.nextPage();
       else if(direction === 'prev') this.prevPage();
     },
@@ -272,7 +272,14 @@ export default {
       this.refreshRendition();
     },
 
+    applyflow(flow){
+      if(!this.rendition.ready) return;
+      this.rendition.flow(flow);
+    },
+
     applyStyle(){
+      if(!this.rendition.ready) return;
+
       this.rendition.getContents().forEach( (content) => {
 			  content.addStylesheetRules(this.styleRules);
       });

@@ -59,6 +59,7 @@ export default {
       this.$remote.getCurrentWebContents().stopFindInPage('clearSelection');
     },
     startSearch() {
+			if(this.searchText === '') return;
       this.$remote.getCurrentWebContents().findInPage(this.searchText);
 		},
 		onNodeClick(data){

@@ -34,8 +34,6 @@ export default function selectListener(document, rendition, fn){
 			width: `${SelectionReact.width}px`,
 			height: `${SelectionReact.height}px`,
 		}
-
-		console.log({react, fn });
 		fn('selected', react, text, cfiRange);
 	});
 

@@ -100,7 +100,7 @@ color: inherit !important;
 }
 
 .dark{
-  background: #333;
+  background: #444;
   color: #eee;
 }
 
