@@ -55,10 +55,13 @@ export default {
 			referenc.style.width = react.width;
 			referenc.style.height = react.height;
 
+			console.log(react);
+
 			this.text = text;
 			this.cfiRange = cfiRange;
 			this.translateText();
 			this.isVisible = true;
+
 		},
 
 		hide(){
@@ -89,9 +92,13 @@ export default {
 		},
 		
 		translateText() {
-      translate(this.text, { to: this.translateTo }).then(res => {
-        this.translatedText = res.text;
-      });
+			try{
+				translate(this.text, { to: this.translateTo }).then(res => {
+					this.translatedText = res.text;
+      	});
+			}catch(e){
+				console.error(e);
+			}
     },
 
   },

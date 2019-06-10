@@ -29,7 +29,7 @@ export default function selectListener(document, rendition, fn){
 		const viewRect = rendition.manager.container.getBoundingClientRect();
 
 		let react = {
-			left: `${viewRect.x + SelectionReact.x}px`,
+			left: `${viewRect.x + SelectionReact.x - (rendition.manager.scrollLeft || 0)}px`,
 			top: `${viewRect.y + SelectionReact.y}px`,
 			width: `${SelectionReact.width}px`,
 			height: `${SelectionReact.height}px`,
