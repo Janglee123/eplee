@@ -35,7 +35,7 @@
 		</el-main>
 
 		<el-footer height="45">
-			<el-slider v-model="sliderValue" :step="0.01" @change="onSliderValueChange"></el-slider>
+			<el-slider v-model="sliderValue" :step="0.01" :format-tooltip="lableFromPercentage" @change="onSliderValueChange"></el-slider>
 		</el-footer>
 
 		<buble-menu ref="bubleMenu" @highlight-btn-click="highlightSelection" />
@@ -96,6 +96,14 @@ export default {
     this.buble = this.$refs.bubleMenu
     this.book = new Book(this.info.path);
 
+    this._flattenedToc = (function flatten(items) {
+      return [].concat(...items.map(item => [item].concat(...flatten(item.children))));
+    })(this.toc);
+
+    this._flattenedToc.sort((a,b)=>{
+      return a.percentage - b.percentage;
+    })
+
     this.rendition = new Rendition(this.book, {
       width: '100%',
       height: '100%',
@@ -107,14 +115,13 @@ export default {
       swipListener(iframe.document,  this.flipPage);
       wheelListener(iframe.document, this.flipPage);
       keyListener(iframe.document, this.flipPage);
-      // let { label } = this.book.navigation.get(e.href);
-      // this.currentChapter = label.trim();
     });
 
     this.rendition.on('relocated', location => {
       this.info.lastCfi = location.start.cfi;
       this.$db.set(this.info.id, this.info);
       this.history.push(location.start.cfi);
+
       this.progress = this.book.locations.percentageFromCfi(location.start.cfi);
       this.sliderValue = Math.floor(this.progress * 10000) / 100;
     });
@@ -192,7 +199,7 @@ export default {
 
     highlightSelection(cfiRange) {
       this.rendition.annotations.highlight(cfiRange);
-      this.info.highlight.push(cfiRange);
+      // this.info.highlight.push(cfiRange);
     },
 
     nextPage() {
@@ -222,10 +229,10 @@ export default {
        */
 
       const { location } = this.rendition;
-      const { href, cfi } = location.start;
+      const { href, cfi, percentage } = location.start;
 
       // TODO : find more minigful name for bookmark
-      const title = `${this.currentChapter} : At ${Math.floor(
+      const title = `${this.lableFromPercentage(percentage*100)} : At ${Math.floor(
         this.progress * 1000
       ) / 10}%`;
 
@@ -292,6 +299,26 @@ export default {
       this.$bus.emit('theme-change', theme);
     },
 
+    tocFromPercentage(percent){
+      
+      if(!this._flattenedToc) return {};
+      
+      percent /= 100;
+
+      for(let i = 0 ; i < this._flattenedToc.length ; i+=1 ){
+        if(this._flattenedToc[i].percentage > percent){
+          return this._flattenedToc[i-1];
+        }
+      }
+
+      return null;
+    },
+
+    lableFromPercentage(percent){
+      let toc = this.tocFromPercentage(percent)
+      if(toc) return toc.label;
+      return '';
+    }
   },
 };
 </script>
