@@ -2,15 +2,16 @@
 
 - [ ] add dictionary
 - [ ] add search in home
-- [ ] set up vue-router with animation
-- [ ] fix and improve highlight
-- [ ] reduce build size
-- [ ] create theme
-- [ ] fix defoult cover
+- [ ] swip transtition
 - [ ] fix app icon
-- [ ] add click lisnter in rendition for navigation (buttons removed)
-- [ ] add threshold value for wheel event  
-- [ ] fix bubble 
+- [x] fix : highlight not loading 
+- [x] fix : if cover not found replace it with default cover
+- [x] feature : Themes ( dark, tan and light theme added)
+- [x] fix : click lisnter in rendition for navigation (buttons removed)
+- [x] fix : add threshold value for wheel event  
+- [x] fix : bubble goes out of page 
+- [x] fix : bookmark titles
+- [x] feature : sliderbar tooltip now show cuurent toc insted of percentage
 
 # v0.3.0
 
