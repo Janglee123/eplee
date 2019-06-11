@@ -45,13 +45,13 @@
 <script>
 import { Book, Rendition } from 'epubjs';
 import Titlebar from '../components/Titlebar';
-import TocMenu from '../components/Reader/TocMenu'
-import BookmarkMenu from '../components/Reader/BookmarkMenu'
-import SearchMenu from '../components/Reader/SearchMenu'
-import ThemeMenu from '../components/Reader/ThemeMenu'
-import BubleMenu from '../components/Reader/BubleMenu'
-import { dark, tan } from '../../shared/themes'
-import { selectListener, clickListener, swipListener, wheelListener, keyListener } from '../components/Reader/listener/listener'
+import TocMenu from '../components/Reader/TocMenu';
+import BookmarkMenu from '../components/Reader/BookmarkMenu';
+import SearchMenu from '../components/Reader/SearchMenu';
+import ThemeMenu from '../components/Reader/ThemeMenu';
+import BubleMenu from '../components/Reader/BubleMenu';
+import { dark, tan } from '../../shared/themes';
+import { selectListener, clickListener, swipListener, wheelListener, keyListener } from '../components/Reader/listener/listener';
 
 export default {
   name: 'Reader',
@@ -136,13 +136,17 @@ export default {
       })
       .then(() => {
         this.rendition.attachTo(document.getElementById('reader'));
-        this.rendition.themes.fontSize(100);
         this.rendition.display(this.info.lastCfi || 1);
         this.rendition.themes.registerRules('dark',dark);
         this.rendition.themes.registerRules('tan', tan);
         this.rendition.ready = true;
         this.theme = this.$store.getters.theme;
         this.applytheme(this.theme);
+      })
+      .then(()=>{
+        this.info.highlights.forEach(cfiRange=>{
+          this.rendition.annotations.highlight(cfiRange);
+        });
       })
       .then(() => {
         this.isReady = true;
@@ -199,7 +203,8 @@ export default {
 
     highlightSelection(cfiRange) {
       this.rendition.annotations.highlight(cfiRange);
-      // this.info.highlight.push(cfiRange);
+      this.info.highlights.push(cfiRange);
+      this.$db.set(this.info.id, this.info);
     },
 
     nextPage() {
