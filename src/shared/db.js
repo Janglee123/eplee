@@ -189,9 +189,10 @@ class Database {
 
     if (this.storage[id]) {
       this.storage[id] = newValue;
+      this.hasChanges = true;
+      this.async();
       return true;
     }
-    this.async();
     return false;
   }
 
