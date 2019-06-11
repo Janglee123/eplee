@@ -54,14 +54,13 @@ function genrateKey(filePath) {
 /**
  * Parsh the toc provided by epubjs to required form by element-ui tree component
  * and store inforamtion related to toc item such as lable, href, cfi and percent.
- * @param {Object} Book - EPUBJS Book needed to be ready 
+ * @param {Object} Book - EPUBJS Book needed to be ready
  * @returns {Array} returns array of toc tree that easily adopted by el-tree
  */
 function parshToc(book) {
-  
   const { toc } = book.navigation;
   const { spine } = book;
-  
+
   /**
    * some epubs not uese standerd href or epubjs fails to process them
    * @param {String} href  The href to validate
