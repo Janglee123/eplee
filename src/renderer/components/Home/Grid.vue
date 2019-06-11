@@ -3,7 +3,12 @@
 		<div v-for="book in bookList" :key="book.id">
 			<router-link :to="{ name: 'Reader', params: { id:book.id } }">
 				<el-card ref="card" shadow="hover" class="box-card" :body-style="{ padding: '0px' }">
-					<el-image :src="book.coverPath===''?defoultCover:book.coverPath" :fit="'fill'" />
+					<el-image :src="book.coverPath" :fit="'fill'">
+						<div slot="error" class="image-slot">
+							<el-image :src="require('../../assets/default-cover.png')" :fit="'fill'">              
+							</el-image>
+						</div>
+					</el-image>
 					<div class="title" :style="{ background: book.bgColorFromCover }">
 						{{ trunc(book.title,30) }}
 					</div>
@@ -19,6 +24,7 @@
  */
 
 export default {
+
   name: 'Grid',
 
   props: {
