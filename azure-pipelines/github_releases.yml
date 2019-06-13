@@ -1,6 +1,6 @@
 steps:
 
-  - task: DownloadPipelineArtifact@1
+  - task: DownloadBuildArtifact@1
     displayName: "Download windows pipeline artifact"
     inputs:
       buildType: "current"
@@ -10,7 +10,7 @@ steps:
       targetPath: $(Build.ArtifactStagingDirectory)
       downloadPath: $(System.ArtifactsDirectory)
 
-  - task: DownloadPipelineArtifact@1
+  - task: DownloadBuildArtifact@1
     displayName: "Download linux pipeline artifact"
     inputs:
       buildType: "current"
@@ -20,7 +20,7 @@ steps:
       targetPath: $(Build.ArtifactStagingDirectory)
       downloadPath: $(System.ArtifactsDirectory)
 
-  - task: DownloadPipelineArtifact@1
+  - task: DownloadBuildArtifact@1
     displayName: "Download mac pipeline artifact"
     inputs:
       buildType: "current"
