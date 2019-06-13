@@ -144,5 +144,5 @@
     "postinstall": "electron-builder install-app-deps",
     "release": "build"
   },
-  "version": "0.3.0"
+  "version": "0.4.0"
 }
