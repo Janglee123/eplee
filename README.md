@@ -31,6 +31,22 @@ Eplee is an ePub reader focused on clean distraction-free reading experience wit
 
 ![](https://raw.githubusercontent.com/Janglee123/eplee/master/screenshots/screenshot_2.png) ![](https://raw.githubusercontent.com/Janglee123/eplee/master/screenshots/screenshot_1.png)
 
+## Features
+
+- Clean UI 
+- Easy Navigation
+  - Table of content
+  - Slider
+  - Use swip, wheel, arrow key or mouse to flip page  
+- Bookmark
+- Highlights
+- In Book search
+- Themes (Light, Tan, Dark)
+- Custom style support
+- Language translation
+- Continue reading where you left
+
+
 ## Why?
 
 There are lots of open source epub reader available right now. So, the question "Why there is a need for another epub reader?" is meaningful. The answer is the reading experience. Eplee focused on clean UI that let you read a book without annoying GUI.
