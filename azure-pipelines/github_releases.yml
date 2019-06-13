@@ -7,7 +7,7 @@ steps:
       specificBuildWithTriggering: false
       buildVersionToDownload: "latestFromBranch"
       artifactName: "win"
-      targetPath: $(Build.ArtifactStagingDirectory)
+      targetPath: $(Build.ArtifactStagingDirectory)/
       downloadPath: $(System.ArtifactsDirectory)
 
   - task: DownloadBuildArtifacts@0
@@ -17,7 +17,7 @@ steps:
       specificBuildWithTriggering: false
       buildVersionToDownload: "latestFromBranch"
       artifactName: "linux"
-      targetPath: $(Build.ArtifactStagingDirectory)
+      targetPath: $(Build.ArtifactStagingDirectory)/linux
       downloadPath: $(System.ArtifactsDirectory)
 
   - task: DownloadBuildArtifacts@0
@@ -27,11 +27,15 @@ steps:
       specificBuildWithTriggering: false
       buildVersionToDownload: "latestFromBranch"
       artifactName: "mac"
-      targetPath: $(Build.ArtifactStagingDirectory)
+      targetPath: $(Build.ArtifactStagingDirectory)/mac
       downloadPath: $(System.ArtifactsDirectory)
 
   - script: |
-      cd $(System.ArtifactsDirectory)/dist
+      cd $(System.ArtifactsDirectory)
+      ls
+      mv linux/* .
+      mv mac/* .
+      mv win/* .
       ls
     displayName: "List files from dist"
   - script: |
@@ -43,7 +47,7 @@ steps:
   - task: CopyFiles@2
     displayName: "Copy files"
     inputs:
-      sourceFolder: $(System.ArtifactsDirectory)/dist
+      sourceFolder: $(System.ArtifactsDirectory)
       contents: |
         *
         !electron
