@@ -40,6 +40,8 @@ jobs:
       - template: mac.yml
 
   - job: github_releases
+    pool:
+      vmImage: "ubuntu-16.04"
     dependsOn:
       - win
       - linux
