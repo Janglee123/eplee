@@ -25,7 +25,7 @@ Sweet, Simple and Beautiful ePub reader<br>
 </div>
 
 
-Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI. **Project is in the early stage of development**.
+Eplee is an ePub reader focused on clean distraction-free reading experience with simple and beautiful UI.
 
 ## Screenshots
 
@@ -37,7 +37,7 @@ Eplee is an ePub reader focused on clean distraction-free reading experience wit
 - Easy Navigation
   - Table of content
   - Slider
-  - Use swip, wheel, arrow key or mouse to flip page  
+  - Use swipe, wheel, arrow key or mouse to flip page  
 - Bookmark
 - Highlights
 - In Book search
