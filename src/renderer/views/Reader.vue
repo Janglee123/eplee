@@ -89,7 +89,11 @@ export default {
 
   },
   mounted() {
-    const { id } = this.$route.params;
+    let { id } = this.$route.params;
+
+    if (process.platform === 'win32') {
+        id = id.split('\\').pop();
+    }
     this.info = this.$db.get(id);
     this.toc = this.info.toc;
     this.info.lastOpen = new Date().getTime();
