@@ -5,6 +5,7 @@ import toBuffer from 'blob-to-buffer';
 import { Book } from 'epubjs';
 import fileUrl from 'file-url';
 import path from 'path';
+import process from 'process';
 import * as Vibrant from 'node-vibrant';
 
 /**
@@ -203,7 +204,7 @@ function getInfo(filePath, callback) {
 
 function addToDB(file, db, cb) {
   getInfo(file, (info, book) => {
-    const key = info.id;
+    let key = info.id;
     info.lastOpen = new Date().getTime();
 
     // return if book is allready registered
@@ -212,6 +213,10 @@ function addToDB(file, db, cb) {
         cb(info, db);
       }
       return;
+    }
+
+    if (process.platform === 'win32') {
+        key = key.split('\\').pop();
     }
 
     const coverPath = path.join(
