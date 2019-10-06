@@ -7,22 +7,22 @@
 			</el-button-group>
 
 			<toc-menu :toc="toc" :theme="theme" @node-click="onNodeClick"></toc-menu>
-			
-			<bookmark-menu 
-				:bookmarks="info.bookmarks" 
-				:theme="theme" 
+
+			<bookmark-menu
+				:bookmarks="info.bookmarks"
+				:theme="theme"
 				@node-click="onNodeClick"
 				@add-bookmark="addBookmark"
 				@remove-bookmark="removeBookmark"
 			/>
-			
+
 			<search-menu
 				:search-result="searchResult"
 				:theme="theme"
 				@node-click="onNodeClick"
 				@search="search"
 			/>
-			
+
 			<theme-menu
 				@theme-change="applytheme"
 				@flow-change="applyflow"
@@ -305,9 +305,9 @@ export default {
     },
 
     tocFromPercentage(percent){
-      
+
       if(!this._flattenedToc) return {};
-      
+
       percent /= 100;
 
       for(let i = 0 ; i < this._flattenedToc.length ; i+=1 ){
