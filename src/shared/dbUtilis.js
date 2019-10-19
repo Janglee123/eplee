@@ -5,6 +5,7 @@ import toBuffer from 'blob-to-buffer';
 import { Book } from 'epubjs';
 import fileUrl from 'file-url';
 import path from 'path';
+import process from 'process';
 import * as Vibrant from 'node-vibrant';
 
 /**
@@ -43,7 +44,7 @@ function storeCover(book, path, cb) {
  * @returns {String} which will be used as a id to store file info in db
  */
 
-function genrateKey(filePath) {
+function generateKey(filePath) {
   if (!filePath || typeof filePath !== 'string') {
     return '';
   }
@@ -161,7 +162,7 @@ function getInfo(filePath, callback) {
   }
 
   // create a key from path
-  const key = genrateKey(filePath);
+  const key = generateKey(filePath);
 
   // file load on file protocol
   const uri = fileUrl(filePath);
@@ -203,7 +204,7 @@ function getInfo(filePath, callback) {
 
 function addToDB(file, db, cb) {
   getInfo(file, (info, book) => {
-    const key = info.id;
+    let key = info.id;
     info.lastOpen = new Date().getTime();
 
     // return if book is allready registered
@@ -214,6 +215,10 @@ function addToDB(file, db, cb) {
       return;
     }
 
+    if (process.platform === 'win32') {
+        key = key.split('\\').pop();
+    }
+
     const coverPath = path.join(
       remote.app.getPath('appData'),
       'eplee',
@@ -221,8 +226,8 @@ function addToDB(file, db, cb) {
       key
     );
 
-    storeCover(book, coverPath, isSucces => {
-      if (isSucces) {
+    storeCover(book, coverPath, isSuccess => {
+      if (isSuccess) {
         info.coverPath = fileUrl(coverPath);
         Vibrant.from(coverPath)
           .getPalette((err, palette) => {
@@ -249,4 +254,4 @@ function addToDB(file, db, cb) {
   });
 }
 
-export { addToDB, storeCover, genrateKey, getInfo, parshToc };
+export { addToDB, storeCover, generateKey, getInfo, parshToc };

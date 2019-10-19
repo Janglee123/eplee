@@ -7,22 +7,22 @@
 			</el-button-group>
 
 			<toc-menu :toc="toc" :theme="theme" @node-click="onNodeClick"></toc-menu>
-			
-			<bookmark-menu 
-				:bookmarks="info.bookmarks" 
-				:theme="theme" 
+
+			<bookmark-menu
+				:bookmarks="info.bookmarks"
+				:theme="theme"
 				@node-click="onNodeClick"
 				@add-bookmark="addBookmark"
 				@remove-bookmark="removeBookmark"
 			/>
-			
+
 			<search-menu
 				:search-result="searchResult"
 				:theme="theme"
 				@node-click="onNodeClick"
 				@search="search"
 			/>
-			
+
 			<theme-menu
 				@theme-change="applytheme"
 				@flow-change="applyflow"
@@ -89,7 +89,11 @@ export default {
 
   },
   mounted() {
-    const { id } = this.$route.params;
+    let { id } = this.$route.params;
+
+    if (process.platform === 'win32') {
+        id = id.split('\\').pop();
+    }
     this.info = this.$db.get(id);
     this.toc = this.info.toc;
     this.info.lastOpen = new Date().getTime();
@@ -305,9 +309,9 @@ export default {
     },
 
     tocFromPercentage(percent){
-      
+
       if(!this._flattenedToc) return {};
-      
+
       percent /= 100;
 
       for(let i = 0 ; i < this._flattenedToc.length ; i+=1 ){

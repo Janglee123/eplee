@@ -33,7 +33,7 @@ export default {
     else{
         this.isReady = true;
     }
-    
+
     this.$bus.on('theme-change',(theme)=>{
       this.$refs.app.className = "";
       this.$refs.app.classList.add(theme);
@@ -65,7 +65,7 @@ html,
 body {
   margin: 0px;
   width: 100%;
-  height: 100%;  
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
 }
