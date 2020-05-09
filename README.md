@@ -16,9 +16,6 @@ Sweet, Simple and Beautiful ePub reader<br>
 <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs welcome!" />
 </a>
 
-<a href="https://discord.gg/nrt3QKN">
-  <img src="https://img.shields.io/discord/568671056865394688.svg?label=&amp;logo=discord&amp;logoColor=ffffff&amp;color=7389D8&amp;labelColor=6A7EC2" alt="Discord invite">
-</a>
 <a href="https://github.com/Janglee123/eplee/releases">
 <img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/janglee123/eplee/total.svg?label=Downloads&logo=GitHub">
 </a>
@@ -90,7 +87,7 @@ yarn run dev
 
 ## Contributing
 
-When contributing to this repository, please first discuss the change you wish to make on Discord [server](https://discord.gg/nrt3QKN) before making a change.
+PRs are welcome. Feel free to contribute. 
 
 # License
 
