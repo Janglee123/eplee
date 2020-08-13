@@ -198,10 +198,8 @@ export default {
 
     refreshRendition(){
       // re-render to apply theme properly
-      // trick to rerender is resize render
       if(this.rendition.manager){
-        this.rendition.resize(0, 0);
-        this.rendition.resize('100%', '100%');
+        this.rendition.start();
       }
     },
 
