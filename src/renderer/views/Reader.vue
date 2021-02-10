@@ -114,6 +114,7 @@ export default {
     });
 
     this.rendition.on('rendered', (e, iframe) => {
+      iframe.iframe.contentWindow.focus()
       clickListener(iframe.document, this.rendition, this.flipPage);
       selectListener(iframe.document, this.rendition, this.toggleBuble);
       swipListener(iframe.document,  this.flipPage);
