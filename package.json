@@ -70,7 +70,7 @@
     "blob-to-buffer": "^1.2.8",
     "electron-localshortcut": "^3.1.0",
     "element-ui": "^2.8.2",
-    "epubjs": "^0.3.84",
+    "epubjs": "^0.3.89",
     "file-url": "^3.0.0",
     "node-vibrant": "^3.2.0-alpha",
     "save-file": "^2.3.1",
