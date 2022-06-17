@@ -90,7 +90,7 @@
     "copy-webpack-plugin": "^5.0.2",
     "css-loader": "^2.1.1",
     "devtron": "^1.4.0",
-    "electron": "~4.1.4",
+    "electron": "~15.5.5",
     "electron-builder": "^20.39.0",
     "electron-debug": "^2.2.0",
     "eslint": "^5.16.0",
